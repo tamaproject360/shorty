@@ -35,7 +35,7 @@ function copyLink() {
 
 <template>
   <Card>
-    <CardContent :class="{ 'p-4': linksStore.viewMode === 'list' }">
+    <CardContent :class="{ 'p-4': linksStore.viewMode === 'list', 'relative': linksStore.viewMode === 'card' }">
       <NuxtLink
         class="flex" :class="[
           linksStore.viewMode === 'list' ? 'flex-row items-center space-x-4' : `
@@ -194,25 +194,100 @@ function copyLink() {
             </PopoverContent>
           </Popover>
         </div>
-
-        <!-- Actions for Card View -->
-        <div v-else class="absolute top-4 right-4 flex items-center space-x-2">
-          <!-- This section was tricky in the original code, it was mixed.
-                 I'll revert to a simpler conditional structure to minimize diff complexity
-                 and risk of breaking the layout completely.
-
-                 Actually, looking at the original code, the actions were inside the first div.
-                 Let's stick to modifying the container classes primarily.
-            -->
-        </div>
-
-        <!-- Reverting complex split and just hiding/showing elements based on mode or using css grid is safer
-             but let's try to adapt the existing structure slightly.
-        -->
       </NuxtLink>
 
-      <!-- Let's rewrite the template part more carefully to match the original structure
-           but adding the conditions for layout -->
+      <!-- Actions for Card View (outside NuxtLink to prevent navigation) -->
+      <div
+        v-if="linksStore.viewMode === 'card'"
+        class="absolute top-4 right-4 flex items-center space-x-2"
+      >
+        <a
+          :href="link.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open original link"
+          @click.stop
+        >
+          <LinkIcon
+            class="
+              h-5 w-5 text-muted-foreground
+              hover:text-foreground
+            "
+          />
+        </a>
+
+        <Popover>
+          <PopoverTrigger aria-label="Show QR code">
+            <QrCode
+              class="
+                h-5 w-5 text-muted-foreground
+                hover:text-foreground
+              "
+              @click.prevent
+            />
+          </PopoverTrigger>
+          <PopoverContent>
+            <DashboardLinksQRCode
+              :data="shortLink"
+              :image="linkIcon"
+            />
+          </PopoverContent>
+        </Popover>
+
+        <Popover v-model:open="editPopoverOpen">
+          <PopoverTrigger aria-label="More actions">
+            <SquareChevronDown
+              class="
+                h-5 w-5 text-muted-foreground
+                hover:text-foreground
+              "
+              @click.prevent
+            />
+          </PopoverTrigger>
+          <PopoverContent
+            class="w-auto p-0"
+            :hide-when-detached="false"
+          >
+            <LazyDashboardLinksEditor
+              :link="link"
+            >
+              <div
+                class="
+                  flex cursor-pointer items-center rounded-sm px-2 py-1.5
+                  text-sm outline-hidden select-none
+                  hover:bg-accent hover:text-accent-foreground
+                "
+              >
+                <SquarePen
+                  aria-hidden="true"
+                  class="mr-2 h-5 w-5"
+                />
+                {{ $t('common.edit') }}
+              </div>
+            </LazyDashboardLinksEditor>
+
+            <Separator />
+
+            <LazyDashboardLinksDelete
+              :link="link"
+            >
+              <div
+                class="
+                  flex cursor-pointer items-center rounded-sm px-2 py-1.5
+                  text-sm outline-hidden select-none
+                  hover:bg-accent hover:text-accent-foreground
+                "
+              >
+                <Eraser
+                  aria-hidden="true"
+                  class="mr-2 h-5 w-5"
+                />
+                {{ $t('common.delete') }}
+              </div>
+            </LazyDashboardLinksDelete>
+          </PopoverContent>
+        </Popover>
+      </div>
     </CardContent>
   </Card>
 </template>
