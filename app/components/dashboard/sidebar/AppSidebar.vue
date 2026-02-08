@@ -17,6 +17,12 @@ const platformItems = computed<NavItem[]>(() => [
     isActive: isActive('links'),
   },
   {
+    title: 'nav.microsites',
+    url: '/dashboard/microsites',
+    icon: DASHBOARD_ROUTES.microsites.icon,
+    isActive: isActive('microsites'),
+  },
+  {
     title: 'nav.analysis',
     url: '/dashboard/analysis',
     icon: DASHBOARD_ROUTES.analysis.icon,

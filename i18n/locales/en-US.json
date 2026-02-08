@@ -52,6 +52,7 @@
   },
   "nav": {
     "links": "Links",
+    "microsites": "Microsites",
     "analysis": "Analysis",
     "realtime": "Realtime",
     "migrate": "Import/Export"
