@@ -77,5 +77,5 @@ node .output/server/index.mjs
 
 ## 💖 Credits
 
-Original project [Sink](https://github.com/miantiao-me/sink) by [ccbikai](https://github.com/ccbikai).
+Original project [Sink](https://github.com/miantiao-me/sink).
 This fork modifies the storage layer to be platform-agnostic using [Unstorage](https://unstorage.unjs.io/).
