@@ -37,10 +37,12 @@ function handleRealtimeFilterChange(type: string, value: string) {
       <LazyDashboardLinksEditor />
       <div class="flex-1" />
       <DashboardLinksSort />
+      <DashboardLinksViewToggle />
     </template>
     <template v-else>
       <LazyDashboardLinksEditor />
       <DashboardLinksSort />
+      <DashboardLinksViewToggle />
       <LazyDashboardLinksSearch />
     </template>
   </template>

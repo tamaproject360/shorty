@@ -24,7 +24,7 @@ const user = computed<User>(() => ({
 }))
 
 function logOut() {
-  localStorage.removeItem('SinkSiteToken')
+  localStorage.removeItem('ShortySiteToken')
   navigateTo('/dashboard/login')
 }
 </script>

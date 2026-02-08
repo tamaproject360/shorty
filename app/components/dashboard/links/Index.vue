@@ -86,11 +86,12 @@ linksStore.onLinkUpdate(({ link, type }) => {
 
 <template>
   <section
-    class="
-      grid grid-cols-1 gap-4
+    class="gap-4"
+    :class="linksStore.viewMode === 'list' ? 'flex flex-col' : `
+      grid grid-cols-1
       md:grid-cols-2
       lg:grid-cols-3
-    "
+    `"
   >
     <DashboardLinksLink
       v-for="link in displayedLinks"
