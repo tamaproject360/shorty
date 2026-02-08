@@ -13,18 +13,38 @@ app/                    # Nuxt 4 application
   ├── components/       # Vue components (PascalCase)
   │   ├── ui/           # shadcn-vue components (DO NOT EDIT)
   │   ├── dashboard/    # Dashboard components
+  │   │   ├── links/    # Link management components
+  │   │   ├── microsites/  # Microsite (link-in-bio) components
+  │   │   └── sidebar/  # Sidebar components
   │   └── home/         # Landing page components
   ├── composables/      # Vue composables (camelCase)
   ├── pages/            # File-based routing
+  │   ├── dashboard/    # Dashboard pages (links, microsites, etc.)
+  │   └── m/            # Public microsite pages (/m/[slug])
   ├── stores/           # Pinia stores
+  │   ├── links.ts      # Link management store
+  │   └── microsites.ts # Microsite management store
   ├── types/            # TypeScript types
+  │   ├── link.ts       # Link types
+  │   ├── microsite.ts  # Microsite types
+  │   └── index.ts      # Type exports
   ├── utils/            # Utility functions
   └── lib/              # Shared helpers
 server/                 # Nitro server (Cloudflare Workers)
   ├── api/              # API endpoints
+  │   ├── link/         # Link CRUD endpoints
+  │   └── microsite/    # Microsite CRUD endpoints
   └── utils/            # Server utilities
+    ├── link-store.ts   # Link storage functions
+    └── microsite-store.ts  # Microsite storage functions
 schemas/                # Zod validation schemas
+  ├── link.ts           # Link validation
+  └── microsite.ts      # Microsite validation
 tests/                  # Vitest tests
+docs/                   # Documentation
+  ├── CHANGELOG.md      # Change log
+  ├── task.md           # Implementation summary
+  └── API.md            # API documentation
 ```
 
 ## Commands
