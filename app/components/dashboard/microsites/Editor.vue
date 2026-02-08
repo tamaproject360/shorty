@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Microsite, MicrositeItem } from '@/types'
+import type { Microsite, MicrositeItem, SocialLink } from '@/types'
 import { GripVertical, Plus, Trash2 } from 'lucide-vue-next'
 import { nanoid } from 'nanoid'
 import { toast } from 'vue-sonner'
@@ -24,7 +24,10 @@ const form = reactive({
   avatar: '',
   theme: 'auto' as 'light' | 'dark' | 'auto',
   bgColor: '',
+  bgImage: '',
+  bgOverlayOpacity: 0.2,
   textColor: '',
+  socialLinks: [] as SocialLink[],
   items: [] as MicrositeItem[],
   published: false,
 })
@@ -34,6 +37,8 @@ const submitting = ref(false)
 watch(() => micrositesStore.editingMicrosite, (microsite) => {
   if (microsite) {
     Object.assign(form, microsite)
+    if (!form.socialLinks)
+      form.socialLinks = []
   }
   else {
     resetForm()
@@ -47,7 +52,10 @@ function resetForm() {
   form.avatar = ''
   form.theme = 'auto'
   form.bgColor = ''
+  form.bgImage = ''
+  form.bgOverlayOpacity = 0.2
   form.textColor = ''
+  form.socialLinks = []
   form.items = []
   form.published = false
 }
@@ -59,6 +67,7 @@ function addItem() {
     url: '',
     order: form.items.length,
     visible: true,
+    gridSpan: '1x1',
   })
 }
 
@@ -208,10 +217,47 @@ async function handleSubmit() {
                   v-model="item.title"
                   placeholder="Link title"
                 />
-                <Input
-                  v-model="item.url"
-                  placeholder="https://..."
-                />
+                <div class="flex gap-2">
+                  <Input
+                    v-model="item.url"
+                    placeholder="https://..."
+                    class="flex-1"
+                  />
+                  <Select v-model="item.gridSpan">
+                    <SelectTrigger class="w-[120px]">
+                      <SelectValue placeholder="Size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1x1">
+                        1x1
+                      </SelectItem>
+                      <SelectItem value="2x1">
+                        2x1
+                      </SelectItem>
+                      <SelectItem value="2x2">
+                        2x2
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div class="space-y-2">
+                  <Label>Background</Label>
+                  <div class="grid gap-2">
+                    <Input v-model="form.bgColor" placeholder="#Color (e.g. #000000)" />
+                    <Input v-model="form.bgImage" placeholder="Image URL (https://...)" />
+                    <div v-if="form.bgImage" class="flex items-center gap-2">
+                      <Label class="w-24 text-xs">Overlay: {{ Math.round((form.bgOverlayOpacity || 0.2) * 100) }}%</Label>
+                      <Slider
+                        :model-value="[form.bgOverlayOpacity || 0.2]"
+                        :max="1"
+                        :step="0.1"
+                        class="flex-1"
+                        @update:model-value="(v) => form.bgOverlayOpacity = v[0]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div class="flex items-center space-x-2">
                   <Switch v-model:checked="item.visible" />
                   <span class="text-sm text-muted-foreground">Visible</span>

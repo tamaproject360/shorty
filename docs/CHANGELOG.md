@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-02-08 - Analytics & Tracking
+
+### Added
+- **Analytics Engine**: Local storage-based event tracking for microsite views.
+- **Analytics Dashboard**: Dedicated page showing total views, timeline, top countries, referrers, and devices.
+- **Card Actions**: Added "Stats" button to microsite cards.
+
+### Modified
+- `app/components/dashboard/microsites/MicrositeCard.vue`: Updated footer layout to include Analytics button.
+- `app/pages/m/[slug].vue`: Added automatic view tracking on page load.
+
+## 2026-02-08 - Microsite Visual Upgrades
+
+### Added (Phase 1 Continued)
+- **Bento Grid Layout**: Added support for variable item sizes (1x1, 2x1, 2x2) with a responsive grid layout.
+- **Background Customization**: Added support for custom background images with adjustable overlay opacity.
+- **Enhanced Editor**: Added grid size selection for items and background settings section.
+
+### Modified
+- `app/types/microsite.ts`: Added `gridSpan`, `bgImage`, `bgOverlayOpacity` properties.
+- `schemas/microsite.ts`: Updated Zod schema for new properties.
+- `app/components/dashboard/microsites/Editor.vue`: Added Grid Size selector and Background controls.
+- `app/pages/m/[slug].vue`: Implemented grid layout logic and background image rendering.
+
+### Added
+- **Social Icon Bar**: Dedicated section for social media profiles (GitHub, Twitter, Instagram, etc.) with automatic icon rendering.
+- **Rich Media Embeds**: Automatically converts YouTube and Spotify URLs into playable embed cards on public microsite pages.
+- **Improved Editor**: Added social links management section to the microsite editor.
+
+### Modified
+- `app/types/microsite.ts`: Added `SocialLink` interface and `socialLinks` array to `Microsite` type.
+- `schemas/microsite.ts`: Updated Zod schema to validate social links.
+- `app/components/dashboard/microsites/Editor.vue`: Added UI for adding/removing social links.
+- `app/pages/m/[slug].vue`: Added rendering logic for social icons and media embeds.
+
 ## 2026-02-08 - Microsite Feature Implementation
 
 ### Added

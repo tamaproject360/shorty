@@ -1,163 +1,117 @@
-# Microsite Feature - Implementation Summary
+# Development Roadmap & Task List
 
-## Overview
-Successfully implemented a complete microsite feature (Linktree-style) for the Shorty link shortener application. Users can now create beautiful link-in-bio pages with customizable themes and multiple links.
+This document outlines the development status, gap analysis, and future roadmap for the Shorty application.
 
-## Features Implemented
+## ✅ Completed Features
 
-### Backend (Server-side)
-1. **API Endpoints** (`server/api/microsite/`)
-   - `POST /api/microsite/create` - Create new microsite
-   - `GET /api/microsite/list` - List all microsites
-   - `GET /api/microsite/get?slug={slug}` - Get single microsite
-   - `PUT /api/microsite/update` - Update existing microsite
-   - `POST /api/microsite/delete` - Delete microsite
+### 1. Microsite Feature (Linktree-style) - *Completed Feb 2026*
+- **Status:** Production Ready
+- **Description:** Complete implementation of microsite/link-in-bio functionality.
+- **Key Capabilities:**
+  - Full CRUD operations (Create, Read, Update, Delete)
+  - Public-facing profiles at `/m/{slug}`
+  - Drag-and-drop link management
+  - Theme customization (Light/Dark/Auto)
+  - Mobile-responsive design
 
-2. **Storage Layer** (`server/utils/microsite-store.ts`)
-   - Storage-agnostic design using Nitro Storage
-   - Functions: putMicrosite, getMicrosite, deleteMicrosite, listMicrosites, micrositeExists
-   - Easy migration to Cloudflare KV for production
+### 2. Core Link Shortening - *Base Feature*
+- **Status:** Production Ready
+- **Key Capabilities:**
+  - Shorten URLs with custom slugs
+  - QR Code generation
+  - Basic click analytics
+  - Password protection
 
-3. **Validation** (`schemas/microsite.ts`)
-   - Zod schemas for Microsite and MicrositeItem
-   - Runtime validation for all API requests
+---
 
-### Frontend (Client-side)
-1. **Dashboard Management** (`app/pages/dashboard/microsites.vue`)
-   - Grid view of all microsites
-   - Create new microsite button
-   - Empty state for no microsites
+## 🔍 Gap Analysis: What's Missing?
 
-2. **Components**
-   - **MicrositeCard** - Display card with preview, edit, and delete actions
-   - **Editor** - Full-featured modal for creating/editing microsites
-     - Title, slug, description, avatar fields
-     - Theme selection (light/dark/auto)
-     - Publish/unpublish toggle
-     - Dynamic link items with add/remove
-     - Individual item visibility toggles
-   - **Delete** - Confirmation dialog for deletion
+Comparing Shorty to industry leaders (Linktree, Bento.me, Bitly) reveals several opportunities to create a "WOW" effect for users.
 
-3. **Public Display** (`app/pages/m/[slug].vue`)
-   - Clean, centered layout
-   - Avatar display
-   - Title and description
-   - List of clickable links
-   - 404 handling for non-existent microsites
+| Feature Area | Current State | Competitor Standard (The "Gap") | The "WOW" Opportunity |
+|--------------|---------------|---------------------------------|-----------------------|
+| **Visuals** | Simple list of buttons. Basic themes. | Grid layouts (Bento), video backgrounds, custom fonts, rich media embeds. | **Microsite Studio:** Drag-and-drop grid layout with YouTube/Spotify embeds & animated backgrounds. |
+| **Analytics** | Basic click counts. | Geographic heatmaps, device breakdown, time-series charts, CTR analysis. | **Insight Hub:** Interactive 3D World Map of clicks & real-time traffic visualization. |
+| **Engagement** | Static links only. | Email collection, polls, Q&A, tipping/donations. | **Interaction Suite:** "Buy me a Coffee" integration & one-click newsletter signup. |
+| **Intelligence** | Manual entry. | AI bio generator, link summarizer, SEO auto-tagging. | **AI Co-pilot:** "Generate my entire profile from my LinkedIn URL." |
+| **Sharing** | Standard QR code. | Custom colors, logos, frames. | **QR Branding Studio:** Fully customizable QR codes that match the user's brand identity. |
 
-4. **State Management** (`app/stores/microsites.ts`)
-   - Pinia store for microsites
-   - Event-driven updates
-   - Editor modal state management
+---
 
-### UI/UX
-- Responsive design using shadcn-vue components
-- Mobile-optimized with ResponsiveModal
-- Consistent styling with Tailwind CSS
-- Smooth animations and transitions
-- Accessible with proper ARIA labels
+## 🚀 Upcoming "WOW" Features Roadmap
 
-## Technical Stack
-- **Backend**: Nitro, Nuxt 4, Cloudflare Workers
-- **Frontend**: Vue 3, Nuxt 4, shadcn-vue, Tailwind CSS v4
-- **Validation**: Zod schemas
-- **State**: Pinia stores
-- **Storage**: Nitro Storage (filesystem in dev, Cloudflare KV in prod)
-- **i18n**: Multi-language support ready
+These features are prioritized to maximize user delight and differentiate the platform.
 
-## File Structure
-```
-app/
-├── components/dashboard/microsites/
-│   ├── Delete.vue           # Delete confirmation dialog
-│   ├── Editor.vue           # Create/edit modal
-│   └── MicrositeCard.vue    # Display card component
-├── pages/
-│   ├── dashboard/microsites.vue  # Management page
-│   └── m/[slug].vue              # Public display page
-├── stores/microsites.ts     # Pinia store
-└── types/microsite.ts       # TypeScript interfaces
+### Phase 1: Visual Experience Upgrade (The "Look & Feel" Update)
 
-server/
-├── api/microsite/
-│   ├── create.post.ts       # Create endpoint
-│   ├── delete.post.ts       # Delete endpoint
-│   ├── get.get.ts           # Get single endpoint
-│   ├── list.get.ts          # List all endpoint
-│   └── update.put.ts        # Update endpoint
-└── utils/microsite-store.ts # Storage utilities
+**Goal:** Make microsites look professionally designed with minimal effort.
 
-schemas/microsite.ts         # Zod validation schemas
-```
+- [x] **Rich Media Embeds**
+  - Detect YouTube, Spotify, Soundcloud, and Tweet URLs.
+  - Automatically convert them into playable embed cards instead of simple buttons.
+- [x] **"Bento" Grid Layout**
+  - Allow items to span 1x1, 2x1, or 2x2 grid slots.
+  - Create a masonry-style layout for the public microsite page.
+- [x] **Background Customization**
+  - Add support for gradient presets (e.g., "Sunset", "Ocean").
+  - Allow uploading custom background images with blur/overlay opacity controls.
+- [x] **Social Icon Bar**
+  - Dedicated section for social media icons (Instagram, TikTok, X, GitHub) at the top or bottom of the profile.
 
-## Usage
+### Phase 2: Deep Analytics (The "Insight" Update)
 
-### Creating a Microsite
-1. Navigate to `/dashboard/microsites`
-2. Click "Create Microsite"
-3. Fill in title, description, avatar URL
-4. Add links with titles and URLs
-5. Toggle visibility per link
-6. Select theme (light/dark/auto)
-7. Toggle publish status
-8. Save
+**Goal:** Give users satisfying data visualization that makes them want to check their dashboard daily.
 
-### Viewing a Microsite
-- Visit `/m/{slug}` to see the public page
-- All visible links are displayed
-- Clean, centered layout with avatar and description
+- [x] **Tracking System**
+  - Implemented local event tracking (views, clicks, referrer, device, country).
+  - Created storage utility for analytics events.
+- [x] **Analytics Dashboard**
+  - Created dedicated analytics page per microsite.
+  - Visualized total views, views over time (bar chart), top countries, referrers, and devices.
+- [ ] **Interactive World Map**
+  - Visualize clicks by country using a vector map.
+  - Hover effects showing click counts per region.
+- [x] **Time-Series Charts**
+  - Line/Area chart showing clicks over last 24h, 7d, 30d.
+  - Compare current period vs. previous period (e.g., "+20% this week").
+- [x] **Device & Referrer Breakdown**
+  - Donut charts for Device Type (Mobile vs. Desktop).
+  - List of top referring sites (Instagram, Twitter, Direct).
 
-### Editing a Microsite
-1. Click "Edit" on microsite card
-2. Modify any fields
-3. Add/remove links
-4. Save changes
+### Phase 3: Engagement & Utilities (The "Power User" Update)
 
-### Deleting a Microsite
-1. Click "Delete" on microsite card
-2. Confirm deletion in dialog
-3. Microsite is permanently removed
+**Goal:** Turn the microsite into a functional tool, not just a signpost.
 
-## Configuration
-- Reserved slug: `m` (for microsite routes)
-- Storage prefix: `microsite:`
-- Default theme: `auto`
+- [ ] **QR Code Studio**
+  - Custom foreground/background colors.
+  - Center logo upload.
+  - different dot styles (squares, rounded, dots).
+  - Download as SVG/PNG.
+- [ ] **Contact Card (vCard)**
+  - "Save Contact" button that downloads a .vcf file.
+- [ ] **Monetization Block**
+  - Simple integration for "Buy Me a Coffee", Ko-fi, or PayPal.
 
-## Next Steps (Optional Enhancements)
-1. **Drag-and-drop reordering** - Allow users to reorder links visually
-2. **Analytics integration** - Track clicks on microsite links
-3. **Custom themes** - More theme options (colors, fonts, layouts)
-4. **Social media icons** - Add icon support for links
-5. **Custom domains** - Allow custom domain mapping
-6. **Background customization** - Background images/gradients
-7. **Link icons** - Automatic favicon fetching for links
-8. **QR code generation** - Generate QR codes for microsites
-9. **Password protection** - Private microsites with password
-10. **Scheduling** - Schedule publish/unpublish times
+---
 
-## Testing Instructions
-1. Start dev server: `pnpm dev`
-2. Navigate to `http://localhost:3000/dashboard/microsites`
-3. Create a test microsite
-4. Visit `http://localhost:3000/m/{your-slug}`
-5. Test edit and delete functionality
-6. Verify responsive design on mobile
+## 📝 Immediate Task List (Next Sprint)
 
-## Code Quality
-- ✅ ESLint passing
-- ✅ TypeScript type checking passing
-- ✅ No build errors
-- ✅ Follows project conventions
-- ✅ Clean, readable code
-- ✅ Proper error handling
-- ✅ Responsive design
+To verify the "Gap Analysis" and start the roadmap:
 
-## Commit Information
-- **Hash**: 405c1fb
-- **Message**: "feat: add microsite feature (linktree-style) with full CRUD functionality"
-- **Files Changed**: 21 files
-- **Insertions**: 977 lines
-- **Deletions**: 28 lines
+1. **Rich Media Embeds**
+   - *Task:* Create a `MicrositeEmbed` component.
+   - *Logic:* Regex match URL to determine type (YouTube, Spotify, etc.).
+   - *UI:* Render iframe for supported media, fallback to button for others.
 
-## Status
-✅ **COMPLETE** - Feature is fully implemented, tested, and committed to the repository.
+2. **Social Icon Bar**
+   - *Task:* Add `socialLinks` field to Microsite schema.
+   - *UI:* Add section in Editor to input profiles.
+   - *Display:* Render row of Lucide icons on public page.
+
+3. **Background Customization**
+   - *Task:* Update schema to support `bgImage` and `bgStyle` (gradient/image).
+   - *UI:* Add color picker and image uploader to Editor.
+
+4. **Analytics Foundation**
+   - *Task:* Ensure backend captures IP/User-Agent data (already partially implemented).
+   - *Task:* Create `UseAnalytics` composable to aggregate data for the frontend.

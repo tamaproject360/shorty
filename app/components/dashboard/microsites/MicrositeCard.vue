@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Microsite } from '@/types'
-import { Edit, ExternalLink, Globe, Trash2 } from 'lucide-vue-next'
+import { BarChart, Edit, ExternalLink, Globe, Trash2 } from 'lucide-vue-next'
 
 const props = defineProps<{
   microsite: Microsite
@@ -70,18 +70,25 @@ function handleEdit() {
         </a>
       </div>
     </CardContent>
-    <CardFooter class="flex gap-2">
-      <Button variant="outline" size="sm" class="flex-1" @click="handleEdit">
-        <Edit class="mr-2 h-4 w-4" />
-        Edit
-      </Button>
-      <Button variant="outline" size="sm" as-child>
+    <CardFooter class="grid grid-cols-4 gap-2">
+      <Button variant="outline" size="icon" class="w-full" as-child title="View Page">
         <a :href="micrositeUrl" target="_blank">
           <ExternalLink class="h-4 w-4" />
         </a>
       </Button>
+
+      <Button variant="outline" size="icon" class="w-full" as-child title="Analytics">
+        <NuxtLink :to="`/dashboard/microsite-analytics/${microsite.slug}`">
+          <BarChart class="h-4 w-4" />
+        </NuxtLink>
+      </Button>
+
+      <Button variant="outline" size="icon" class="w-full" title="Edit" @click="handleEdit">
+        <Edit class="h-4 w-4" />
+      </Button>
+
       <LazyDashboardMicrositesDelete :microsite="microsite">
-        <Button variant="outline" size="sm">
+        <Button variant="destructive" size="icon" class="w-full" title="Delete">
           <Trash2 class="h-4 w-4" />
         </Button>
       </LazyDashboardMicrositesDelete>
