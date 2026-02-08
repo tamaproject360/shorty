@@ -49,26 +49,29 @@ function hasOgConfig(link: z.infer<typeof LinkSchema>): boolean {
 export default eventHandler(async (event) => {
   const { pathname: slug } = parsePath(event.path.replace(/^\/|\/$/g, ''))
   const { slugRegex, reserveSlug } = useAppConfig()
-  const { homeURL, linkCacheTtl, caseSensitive, redirectWithQuery, redirectStatusCode } = useRuntimeConfig(event)
-  const { cloudflare } = event.context
+  const { homeURL, linkCacheTtl: _linkCacheTtl, caseSensitive, redirectWithQuery, redirectStatusCode } = useRuntimeConfig(event)
+  const { cloudflare: _cloudflare } = event.context
 
   if (event.path === '/' && homeURL)
     return sendRedirect(event, homeURL)
 
-  if (slug && !reserveSlug.includes(slug) && slugRegex.test(slug) && cloudflare) {
-    const { KV } = cloudflare.env
+  if (slug && !reserveSlug.includes(slug) && slugRegex.test(slug)) {
+    // const { KV } = cloudflare.env
+    // Refactored to use storage-agnostic getLink
 
     let link: z.infer<typeof LinkSchema> | null = null
 
-    const getLink = async (key: string) =>
-      await KV.get(`link:${key}`, { type: 'json', cacheTtl: linkCacheTtl })
+    // const getLink = async (key: string) =>
+    //   await KV.get(`link:${key}`, { type: 'json', cacheTtl: linkCacheTtl })
 
     const lowerCaseSlug = slug.toLowerCase()
-    link = await getLink(caseSensitive ? slug : lowerCaseSlug)
+
+    // Attempt to get link using the utility which uses Nitro Storage
+    link = await getLink(event, caseSensitive ? slug : lowerCaseSlug)
 
     if (!caseSensitive && !link && lowerCaseSlug !== slug) {
       console.log('original slug fallback:', `slug:${slug} lowerCaseSlug:${lowerCaseSlug}`)
-      link = await getLink(slug)
+      link = await getLink(event, slug)
     }
 
     if (link) {

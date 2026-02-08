@@ -58,9 +58,29 @@ export default defineNuxtConfig({
   },
   compatibilityDate: 'latest',
   nitro: {
-    preset: !import.meta.env.CI ? 'cloudflare-module' : undefined,
+    // preset: !import.meta.env.CI ? 'cloudflare-module' : undefined,
     experimental: {
       openAPI: true,
+    },
+    storage: {
+      data: {
+        driver: 'fs',
+        base: './.data/links',
+      },
+      images: {
+        driver: 'fs',
+        base: './.data/assets',
+      },
+    },
+    devStorage: {
+      data: {
+        driver: 'fs',
+        base: './.data/links',
+      },
+      images: {
+        driver: 'fs',
+        base: './.data/assets',
+      },
     },
     timing: true,
     openAPI: {

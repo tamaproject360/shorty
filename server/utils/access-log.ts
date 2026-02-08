@@ -110,7 +110,11 @@ export function useAccessLog(event: H3Event) {
     device: [ExtraDevices.device || []].flat(),
   })).getResult()
 
-  const { request: { cf }, env } = event.context.cloudflare
+  // Graceful fallback for Cloudflare context
+  const cloudflare = event.context.cloudflare || {}
+  const cf = cloudflare.request?.cf || {}
+  const env = cloudflare.env || {}
+
   const link = event.context.link || {}
 
   const isBot = cf?.botManagement?.verifiedBot
@@ -124,7 +128,7 @@ export function useAccessLog(event: H3Event) {
   }
 
   const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
-  const countryName = regionNames.of(cf?.country || 'WD') // fallback to "Worldwide"
+  const countryName = cf?.country ? regionNames.of(cf.country) : 'Unknown' // fallback to "Worldwide"
   const accessLogs = {
     url: link.url,
     slug: link.slug,
@@ -148,7 +152,7 @@ export function useAccessLog(event: H3Event) {
     longitude: Number(cf?.longitude || getHeader(event, 'cf-iplongitude') || 0),
   }
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && env.ANALYTICS) {
     return env.ANALYTICS.writeDataPoint({
       indexes: [link.id], // only one index
       blobs: logs2blobs(accessLogs),
@@ -156,6 +160,7 @@ export function useAccessLog(event: H3Event) {
     })
   }
 
-  console.log('access logs:', accessLogs, logs2blobs(accessLogs), logs2doubles(accessLogs), { ...blobs2logs(logs2blobs(accessLogs)), ...doubles2logs(logs2doubles(accessLogs)) })
+  // Local/Netlify logging
+  console.log('access logs:', accessLogs)
   return Promise.resolve()
 }

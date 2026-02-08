@@ -3,7 +3,7 @@ import { LinkSchema } from '@@/schemas/link'
 const slugValidator = LinkSchema.shape.slug
 
 export default eventHandler(async (event) => {
-  const { R2 } = event.context.cloudflare.env
+  const storage = useStorage('images')
   const key = getRouterParam(event, 'key')
 
   if (!key) {
@@ -27,17 +27,30 @@ export default eventHandler(async (event) => {
     throw createError({ status: 400, statusText: 'Invalid slug format' })
   }
 
-  const object = await R2.get(key)
-
-  if (!object) {
+  // Check if item exists first
+  if (!await storage.hasItem(key)) {
     throw createError({ status: 404, statusText: 'Image not found' })
   }
 
-  const contentType = object.httpMetadata?.contentType || 'application/octet-stream'
+  const object = await storage.getItemRaw(key)
+
+  // Simple content type inference based on extension
+  const ext = key.split('.').pop()?.toLowerCase()
+  const mimeTypes: Record<string, string> = {
+    png: 'image/png',
+    jpg: 'image/jpeg',
+    jpeg: 'image/jpeg',
+    gif: 'image/gif',
+    webp: 'image/webp',
+    svg: 'image/svg+xml',
+  }
+  const contentType = (ext && mimeTypes[ext]) || 'application/octet-stream'
 
   setHeader(event, 'Content-Type', contentType)
   setHeader(event, 'Cache-Control', 'public, max-age=31536000, immutable')
-  setHeader(event, 'ETag', object.etag)
 
-  return object.body
+  // ETag generation (simple)
+  // setHeader(event, 'ETag', object.etag)
+
+  return object
 })

@@ -25,7 +25,7 @@ defineRouteMeta({
 })
 
 export default eventHandler(async (event) => {
-  const { R2 } = event.context.cloudflare.env
+  const storage = useStorage('images')
 
   const formData = await readFormData(event)
   const file = formData.get('file') as File | null
@@ -56,11 +56,13 @@ export default eventHandler(async (event) => {
   const key = `images/${slug}/${nanoid(10)()}.${ext}`
 
   const arrayBuffer = await file.arrayBuffer()
-  await R2.put(key, arrayBuffer, {
-    httpMetadata: {
-      contentType: file.type,
-    },
-  })
+
+  // Use Nitro storage instead of R2
+  // We explicitly use Buffer for Node compatibility if needed, though arrayBuffer is standard
+  await storage.setItemRaw(key, arrayBuffer)
+
+  // Store metadata if possible (Nitro storage doesn't support metadata directly on setItemRaw usually)
+  // For simple FS storage, we just store the file. Content-Type inference will happen on read.
 
   const imageUrl = `/_assets/${key}`
   return { url: imageUrl, key }

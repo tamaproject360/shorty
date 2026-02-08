@@ -6,11 +6,18 @@ export default eventHandler(async (event) => {
   const url = (await getValidatedQuery(event, z.object({
     url: z.string().url(),
   }).parse)).url
-  const { cloudflare } = event.context
-  const { AI } = cloudflare.env
+
+  // Gracefully handle missing Cloudflare context
+  const cloudflare = event.context.cloudflare || {}
+  const env = cloudflare.env || {}
+  const AI = env.AI
 
   if (!AI) {
-    throw createError({ status: 501, statusText: 'AI not enabled' })
+    // throw createError({ status: 501, statusText: 'AI not enabled' })
+    // Fallback for local development/Netlify
+    return {
+      slug: null, // or generate a random one if preferred, but let frontend handle null
+    }
   }
 
   const { aiPrompt, aiModel } = useRuntimeConfig(event)
