@@ -262,76 +262,79 @@ async function handleSubmit() {
     v-model:open="open"
     :title="isEditing ? 'Edit Microsite' : 'Create Microsite'"
     description="Create a beautiful link-in-bio page for your audience"
-    content-class="max-w-5xl"
+    content-class="!max-w-[95vw] !md:max-w-6xl"
   >
-    <div class="space-y-4 p-6">
-      <div class="space-y-2">
-        <Label for="title">Title *</Label>
-        <Input id="title" v-model="form.title" placeholder="My Awesome Page" />
-      </div>
+    <div class="grid gap-6 p-6 md:grid-cols-2">
+      <!-- ─── Left Column: Settings ─────────────────────────────── -->
+      <div class="space-y-4">
+        <div class="space-y-2">
+          <Label for="title">Title *</Label>
+          <Input id="title" v-model="form.title" placeholder="My Awesome Page" />
+        </div>
 
-      <div class="space-y-2">
-        <Label for="slug">Slug</Label>
-        <Input id="slug" v-model="form.slug" placeholder="my-page" />
-        <p class="text-xs text-muted-foreground">
-          Leave empty for auto-generated slug
-        </p>
-      </div>
+        <div class="space-y-2">
+          <Label for="slug">Slug</Label>
+          <Input id="slug" v-model="form.slug" placeholder="my-page" />
+          <p class="text-xs text-muted-foreground">
+            Leave empty for auto-generated slug
+          </p>
+        </div>
 
-      <div class="space-y-2">
-        <Label for="description">Description</Label>
-        <Textarea
-          id="description"
-          v-model="form.description"
-          placeholder="Tell your audience about yourself"
-          rows="3"
-        />
-      </div>
+        <div class="space-y-2">
+          <Label for="description">Description</Label>
+          <Textarea
+            id="description"
+            v-model="form.description"
+            placeholder="Tell your audience about yourself"
+            rows="4"
+            class="resize-none"
+          />
+        </div>
 
-      <div class="space-y-2">
-        <Label>Avatar Icon</Label>
-        <div class="grid grid-cols-8 gap-2">
-          <button
-            v-for="opt in AVATAR_ICONS"
-            :key="opt.name"
-            type="button"
-            class="flex size-10 items-center justify-center rounded-lg border transition-colors"
-            :class="form.avatarIcon === opt.name ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/50'"
-            @click="form.avatarIcon = form.avatarIcon === opt.name ? '' : opt.name"
-          >
-            <component :is="opt.icon" class="size-5" />
-          </button>
+        <div class="space-y-2">
+          <Label>Avatar Icon</Label>
+          <div class="grid grid-cols-8 gap-2">
+            <button
+              v-for="opt in AVATAR_ICONS"
+              :key="opt.name"
+              type="button"
+              class="flex size-10 items-center justify-center rounded-lg border transition-colors"
+              :class="form.avatarIcon === opt.name ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/50'"
+              @click="form.avatarIcon = form.avatarIcon === opt.name ? '' : opt.name"
+            >
+              <component :is="opt.icon" class="size-5" />
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <Label for="theme">Theme</Label>
+          <Select v-model="form.theme">
+            <SelectTrigger>
+              <SelectValue placeholder="Select theme" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">
+                Light
+              </SelectItem>
+              <SelectItem value="dark">
+                Dark
+              </SelectItem>
+              <SelectItem value="auto">
+                Auto
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <Switch id="published" v-model="form.published" />
+          <Label for="published">Published</Label>
         </div>
       </div>
 
-      <div class="space-y-2">
-        <Label for="theme">Theme</Label>
-        <Select v-model="form.theme">
-          <SelectTrigger>
-            <SelectValue placeholder="Select theme" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">
-              Light
-            </SelectItem>
-            <SelectItem value="dark">
-              Dark
-            </SelectItem>
-            <SelectItem value="auto">
-              Auto
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <Switch id="published" v-model="form.published" />
-        <Label for="published">Published</Label>
-      </div>
-
-      <Separator />
-
-      <div class="space-y-4">
+      <!-- ─── Right Column: Items ────────────────────────────────── -->
+      <div class="space-y-4 md:border-l md:pl-6">
         <div class="flex items-center justify-between">
           <Label>Items</Label>
           <div class="flex gap-2">
@@ -353,7 +356,7 @@ async function handleSubmit() {
           No items yet. Add links and separators!
         </div>
 
-        <div v-else class="space-y-3">
+        <div v-else class="max-h-[60vh] space-y-3 overflow-y-auto pr-1">
           <Card
             v-for="(item, index) in form.items"
             :key="item.id"

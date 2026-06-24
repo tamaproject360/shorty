@@ -30,7 +30,6 @@ const isDesktop = useMediaQuery('(min-width: 640px)')
     <DialogContent
       class="
         max-h-[90svh] max-w-[95svw] grid-rows-[auto_minmax(0,1fr)_auto]
-        md:max-w-lg
       " :class="[
         contentClass,
       ]"
