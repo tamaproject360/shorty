@@ -1,6 +1,6 @@
 export default defineAppConfig({
   title: 'Shorty',
-  github: 'https://github.com/miantiao-me/shorty',
+  github: '',
   twitter: '',
   telegram: '',
   description: 'A Simple / Speedy / Secure Link Shortener with Analytics.',
