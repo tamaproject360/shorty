@@ -262,7 +262,7 @@ async function handleSubmit() {
     v-model:open="open"
     :title="isEditing ? 'Edit Microsite' : 'Create Microsite'"
     description="Create a beautiful link-in-bio page for your audience"
-    content-class="max-w-2xl"
+    content-class="max-w-4xl"
   >
     <div class="space-y-4 p-6">
       <div class="space-y-2">
