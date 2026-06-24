@@ -96,6 +96,46 @@ const form = reactive({
 })
 
 const submitting = ref(false)
+const dragIndex = ref<number | null>(null)
+const dropOverIndex = ref<number | null>(null)
+
+function onDragStart(event: DragEvent, index: number) {
+  dragIndex.value = index
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', String(index))
+  }
+}
+
+function onDragEnter(index: number) {
+  if (dragIndex.value !== null && dragIndex.value !== index) {
+    dropOverIndex.value = index
+  }
+}
+
+function onDragLeave() {
+  dropOverIndex.value = null
+}
+
+function onDrop(index: number) {
+  if (dragIndex.value === null || dragIndex.value === index)
+    return
+
+  const [moved] = form.items.splice(dragIndex.value, 1)
+  form.items.splice(index, 0, moved)
+
+  form.items.forEach((item, idx) => {
+    item.order = idx
+  })
+
+  dragIndex.value = null
+  dropOverIndex.value = null
+}
+
+function onDragEnd() {
+  dragIndex.value = null
+  dropOverIndex.value = null
+}
 
 watch(() => micrositesStore.editingMicrosite, (microsite) => {
   if (microsite) {
@@ -317,10 +357,25 @@ async function handleSubmit() {
           <Card
             v-for="(item, index) in form.items"
             :key="item.id"
-            class="p-4"
-            :class="{ 'border-dashed bg-muted/30': item.type === 'separator' }"
+            class="p-4 transition-colors"
+            :class="{
+              'border-dashed bg-muted/30': item.type === 'separator',
+              'border-primary/50 bg-primary/5': dropOverIndex === index,
+            }"
+            @dragover.prevent
+            @dragenter.prevent="onDragEnter(index)"
+            @dragleave="onDragLeave()"
+            @drop.prevent="onDrop(index)"
+            @dragend="onDragEnd()"
           >
             <div v-if="item.type === 'separator'" class="flex items-center gap-3">
+              <div
+                class="cursor-grab active:cursor-grabbing pt-1"
+                draggable="true"
+                @dragstart="onDragStart($event, index)"
+              >
+                <GripVertical class="h-5 w-5 text-muted-foreground" />
+              </div>
               <span class="text-xs font-medium text-muted-foreground whitespace-nowrap">Separator</span>
               <Input
                 v-model="item.title"
@@ -338,7 +393,11 @@ async function handleSubmit() {
             </div>
 
             <div v-else class="flex items-start gap-3">
-              <div class="cursor-move pt-2">
+              <div
+                class="cursor-grab active:cursor-grabbing pt-2"
+                draggable="true"
+                @dragstart="onDragStart($event, index)"
+              >
                 <GripVertical class="h-5 w-5 text-muted-foreground" />
               </div>
               <div class="flex-1 space-y-3">
