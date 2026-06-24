@@ -1,0 +1,95 @@
+import { existsSync, mkdirSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import Database from 'better-sqlite3'
+
+const DB_PATH = join(process.cwd(), '.data', 'shorty.db')
+
+let _db: Database.Database | null = null
+
+export function getDb(): Database.Database {
+  if (_db)
+    return _db
+
+  const dir = dirname(DB_PATH)
+  if (!existsSync(dir))
+    mkdirSync(dir, { recursive: true })
+
+  _db = new Database(DB_PATH)
+  _db.pragma('journal_mode = WAL')
+  _db.pragma('foreign_keys = ON')
+
+  _db.exec(`
+    CREATE TABLE IF NOT EXISTS links (
+      id TEXT PRIMARY KEY,
+      url TEXT NOT NULL,
+      slug TEXT NOT NULL UNIQUE,
+      comment TEXT,
+      title TEXT,
+      description TEXT,
+      image TEXT,
+      expiration INTEGER,
+      apple TEXT,
+      google TEXT,
+      created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+      updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+    );
+    CREATE INDEX IF NOT EXISTS idx_links_slug ON links(slug);
+    CREATE INDEX IF NOT EXISTS idx_links_created ON links(created_at);
+
+    CREATE TABLE IF NOT EXISTS microsites (
+      id TEXT PRIMARY KEY,
+      slug TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      description TEXT,
+      avatar TEXT,
+      theme TEXT NOT NULL DEFAULT 'auto',
+      social_links TEXT DEFAULT '[]',
+      links TEXT DEFAULT '[]',
+      bg_image TEXT,
+      bg_overlay_opacity REAL DEFAULT 0.5,
+      text_color TEXT,
+      published INTEGER DEFAULT 0,
+      created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+      updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+    );
+    CREATE INDEX IF NOT EXISTS idx_microsites_slug ON microsites(slug);
+
+    CREATE TABLE IF NOT EXISTS clicks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      link_id TEXT NOT NULL,
+      slug TEXT NOT NULL,
+      url TEXT,
+      ip TEXT,
+      referer TEXT,
+      country TEXT,
+      region TEXT,
+      city TEXT,
+      timezone TEXT,
+      language TEXT,
+      os TEXT,
+      browser TEXT,
+      browser_type TEXT,
+      device TEXT,
+      device_type TEXT,
+      user_agent TEXT,
+      latitude REAL DEFAULT 0,
+      longitude REAL DEFAULT 0,
+      is_bot INTEGER DEFAULT 0,
+      created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+      FOREIGN KEY (link_id) REFERENCES links(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_clicks_link_id ON clicks(link_id);
+    CREATE INDEX IF NOT EXISTS idx_clicks_slug ON clicks(slug);
+    CREATE INDEX IF NOT EXISTS idx_clicks_created ON clicks(created_at);
+    CREATE INDEX IF NOT EXISTS idx_clicks_country ON clicks(country);
+  `)
+
+  return _db
+}
+
+export function closeDb(): void {
+  if (_db) {
+    _db.close()
+    _db = null
+  }
+}

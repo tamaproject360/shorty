@@ -1,28 +1,38 @@
-import type { H3Event } from 'h3'
 import { QuerySchema } from '@@/schemas/query'
-import { z } from 'zod'
-
-const { select } = SqlBricks
-
-const HeatmapQuerySchema = QuerySchema.extend({
-  clientTimezone: z.string()
-    .regex(/^[A-Z_]+(?:\/[A-Z_-]+)*$/i)
-    .max(64)
-    .default('Etc/UTC'),
-})
-
-function query2sql(query: z.infer<typeof HeatmapQuerySchema>, event: H3Event): string {
-  const filter = query2filter(query)
-  const { dataset } = useRuntimeConfig(event)
-  const timezone = getSafeTimezone(query.clientTimezone)
-  const tzTimestamp = `toDateTime(toUnixTimestamp(timestamp), '${timezone}')`
-  const sql = select(`toDayOfWeek(${tzTimestamp}) as weekday, toHour(${tzTimestamp}) as hour, SUM(_sample_interval) as visits, COUNT(DISTINCT ${logsMap.ip}) as visitors`).from(dataset).where(filter).groupBy('weekday', 'hour').orderBy('weekday', 'hour')
-  appendTimeFilter(sql, query)
-  return sql.toString()
-}
+import { getDb } from '../../utils/db'
 
 export default eventHandler(async (event) => {
-  const query = await getValidatedQuery(event, HeatmapQuerySchema.parse)
-  const sql = query2sql(query, event)
-  return useWAE(event, sql)
+  const query = await getValidatedQuery(event, QuerySchema.parse)
+  const db = getDb()
+
+  const { where, params } = buildWhere(query)
+
+  const rows = db.prepare(
+    `SELECT CAST(strftime('%w', datetime(created_at, 'unixepoch')) AS INTEGER) as weekday, CAST(strftime('%H', datetime(created_at, 'unixepoch')) AS INTEGER) as hour, COUNT(*) as visits, COUNT(DISTINCT ip) as visitors FROM clicks ${where} AND is_bot = 0 GROUP BY weekday, hour ORDER BY weekday, hour`,
+  ).all(...params) as { weekday: number, hour: number, visits: number, visitors: number }[]
+
+  return { data: rows }
 })
+
+function buildWhere(query: { slug?: string, start?: number, end?: number }) {
+  const conditions: string[] = []
+  const params: (string | number)[] = []
+
+  if (query.slug) {
+    conditions.push('slug = ?')
+    params.push(query.slug)
+  }
+  if (query.start) {
+    conditions.push('created_at >= ?')
+    params.push(query.start)
+  }
+  if (query.end) {
+    conditions.push('created_at <= ?')
+    params.push(query.end)
+  }
+
+  return {
+    where: conditions.length ? `WHERE ${conditions.join(' AND ')}` : '',
+    params,
+  }
+}

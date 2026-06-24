@@ -1,23 +1,37 @@
-import type { H3Event } from 'h3'
 import { QuerySchema } from '@@/schemas/query'
-
-const { select, and, notEq } = SqlBricks
-
-function query2sql(query: Query, event: H3Event): string {
-  const filter = query2filter(query)
-  const { dataset } = useRuntimeConfig(event)
-  // Use SUM(_sample_interval) instead of count() to account for sampling
-  const sql = select(`blob8 as ${blobsMap.blob8},double1 as ${doublesMap.double1},double2 as ${doublesMap.double2},SUM(_sample_interval) as count`)
-    .from(dataset)
-    .where(and([notEq('double1', 0), notEq('double2', 0), filter]))
-    .groupBy([blobsMap.blob8, doublesMap.double1, doublesMap.double2])
-  appendTimeFilter(sql, query)
-  return sql.toString()
-}
+import { getDb } from '../../utils/db'
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, QuerySchema.parse)
-  const sql = query2sql(query, event)
+  const db = getDb()
+  const { where, params } = buildWhere(query)
 
-  return useWAE(event, sql)
+  const rows = db.prepare(
+    `SELECT city as name, latitude, longitude, COUNT(*) as count FROM clicks ${where} AND is_bot = 0 AND latitude != 0 AND longitude != 0 GROUP BY city, latitude, longitude`,
+  ).all(...params) as { name: string, latitude: number, longitude: number, count: number }[]
+
+  return { data: rows }
 })
+
+function buildWhere(query: { slug?: string, start?: number, end?: number }) {
+  const conditions: string[] = []
+  const params: (string | number)[] = []
+
+  if (query.slug) {
+    conditions.push('slug = ?')
+    params.push(query.slug)
+  }
+  if (query.start) {
+    conditions.push('created_at >= ?')
+    params.push(query.start)
+  }
+  if (query.end) {
+    conditions.push('created_at <= ?')
+    params.push(query.end)
+  }
+
+  return {
+    where: conditions.length ? `WHERE ${conditions.join(' AND ')}` : '',
+    params,
+  }
+}

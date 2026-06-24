@@ -1,45 +1,58 @@
-import type { H3Event } from 'h3'
 import { QuerySchema } from '@@/schemas/query'
-import { date2unix } from '@/utils/time'
-
-const { select } = SqlBricks
-
-function query2sql(query: Query, event: H3Event): string {
-  const filter = query2filter(query)
-  const { dataset } = useRuntimeConfig(event)
-  const sql = select(`*`).from(dataset).where(filter).orderBy('timestamp DESC')
-  appendTimeFilter(sql, query)
-  return sql.toString()
-}
-
-interface WAEEvents {
-  [key: string]: string
-}
-
-function events2logs(events: WAEEvents[]) {
-  return events.map((event) => {
-    const blobs = Array.from({ length: Object.keys(blobsMap).length }).fill(0).reduce<string[]>((_, _c, i) => {
-      _.push(event[`blob${i + 1}`] ?? '')
-      return _
-    }, [])
-    const doubles = Array.from({ length: Object.keys(doublesMap).length }).fill(0).reduce<number[]>((_, _c, i) => {
-      _.push(+(event[`double${i + 1}`] ?? 0))
-      return _
-    }, [])
-    return {
-      ...blobs2logs(blobs),
-      ...doubles2logs(doubles),
-      ip: undefined,
-      id: crypto.randomUUID(),
-      timestamp: date2unix(new Date(`${event.timestamp}Z`)),
-    }
-  })
-}
+import { getDb } from '../../utils/db'
+import { date2unix } from '../../utils/time'
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, QuerySchema.parse)
-  const sql = query2sql(query, event)
+  const db = getDb()
+  const { where, params } = buildWhere(query)
+  const limit = Math.max(0, Math.floor(query.limit ?? 50))
 
-  const logs = await useWAE(event, sql) as { data: WAEEvents[] }
-  return events2logs(logs?.data || [])
+  const rows = db.prepare(
+    `SELECT * FROM clicks ${where} ORDER BY created_at DESC LIMIT ?`,
+  ).all(...params, limit) as Record<string, unknown>[]
+
+  return rows.map(row => ({
+    id: String(row.id),
+    slug: row.slug as string,
+    url: row.url as string,
+    ip: undefined,
+    referer: row.referer as string,
+    country: row.country as string,
+    region: row.region as string,
+    city: row.city as string,
+    timezone: row.timezone as string,
+    language: row.language as string,
+    os: row.os as string,
+    browser: row.browser as string,
+    browserType: row.browser_type as string,
+    device: row.device as string,
+    deviceType: row.device_type as string,
+    latitude: row.latitude as number,
+    longitude: row.longitude as number,
+    timestamp: date2unix(new Date((row.created_at as number) * 1000)),
+  }))
 })
+
+function buildWhere(query: { slug?: string, start?: number, end?: number }) {
+  const conditions: string[] = []
+  const params: (string | number)[] = []
+
+  if (query.slug) {
+    conditions.push('slug = ?')
+    params.push(query.slug)
+  }
+  if (query.start) {
+    conditions.push('created_at >= ?')
+    params.push(query.start)
+  }
+  if (query.end) {
+    conditions.push('created_at <= ?')
+    params.push(query.end)
+  }
+
+  return {
+    where: conditions.length ? `WHERE ${conditions.join(' AND ')}` : '',
+    params,
+  }
+}

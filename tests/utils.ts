@@ -1,20 +1,26 @@
-import { SELF } from 'cloudflare:test'
+import { ofetch } from 'ofetch'
 
-export function fetchWithAuth(path: string, options?: RequestInit): Promise<Response> {
-  return SELF.fetch(`http://localhost${path}`, {
+export function fetchWithAuth(path: string, options?: RequestInit): Promise<any> {
+  return ofetch(`http://localhost:7465${path}`, {
     ...options,
+    method: options?.method || 'GET',
     headers: {
-      ...options?.headers,
-      Authorization: `Bearer ${import.meta.env.NUXT_SITE_TOKEN}`,
+      ...options?.headers as Record<string, string>,
+      Authorization: `Bearer ${import.meta.env.NUXT_SITE_TOKEN || 'ShortyCool'}`,
     },
+    ignoreResponseError: true,
   })
 }
 
-export function fetch(path: string, options?: RequestInit): Promise<Response> {
-  return SELF.fetch(`http://localhost${path}`, options)
+export function fetch(path: string, options?: RequestInit): Promise<any> {
+  return ofetch(`http://localhost:7465${path}`, {
+    ...options,
+    method: options?.method || 'GET',
+    ignoreResponseError: true,
+  })
 }
 
-export function postJson(path: string, body: unknown, withAuth = true): Promise<Response> {
+export function postJson(path: string, body: unknown, withAuth = true): Promise<any> {
   const fn = withAuth ? fetchWithAuth : fetch
   return fn(path, {
     method: 'POST',
@@ -23,7 +29,7 @@ export function postJson(path: string, body: unknown, withAuth = true): Promise<
   })
 }
 
-export function putJson(path: string, body: unknown, withAuth = true): Promise<Response> {
+export function putJson(path: string, body: unknown, withAuth = true): Promise<any> {
   const fn = withAuth ? fetchWithAuth : fetch
   return fn(path, {
     method: 'PUT',
@@ -32,7 +38,6 @@ export function putJson(path: string, body: unknown, withAuth = true): Promise<R
   })
 }
 
-// 1x1 transparent PNG for testing
 export const TEST_PNG_BYTES = new Uint8Array([
   0x89,
   0x50,

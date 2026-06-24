@@ -1,3 +1,5 @@
+import geoip from 'geoip-lite'
+
 defineRouteMeta({
   openAPI: {
     description: 'Get the location of the user',
@@ -10,9 +12,10 @@ defineRouteMeta({
 })
 
 export default eventHandler((event) => {
-  const { request: { cf } } = event.context.cloudflare
+  const ip = getRequestIP(event, { xForwardedFor: true })
+  const geo = ip ? geoip.lookup(ip) : null
   return {
-    latitude: cf?.latitude,
-    longitude: cf?.longitude,
+    latitude: geo?.ll?.[0],
+    longitude: geo?.ll?.[1],
   }
 })
