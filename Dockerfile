@@ -28,7 +28,8 @@ RUN pnpm install --frozen-lockfile --offline --ignore-scripts && pnpm rebuild be
 
 COPY . .
 ENV NODE_OPTIONS=--max-old-space-size=6144
-RUN pnpm build && pnpm prune --prod
+RUN pnpm build
+RUN pnpm prune --prod --ignore-scripts
 
 # ─── Runtime Stage ────────────────────────────────────────────
 FROM node:22-alpine AS runtime
