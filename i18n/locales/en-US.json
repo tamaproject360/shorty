@@ -68,80 +68,50 @@
   },
   "home": {
     "hero": {
-      "github_repo": "GitHub Repo"
+      "badge": "Simple. Speedy. Secure.",
+      "headline": "Shorten links, track clicks, own your audience",
+      "cta_dashboard": "Go to Dashboard",
+      "cta_create": "Create a Link",
+      "screenshot_alt": "Shorty Dashboard Preview"
     },
     "features": {
-      "title": "Features",
-      "subtitle": "Simple and sufficient functionality",
-      "url_shortening": {
-        "title": "URL Shortening",
-        "description": "Compress your URLs to their minimal length"
+      "headline": "Everything you need",
+      "short_links": {
+        "title": "Short Links",
+        "description": "Compress URLs to minimal length with custom slugs"
       },
       "analytics": {
         "title": "Analytics",
-        "description": "Monitor link analytics and gather insightful statistics"
+        "description": "Real-time click tracking and insightful statistics"
       },
-      "serverless": {
-        "title": "Serverless",
-        "description": "Deploy without the need for traditional servers"
+      "ai": {
+        "title": "AI-Powered",
+        "description": "Smart slug generation using AI"
       },
-      "customizable_slug": {
-        "title": "Customizable Slug",
-        "description": "Support for personalized slugs and case sensitivity"
+      "microsites": {
+        "title": "Microsites",
+        "description": "Build link-in-bio pages in seconds"
       },
-      "ai_slug": {
-        "title": "AI Slug",
-        "description": "Leverage AI to generate slugs"
+      "qr": {
+        "title": "QR Codes",
+        "description": "Generate QR codes for instant sharing"
       },
-      "link_expiration": {
-        "title": "Link Expiration",
-        "description": "Set expiration dates for your links"
-      },
-      "device_routing": {
-        "title": "Device Routing",
-        "description": "Redirect iOS/Android users to App Store links"
-      },
-      "og_preview": {
-        "title": "Social Preview",
-        "description": "Custom OpenGraph previews for social media"
-      },
-      "realtime_analytics": {
-        "title": "Real-time Analytics",
-        "description": "Live 3D globe and real-time event logs"
-      },
-      "qr_code": {
-        "title": "QR Code",
-        "description": "Generate QR codes for your short links"
-      },
-      "import_export": {
-        "title": "Import/Export",
-        "description": "Bulk migration via JSON files"
-      },
-      "multi_language": {
-        "title": "Multi-language",
-        "description": "Full i18n support for the dashboard"
+      "i18n": {
+        "title": "Multi-Language",
+        "description": "Full i18n support with 6 languages"
       }
     },
     "cta": {
-      "title": "Deployment immediately",
-      "description": "With just a few simple clicks, you can start deploying without any expenses",
-      "button": "Start Deploy"
+      "headline": "Ready to shorten your first link?",
+      "subtitle": "Millions of links shortened. Start in seconds.",
+      "button": "Go to Dashboard"
     },
     "logos": {
-      "title": "Built with awesome technologies"
-    },
-    "twitter": {
-      "follow": "Follow on X(Twitter)"
-    },
-    "stats": {
-      "title": "Sink in Numbers",
-      "subtitle": "Trusted by developers around the world",
-      "stars": "Stars on GitHub",
-      "forks": "Forks"
+      "title": "Built with"
     },
     "testimonials": {
       "title": "Loved by Users",
-      "subtitle": "See what developers are saying about Sink"
+      "subtitle": "See what developers are saying about Shorty"
     }
   },
   "dashboard": {
@@ -288,7 +258,7 @@
       },
       "errors": {
         "invalid_json": "Invalid JSON file",
-        "invalid_format": "Invalid file format. Please use a file exported from Sink.",
+        "invalid_format": "Invalid file format. Please use a file exported from Shorty.",
         "no_links": "No links found in file",
         "parse_error": "Failed to parse file"
       }

@@ -48,7 +48,7 @@ async function handleExport() {
       links: allLinks,
     }
 
-    saveAsJson(exportData, `sink-links-${Date.now()}.json`)
+    saveAsJson(exportData, `shorty-links-${Date.now()}.json`)
 
     toast.success(t('migrate.export.success'))
   }

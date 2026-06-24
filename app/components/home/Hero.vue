@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
-import { GitHubIcon, XIcon } from 'vue3-simple-icons'
-import heroUrl from '@/assets/images/hero.svg?url'
 
-const { title, description, github, twitter } = useAppConfig()
+const { description } = useAppConfig()
 </script>
 
 <template>
@@ -14,102 +12,61 @@ const { title, description, github, twitter } = useAppConfig()
         md:py-24
       "
     >
-      <div
-        class="
-          mx-auto flex max-w-6xl flex-col items-center gap-12 px-6
-          lg:flex-row lg:justify-between
-        "
-      >
-        <div
-          class="
-            max-w-lg text-center
-            lg:text-left
-          "
-        >
-          <!-- Twitter Follow Badge -->
-          <a
-            :href="twitter"
-            target="_blank"
-            rel="noopener"
-            :title="$t('home.twitter.follow')"
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="flex flex-col items-center text-center">
+          <div
             class="
-              mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full
-              border p-1 pr-3
-              lg:mx-0
+              mb-6 inline-flex items-center rounded-full border bg-muted/50 px-3
+              py-1 text-sm
             "
           >
-            <span
-              class="
-                flex items-center gap-1.5 rounded-full bg-muted px-2 py-1
-                text-xs
-              "
-            >
-              <XIcon aria-hidden="true" class="size-3" />
-            </span>
-            <span class="text-sm">{{ $t('home.twitter.follow') }}</span>
-            <span class="block h-4 w-px bg-border" />
-            <ArrowRight aria-hidden="true" class="size-4" />
-          </a>
+            <span class="mr-1">✨</span>
+            {{ $t('home.hero.badge') }}
+          </div>
 
           <h1
             class="
-              text-4xl font-medium text-balance
+              max-w-3xl text-4xl font-medium tracking-tight text-balance
               md:text-5xl
               xl:text-6xl
             "
           >
-            {{ title }}
+            {{ $t('home.hero.headline') }}
           </h1>
-          <p class="mt-6 text-lg text-pretty text-muted-foreground">
+          <p class="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
             {{ description }}
           </p>
 
           <div
             class="
-              mt-10 flex flex-col items-center justify-center gap-2
+              mt-10 flex flex-col items-center gap-3
               sm:flex-row
-              lg:justify-start
             "
           >
-            <Button
-              as-child
-              size="lg"
-              class="px-5 text-base"
-            >
+            <Button as-child size="lg" class="px-6 text-base">
               <NuxtLink to="/dashboard">
-                <span class="text-nowrap">{{ $t('dashboard.title') }}</span>
+                {{ $t('home.hero.cta_dashboard') }}
+                <ArrowRight class="ml-1 size-4" />
               </NuxtLink>
             </Button>
-            <Button
-              as-child
-              size="lg"
-              variant="ghost"
-              class="px-5 text-base"
-            >
-              <a
-                :href="github"
-                target="_blank"
-                :title="$t('layouts.footer.social.github')"
-                class="flex items-center gap-1.5"
-              >
-                <GitHubIcon aria-hidden="true" class="size-5" />
-                <span class="text-nowrap">{{ $t('home.hero.github_repo') }}</span>
-              </a>
+            <Button as-child variant="outline" size="lg" class="px-6 text-base">
+              <NuxtLink to="/dashboard/links">
+                {{ $t('home.hero.cta_create') }}
+              </NuxtLink>
             </Button>
           </div>
-        </div>
 
-        <object
-          type="image/svg+xml"
-          :data="heroUrl"
-          class="
-            hidden aspect-square w-96 shrink-0
-            md:block
-            lg:w-[420px]
-          "
-          aria-label="Link sharing illustration"
-          suppressHydrationWarning
-        />
+          <div class="mt-16 w-full max-w-4xl">
+            <div class="overflow-hidden rounded-xl border shadow-2xl">
+              <img
+                src="/asset/dashboard.png"
+                :alt="$t('home.hero.screenshot_alt')"
+                class="w-full"
+                loading="lazy"
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

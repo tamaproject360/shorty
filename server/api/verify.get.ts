@@ -12,9 +12,10 @@ defineRouteMeta({
   },
 })
 
-export default eventHandler(() => {
+export default eventHandler((event) => {
+  const { homeURL } = useRuntimeConfig(event)
   return {
-    name: 'Sink',
-    url: 'https://sink.cool',
+    name: 'Shorty',
+    url: homeURL || '',
   }
 })

@@ -180,7 +180,7 @@ function downloadItems(
     exportedAt: new Date().toISOString(),
     count: links.length,
     links,
-  }, `sink-import-${filename}-${Date.now()}.json`)
+  }, `shorty-import-${filename}-${Date.now()}.json`)
 }
 
 function downloadSuccessItems() {

@@ -1,120 +1,68 @@
 <script setup lang="ts">
-import { AreaChart, FileJson, Globe, Hourglass, Languages, Link, Paintbrush, QrCode, ServerOff, Share2, Smartphone, Sparkles } from 'lucide-vue-next'
+import { AreaChart, Languages, LayoutTemplate, Link, QrCode, Sparkles } from 'lucide-vue-next'
 
-const { t } = useI18n()
-const features = computed(() => [
-  {
-    title: t('home.features.url_shortening.title'),
-    description: t('home.features.url_shortening.description'),
-    icon: Link,
-  },
-  {
-    title: t('home.features.analytics.title'),
-    description: t('home.features.analytics.description'),
-    icon: AreaChart,
-  },
-  {
-    title: t('home.features.serverless.title'),
-    description: t('home.features.serverless.description'),
-    icon: ServerOff,
-  },
-  {
-    title: t('home.features.customizable_slug.title'),
-    description: t('home.features.customizable_slug.description'),
-    icon: Paintbrush,
-  },
-  {
-    title: t('home.features.ai_slug.title'),
-    description: t('home.features.ai_slug.description'),
-    icon: Sparkles,
-  },
-  {
-    title: t('home.features.link_expiration.title'),
-    description: t('home.features.link_expiration.description'),
-    icon: Hourglass,
-  },
-  {
-    title: t('home.features.device_routing.title'),
-    description: t('home.features.device_routing.description'),
-    icon: Smartphone,
-  },
-  {
-    title: t('home.features.og_preview.title'),
-    description: t('home.features.og_preview.description'),
-    icon: Share2,
-  },
-  {
-    title: t('home.features.realtime_analytics.title'),
-    description: t('home.features.realtime_analytics.description'),
-    icon: Globe,
-  },
-  {
-    title: t('home.features.qr_code.title'),
-    description: t('home.features.qr_code.description'),
-    icon: QrCode,
-  },
-  {
-    title: t('home.features.import_export.title'),
-    description: t('home.features.import_export.description'),
-    icon: FileJson,
-  },
-  {
-    title: t('home.features.multi_language.title'),
-    description: t('home.features.multi_language.description'),
-    icon: Languages,
-  },
-])
+interface Feature {
+  icon: Component
+  titleKey: string
+  descriptionKey: string
+}
+
+const features: Feature[] = [
+  { icon: Link, titleKey: 'home.features.short_links.title', descriptionKey: 'home.features.short_links.description' },
+  { icon: AreaChart, titleKey: 'home.features.analytics.title', descriptionKey: 'home.features.analytics.description' },
+  { icon: Sparkles, titleKey: 'home.features.ai.title', descriptionKey: 'home.features.ai.description' },
+  { icon: LayoutTemplate, titleKey: 'home.features.microsites.title', descriptionKey: 'home.features.microsites.description' },
+  { icon: QrCode, titleKey: 'home.features.qr.title', descriptionKey: 'home.features.qr.description' },
+  { icon: Languages, titleKey: 'home.features.i18n.title', descriptionKey: 'home.features.i18n.description' },
+]
 </script>
 
 <template>
   <section
     class="
-      py-12
-      md:py-20
+      py-16
+      md:py-24
     "
   >
-    <div
-      class="
-        mx-auto max-w-6xl space-y-8 px-6
-        md:space-y-12
-      "
-    >
-      <div
-        class="relative z-10 mx-auto max-w-xl space-y-4 text-center"
-      >
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="mb-12 text-center">
         <h2
-          class="text-3xl font-semibold text-balance"
+          class="
+            text-3xl font-medium tracking-tight
+            md:text-4xl
+          "
         >
-          {{ $t('home.features.title') }}
+          {{ $t('home.features.headline') }}
         </h2>
-        <p class="text-muted-foreground">
-          {{ $t('home.features.subtitle') }}
-        </p>
       </div>
-
       <div
         class="
-          relative mx-auto grid gap-3
+          grid gap-6
           sm:grid-cols-2
           lg:grid-cols-3
         "
       >
         <div
-          v-for="item in features"
-          :key="item.title"
-          class="space-y-3 rounded-xl border p-6"
+          v-for="feature in features"
+          :key="feature.titleKey"
+          class="
+            group rounded-xl border bg-background p-6 transition-shadow
+            hover:shadow-md
+          "
         >
-          <div class="flex items-center gap-2">
-            <component
-              :is="item.icon"
-              class="size-4"
-            />
-            <h3 class="text-sm font-medium">
-              {{ item.title }}
-            </h3>
+          <div
+            class="
+              mb-4 inline-flex size-10 items-center justify-center rounded-lg
+              border bg-muted/50
+            "
+          >
+            <component :is="feature.icon" class="size-5 text-muted-foreground" />
           </div>
+          <h3 class="mb-2 font-medium">
+            {{ $t(feature.titleKey) }}
+          </h3>
           <p class="text-sm text-muted-foreground">
-            {{ item.description }}
+            {{ $t(feature.descriptionKey) }}
           </p>
         </div>
       </div>

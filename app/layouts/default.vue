@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Menu, Star, X } from 'lucide-vue-next'
+import { Menu, X } from 'lucide-vue-next'
 import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
 
 const showMenu = ref(false)
 const { title, telegram, twitter, github } = useAppConfig()
-const { stats } = useGithubStats()
 </script>
 
 <template>
@@ -38,7 +37,7 @@ const { stats } = useGithubStats()
                   class="flex size-8 items-center justify-center rounded-full"
                 >
                   <img
-                    src="/sink.png"
+                    src="/icon.png"
                     :alt="`${title} Logo`"
                     class="size-full rounded-full"
                   >
@@ -92,23 +91,6 @@ const { stats } = useGithubStats()
                   md:w-fit
                 "
               >
-                <Button
-                  as-child
-                  variant="outline"
-                  size="sm"
-                >
-                  <a
-                    :href="github"
-                    target="_blank"
-                    :title="$t('layouts.footer.social.github')"
-                    class="flex items-center gap-1.5"
-                  >
-                    <GitHubIcon class="size-4" />
-                    <Star class="size-3" />
-                    <span class="tabular-nums">{{ stats.stars }}</span>
-                  </a>
-                </Button>
-
                 <SwitchLanguage />
                 <SwitchTheme />
               </div>
@@ -149,7 +131,7 @@ const { stats } = useGithubStats()
                   class="flex size-8 items-center justify-center rounded-full"
                 >
                   <img
-                    src="/sink.png"
+                    src="/icon.png"
                     :alt="`${title} Logo`"
                     class="size-full rounded-full"
                   >
@@ -159,15 +141,7 @@ const { stats } = useGithubStats()
             </NuxtLink>
 
             <small class="block text-center text-sm text-muted-foreground">
-              &copy; {{ new Date().getFullYear() }}
-              <a
-                href="https://html.zone"
-                target="_blank"
-                title="HTML.ZONE"
-                class="hover:text-primary"
-              >
-                {{ $t('layouts.footer.copyright') }}
-              </a>
+              &copy; {{ new Date().getFullYear() }} {{ title }}
             </small>
           </div>
 

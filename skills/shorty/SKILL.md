@@ -1,5 +1,5 @@
 ---
-name: sink
+name: shorty
 description: |
   Sink short link API operations via OpenAPI. Use when managing short links: creating, querying, updating, deleting, listing, importing, or exporting links. Also covers AI-powered slug generation and link analytics.
   Triggers: "create short link", "shorten URL", "delete link", "edit link", "list links", "export links", "import links", "link analytics", "AI slug".
@@ -22,7 +22,7 @@ Token = `NUXT_SITE_TOKEN` environment variable.
 ## Base URL
 
 ```
-https://your-sink-domain
+https://your-shorty-domain
 ```
 
 ## API Reference
@@ -198,7 +198,7 @@ Verify if the site token is valid.
 ```json
 {
   "name": "Sink",
-  "url": "https://sink.cool"
+  "url": "https://shorty.dev"
 }
 ```
 

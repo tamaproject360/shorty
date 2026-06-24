@@ -4,7 +4,8 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
-### 1. Microsite Feature (Linktree-style) - *Completed Feb 2026*
+### 1. Microsite Feature (Linktree-style) - _Completed Feb 2026_
+
 - **Status:** Production Ready
 - **Description:** Complete implementation of microsite/link-in-bio functionality.
 - **Key Capabilities:**
@@ -14,7 +15,8 @@ This document outlines the development status, gap analysis, and future roadmap 
   - Theme customization (Light/Dark/Auto)
   - Mobile-responsive design
 
-### 2. Core Link Shortening - *Base Feature*
+### 2. Core Link Shortening - _Base Feature_
+
 - **Status:** Production Ready
 - **Key Capabilities:**
   - Shorten URLs with custom slugs
@@ -28,13 +30,13 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 Comparing Shorty to industry leaders (Linktree, Bento.me, Bitly) reveals several opportunities to create a "WOW" effect for users.
 
-| Feature Area | Current State | Competitor Standard (The "Gap") | The "WOW" Opportunity |
-|--------------|---------------|---------------------------------|-----------------------|
-| **Visuals** | Simple list of buttons. Basic themes. | Grid layouts (Bento), video backgrounds, custom fonts, rich media embeds. | **Microsite Studio:** Drag-and-drop grid layout with YouTube/Spotify embeds & animated backgrounds. |
-| **Analytics** | Basic click counts. | Geographic heatmaps, device breakdown, time-series charts, CTR analysis. | **Insight Hub:** Interactive 3D World Map of clicks & real-time traffic visualization. |
-| **Engagement** | Static links only. | Email collection, polls, Q&A, tipping/donations. | **Interaction Suite:** "Buy me a Coffee" integration & one-click newsletter signup. |
-| **Intelligence** | Manual entry. | AI bio generator, link summarizer, SEO auto-tagging. | **AI Co-pilot:** "Generate my entire profile from my LinkedIn URL." |
-| **Sharing** | Standard QR code. | Custom colors, logos, frames. | **QR Branding Studio:** Fully customizable QR codes that match the user's brand identity. |
+| Feature Area     | Current State                         | Competitor Standard (The "Gap")                                           | The "WOW" Opportunity                                                                               |
+| ---------------- | ------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Visuals**      | Simple list of buttons. Basic themes. | Grid layouts (Bento), video backgrounds, custom fonts, rich media embeds. | **Microsite Studio:** Drag-and-drop grid layout with YouTube/Spotify embeds & animated backgrounds. |
+| **Analytics**    | Basic click counts.                   | Geographic heatmaps, device breakdown, time-series charts, CTR analysis.  | **Insight Hub:** Interactive 3D World Map of clicks & real-time traffic visualization.              |
+| **Engagement**   | Static links only.                    | Email collection, polls, Q&A, tipping/donations.                          | **Interaction Suite:** "Buy me a Coffee" integration & one-click newsletter signup.                 |
+| **Intelligence** | Manual entry.                         | AI bio generator, link summarizer, SEO auto-tagging.                      | **AI Co-pilot:** "Generate my entire profile from my LinkedIn URL."                                 |
+| **Sharing**      | Standard QR code.                     | Custom colors, logos, frames.                                             | **QR Branding Studio:** Fully customizable QR codes that match the user's brand identity.           |
 
 ---
 
@@ -99,19 +101,19 @@ These features are prioritized to maximize user delight and differentiate the pl
 To verify the "Gap Analysis" and start the roadmap:
 
 1. **Rich Media Embeds**
-   - *Task:* Create a `MicrositeEmbed` component.
-   - *Logic:* Regex match URL to determine type (YouTube, Spotify, etc.).
-   - *UI:* Render iframe for supported media, fallback to button for others.
+   - _Task:_ Create a `MicrositeEmbed` component.
+   - _Logic:_ Regex match URL to determine type (YouTube, Spotify, etc.).
+   - _UI:_ Render iframe for supported media, fallback to button for others.
 
 2. **Social Icon Bar**
-   - *Task:* Add `socialLinks` field to Microsite schema.
-   - *UI:* Add section in Editor to input profiles.
-   - *Display:* Render row of Lucide icons on public page.
+   - _Task:_ Add `socialLinks` field to Microsite schema.
+   - _UI:_ Add section in Editor to input profiles.
+   - _Display:_ Render row of Lucide icons on public page.
 
 3. **Background Customization**
-   - *Task:* Update schema to support `bgImage` and `bgStyle` (gradient/image).
-   - *UI:* Add color picker and image uploader to Editor.
+   - _Task:_ Update schema to support `bgImage` and `bgStyle` (gradient/image).
+   - _UI:_ Add color picker and image uploader to Editor.
 
 4. **Analytics Foundation**
-   - *Task:* Ensure backend captures IP/User-Agent data (already partially implemented).
-   - *Task:* Create `UseAnalytics` composable to aggregate data for the frontend.
+   - _Task:_ Ensure backend captures IP/User-Agent data (already partially implemented).
+   - _Task:_ Create `UseAnalytics` composable to aggregate data for the frontend.

@@ -67,81 +67,28 @@
   },
   "home": {
     "hero": {
-      "github_repo": "GitHub 倉庫"
+      "badge": "簡單. 快速. 安全.",
+      "headline": "縮短連結，追蹤點擊，掌控受眾",
+      "cta_dashboard": "進入儀表板",
+      "cta_create": "建立短鏈",
+      "screenshot_alt": "Shorty 儀表板預覽"
     },
     "features": {
-      "title": "功能特色",
-      "subtitle": "簡單而實用的功能",
-      "url_shortening": {
-        "title": "URL 縮短",
-        "description": "將您的 URL 壓縮到最小長度"
-      },
-      "analytics": {
-        "title": "數據分析",
-        "description": "監控連結分析病收集有價值的統計數據"
-      },
-      "serverless": {
-        "title": "無伺服器",
-        "description": "無需傳統伺服器即可部署"
-      },
-      "customizable_slug": {
-        "title": "自定義短連結",
-        "description": "支持自訂連結和大小寫敏感"
-      },
-      "ai_slug": {
-        "title": "AI 短連結",
-        "description": "利用 AI 生成短連結"
-      },
-      "link_expiration": {
-        "title": "短連結過期",
-        "description": "為您的短連結設定過期日期"
-      },
-      "device_routing": {
-        "title": "裝置路由",
-        "description": "iOS/Android 用戶自動跳轉應用商店"
-      },
-      "og_preview": {
-        "title": "社交預覽",
-        "description": "自訂社交媒體 OpenGraph 預覽"
-      },
-      "realtime_analytics": {
-        "title": "即時分析",
-        "description": "3D 地球視覺化和即時事件日誌"
-      },
-      "qr_code": {
-        "title": "QR Code",
-        "description": "為短連結生成 QR Code"
-      },
-      "import_export": {
-        "title": "匯入/匯出",
-        "description": "透過 JSON 檔案批次遷移"
-      },
-      "multi_language": {
-        "title": "多語言",
-        "description": "儀表板完整的國際化支援"
-      }
+      "headline": "你所需的一切",
+      "short_links": { "title": "短鏈", "description": "將 URL 壓縮到最小長度" },
+      "analytics": { "title": "數據分析", "description": "監控連結分析並收集有價值的統計數據" },
+      "ai": { "title": "AI 驅動", "description": "利用 AI 生成短鏈" },
+      "microsites": { "title": "微站", "description": "秒建 link-in-bio 頁面" },
+      "qr": { "title": "QR 碼", "description": "生成 QR 碼方便分享" },
+      "i18n": { "title": "多語言", "description": "完整 i18n 支援 6 種語言" }
     },
     "cta": {
-      "title": "立即部署",
-      "description": "只需幾個簡單的點擊，您就可以免費開始部署",
-      "button": "開始部署"
+      "headline": "準備好縮短第一個連結了嗎？",
+      "subtitle": "數百萬連結已縮短。幾秒鐘即可開始。",
+      "button": "進入儀表板"
     },
-    "logos": {
-      "title": "使用優秀的技術構建"
-    },
-    "twitter": {
-      "follow": "在 X(Twitter) 上追蹤我"
-    },
-    "stats": {
-      "title": "有關 Sink 的數據",
-      "subtitle": "受到全球開發者信賴",
-      "stars": "個 GitHub 星星",
-      "forks": "次分叉"
-    },
-    "testimonials": {
-      "title": "深受用戶喜愛",
-      "subtitle": "看看開發者們都怎麼描述 Sink"
-    }
+    "logos": { "title": "技術棧" },
+    "testimonials": { "title": "用戶喜愛", "subtitle": "看看開發者們怎麼說 Shorty" }
   },
   "dashboard": {
     "title": "儀表板",
@@ -287,7 +234,7 @@
       },
       "errors": {
         "invalid_json": "無效的 JSON 檔案",
-        "invalid_format": "檔案格式無效，請使用從 Sink 匯出的檔案",
+        "invalid_format": "檔案格式無效，請使用從 Shorty 匯出的檔案",
         "no_links": "檔案中找不到連結",
         "parse_error": "檔案解析失敗"
       }

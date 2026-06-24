@@ -9,6 +9,7 @@ Shorty provides RESTful APIs for managing short links and microsites (link-in-bi
 ## Authentication
 
 Include the site token in your requests using one of these methods:
+
 - **Cookie:** `siteToken`
 - **Header:** `Authorization: Bearer YOUR_SITE_TOKEN`
 
@@ -30,26 +31,29 @@ Create a new short link.
 **Endpoint:** `POST /api/link/create`
 
 **Request Body:**
+
 ```json
 {
-  "url": "https://example.com",      // Required
-  "slug": "custom-slug",             // Optional (auto-generated if omitted)
-  "password": "secret"               // Optional
+  "url": "https://example.com", // Required
+  "slug": "custom-slug", // Optional (auto-generated if omitted)
+  "password": "secret" // Optional
 }
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "id": "abc123xyz",
   "url": "https://example.com",
   "slug": "custom-slug",
   "createdAt": "2024-01-01T00:00:00.000Z",
-  "password": "hashed_password"      // Only if password was set
+  "password": "hashed_password" // Only if password was set
 }
 ```
 
 **Error Codes:**
+
 - `400` - Invalid input (malformed URL, invalid slug)
 - `409` - Slug already exists
 - `401` - Unauthorized
@@ -63,10 +67,12 @@ Get all links with optional pagination.
 **Endpoint:** `GET /api/link/list`
 
 **Query Parameters:**
+
 - `offset` (optional) - Number of records to skip (default: 0)
 - `limit` (optional) - Number of records to return (default: 50)
 
 **Response (200 OK):**
+
 ```json
 {
   "links": [
@@ -91,9 +97,11 @@ Get a single link by slug.
 **Endpoint:** `GET /api/link/get`
 
 **Query Parameters:**
+
 - `slug` (required) - Link slug
 
 **Response (200 OK):**
+
 ```json
 {
   "id": "abc123",
@@ -105,6 +113,7 @@ Get a single link by slug.
 ```
 
 **Error Codes:**
+
 - `404` - Link not found
 
 ---
@@ -116,15 +125,17 @@ Update an existing link.
 **Endpoint:** `PUT /api/link/update`
 
 **Request Body:**
+
 ```json
 {
-  "slug": "custom-slug",             // Required (identifies which link to update)
-  "url": "https://new-url.com",      // Optional
-  "password": "new-password"         // Optional
+  "slug": "custom-slug", // Required (identifies which link to update)
+  "url": "https://new-url.com", // Optional
+  "password": "new-password" // Optional
 }
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "id": "abc123",
@@ -144,6 +155,7 @@ Delete a link permanently.
 **Endpoint:** `POST /api/link/delete`
 
 **Request Body:**
+
 ```json
 {
   "slug": "custom-slug"
@@ -151,6 +163,7 @@ Delete a link permanently.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true
@@ -166,9 +179,11 @@ Search links by URL or slug.
 **Endpoint:** `GET /api/link/search`
 
 **Query Parameters:**
+
 - `q` (required) - Search query
 
 **Response (200 OK):**
+
 ```json
 {
   "results": [
@@ -193,29 +208,31 @@ Create a new microsite (link-in-bio page).
 **Endpoint:** `POST /api/microsite/create`
 
 **Request Body:**
+
 ```json
 {
-  "slug": "my-page",                 // Optional (auto-generated if omitted)
-  "title": "My Awesome Page",        // Required
-  "description": "About me",         // Optional
+  "slug": "my-page", // Optional (auto-generated if omitted)
+  "title": "My Awesome Page", // Required
+  "description": "About me", // Optional
   "avatar": "https://example.com/avatar.jpg", // Optional
-  "theme": "auto",                   // "light" | "dark" | "auto" (default: "auto")
-  "bgColor": "#000000",              // Optional
-  "textColor": "#ffffff",            // Optional
-  "published": true,                 // Optional (default: false)
-  "items": [                         // Array of links
+  "theme": "auto", // "light" | "dark" | "auto" (default: "auto")
+  "bgColor": "#000000", // Optional
+  "textColor": "#ffffff", // Optional
+  "published": true, // Optional (default: false)
+  "items": [ // Array of links
     {
-      "id": "item1",                 // Unique ID
+      "id": "item1", // Unique ID
       "title": "My Website",
       "url": "https://example.com",
-      "order": 0,                    // Display order
-      "visible": true                // Show/hide link
+      "order": 0, // Display order
+      "visible": true // Show/hide link
     }
   ]
 }
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "id": "xyz789",
@@ -231,6 +248,7 @@ Create a new microsite (link-in-bio page).
 ```
 
 **Error Codes:**
+
 - `400` - Invalid input
 - `409` - Slug already exists
 
@@ -243,6 +261,7 @@ Get all microsites.
 **Endpoint:** `GET /api/microsite/list`
 
 **Response (200 OK):**
+
 ```json
 {
   "microsites": [
@@ -268,9 +287,11 @@ Get a single microsite by slug.
 **Endpoint:** `GET /api/microsite/get`
 
 **Query Parameters:**
+
 - `slug` (required) - Microsite slug
 
 **Response (200 OK):**
+
 ```json
 {
   "id": "xyz789",
@@ -294,6 +315,7 @@ Get a single microsite by slug.
 ```
 
 **Error Codes:**
+
 - `404` - Microsite not found
 
 ---
@@ -305,6 +327,7 @@ Update an existing microsite.
 **Endpoint:** `PUT /api/microsite/update`
 
 **Request Body:**
+
 ```json
 {
   "slug": "my-page",                 // Required (identifies which microsite to update)
@@ -318,6 +341,7 @@ Update an existing microsite.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "id": "xyz789",
@@ -337,6 +361,7 @@ Delete a microsite permanently.
 **Endpoint:** `POST /api/microsite/delete`
 
 **Request Body:**
+
 ```json
 {
   "slug": "my-page"
@@ -344,6 +369,7 @@ Delete a microsite permanently.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "success": true
@@ -361,11 +387,13 @@ Redirects to the target URL.
 **Endpoint:** `GET /:slug`
 
 **Behavior:**
+
 - If link exists: Redirects (302) to target URL
 - If password protected: Shows password form
 - If not found: Returns 404
 
 **Example:**
+
 ```
 GET /custom-slug
 → 302 Redirect to https://example.com
@@ -380,12 +408,14 @@ Display public microsite page.
 **Endpoint:** `GET /m/:slug`
 
 **Example:**
+
 ```
 GET /m/my-page
 → Shows microsite landing page
 ```
 
 **Status Codes:**
+
 - `200` - Microsite found and published
 - `404` - Microsite not found or not published
 
@@ -405,13 +435,13 @@ All API errors follow this format:
 
 ### Common Error Codes
 
-| Code | Meaning | Description |
-|------|---------|-------------|
-| `400` | Bad Request | Invalid input or malformed request |
-| `401` | Unauthorized | Missing or invalid authentication token |
-| `404` | Not Found | Resource doesn't exist |
-| `409` | Conflict | Duplicate slug or resource conflict |
-| `500` | Internal Server Error | Server error |
+| Code  | Meaning               | Description                             |
+| ----- | --------------------- | --------------------------------------- |
+| `400` | Bad Request           | Invalid input or malformed request      |
+| `401` | Unauthorized          | Missing or invalid authentication token |
+| `404` | Not Found             | Resource doesn't exist                  |
+| `409` | Conflict              | Duplicate slug or resource conflict     |
+| `500` | Internal Server Error | Server error                            |
 
 ---
 
@@ -425,6 +455,7 @@ All requests are validated using **Zod schemas**:
 Invalid requests return `400` with detailed validation errors.
 
 **Example Validation Error:**
+
 ```json
 {
   "statusCode": 400,
@@ -454,6 +485,7 @@ Recommended: Use a reverse proxy (Cloudflare, nginx) for rate limiting.
 CORS is not enabled by default. To enable cross-origin requests:
 
 1. Add CORS configuration in `nuxt.config.ts`:
+
 ```typescript
 export default defineNuxtConfig({
   nitro: {
@@ -481,6 +513,7 @@ Shorty uses **Nitro Storage** (unstorage) with pluggable backends:
 - **Production:** Cloudflare KV, Redis, or any supported backend
 
 Storage keys:
+
 - Links: `link:{slug}`
 - Microsites: `microsite:{slug}`
 
@@ -571,6 +604,7 @@ Consider using tools like `@sidebase/nuxt-openapi` to auto-generate OpenAPI docs
 ## Support
 
 For issues and feature requests:
+
 - GitHub Issues: [Your Repository URL]
 - Documentation: [docs/](../docs/)
 

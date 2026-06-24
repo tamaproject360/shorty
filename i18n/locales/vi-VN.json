@@ -67,81 +67,28 @@
   },
   "home": {
     "hero": {
-      "github_repo": "Kho GitHub"
+      "badge": "Đơn giản. Nhanh chóng. An toàn.",
+      "headline": "Rút gọn link, theo dõi click, làm chủ đối tượng",
+      "cta_dashboard": "Bảng điều khiển",
+      "cta_create": "Tạo link",
+      "screenshot_alt": "Xem trước bảng điều khiển Shorty"
     },
     "features": {
-      "title": "Tính năng",
-      "subtitle": "Đơn giản và đủ dùng",
-      "url_shortening": {
-        "title": "Rút gọn URL",
-        "description": "Rút gọn liên kết đến độ dài tối thiểu"
-      },
-      "analytics": {
-        "title": "Phân tích",
-        "description": "Theo dõi dữ liệu và thu thập thống kê hữu ích"
-      },
-      "serverless": {
-        "title": "Không máy chủ",
-        "description": "Triển khai mà không cần máy chủ truyền thống"
-      },
-      "customizable_slug": {
-        "title": "Slug tùy chỉnh",
-        "description": "Hỗ trợ slug cá nhân hóa và phân biệt chữ hoa/thường"
-      },
-      "ai_slug": {
-        "title": "Slug AI",
-        "description": "Tạo slug bằng trí tuệ nhân tạo"
-      },
-      "link_expiration": {
-        "title": "Hết hạn liên kết",
-        "description": "Đặt ngày hết hạn cho liên kết"
-      },
-      "device_routing": {
-        "title": "Điều hướng thiết bị",
-        "description": "Chuyển hướng người dùng iOS/Android đến App Store"
-      },
-      "og_preview": {
-        "title": "Xem trước mạng xã hội",
-        "description": "Tùy chỉnh OpenGraph cho mạng xã hội"
-      },
-      "realtime_analytics": {
-        "title": "Phân tích thời gian thực",
-        "description": "Địa cầu 3D trực tiếp và nhật ký sự kiện"
-      },
-      "qr_code": {
-        "title": "Mã QR",
-        "description": "Tạo mã QR cho liên kết rút gọn"
-      },
-      "import_export": {
-        "title": "Nhập/Xuất",
-        "description": "Di chuyển hàng loạt qua tệp JSON"
-      },
-      "multi_language": {
-        "title": "Đa ngôn ngữ",
-        "description": "Hỗ trợ i18n đầy đủ cho bảng điều khiển"
-      }
+      "headline": "Mọi thứ bạn cần",
+      "short_links": { "title": "Link ngắn", "description": "Nén URL xuống độ dài tối thiểu" },
+      "analytics": { "title": "Phân tích", "description": "Theo dõi click và thống kê theo thời gian thực" },
+      "ai": { "title": "Hỗ trợ AI", "description": "Tạo slug thông minh bằng AI" },
+      "microsites": { "title": "Microsite", "description": "Tạo trang link-in-bio trong vài giây" },
+      "qr": { "title": "Mã QR", "description": "Tạo mã QR để chia sẻ nhanh" },
+      "i18n": { "title": "Đa ngôn ngữ", "description": "Hỗ trợ i18n đầy đủ với 6 ngôn ngữ" }
     },
     "cta": {
-      "title": "Triển khai ngay",
-      "description": "Chỉ với vài cú nhấp chuột, bạn có thể triển khai miễn phí",
-      "button": "Bắt đầu triển khai"
+      "headline": "Sẵn sàng rút gọn link đầu tiên?",
+      "subtitle": "Hàng triệu link đã được rút gọn. Bắt đầu trong vài giây.",
+      "button": "Bảng điều khiển"
     },
-    "logos": {
-      "title": "Xây dựng bằng những công nghệ tuyệt vời"
-    },
-    "twitter": {
-      "follow": "Theo dõi tôi trên X (Twitter)"
-    },
-    "stats": {
-      "title": "Số liệu Sink",
-      "subtitle": "Được tin dùng bởi các nhà phát triển trên toàn thế giới",
-      "stars": "Stars trên GitHub",
-      "forks": "Forks"
-    },
-    "testimonials": {
-      "title": "Người dùng yêu thích",
-      "subtitle": "Xem các nhà phát triển nói gì về Sink"
-    }
+    "logos": { "title": "Xây dựng với" },
+    "testimonials": { "title": "Được yêu thích", "subtitle": "Xem các nhà phát triển nói gì về Shorty" }
   },
   "dashboard": {
     "title": "Bảng điều khiển",
@@ -287,7 +234,7 @@
       },
       "errors": {
         "invalid_json": "Tệp JSON không hợp lệ",
-        "invalid_format": "Định dạng tệp không hợp lệ. Vui lòng sử dụng tệp được xuất từ Sink.",
+        "invalid_format": "Định dạng tệp không hợp lệ. Vui lòng sử dụng tệp được xuất từ Shorty.",
         "no_links": "Không tìm thấy liên kết trong tệp",
         "parse_error": "Không thể phân tích tệp"
       }

@@ -2,7 +2,10 @@
 import 'vue-sonner/style.css'
 
 const { title, description, image } = useAppConfig()
+const { homeURL } = useRuntimeConfig()
 const route = useRoute()
+
+const ogImage = computed(() => homeURL ? `${homeURL}${image}` : image)
 
 useSeoMeta({
   title: `${title} - Link Shortener with Analytics`,
@@ -11,10 +14,10 @@ useSeoMeta({
   ogTitle: title,
   ogSiteName: title,
   ogDescription: description,
-  ogImage: image,
+  ogImage,
   twitterTitle: title,
   twitterDescription: description,
-  twitterImage: image,
+  twitterImage: ogImage,
   twitterCard: 'summary_large_image',
 })
 
@@ -31,7 +34,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: computed(() => `https://sink.cool${route.path}`),
+      href: computed(() => homeURL ? `${homeURL}${route.path}` : undefined),
     },
     {
       rel: 'icon',

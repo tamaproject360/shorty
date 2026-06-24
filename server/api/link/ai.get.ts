@@ -39,11 +39,8 @@ export default eventHandler(async (event) => {
       { role: 'user', content: 'https://github.com/nuxt/' },
       { role: 'assistant', content: JSON.stringify({ slug: 'nuxt' }) },
 
-      { role: 'user', content: 'https://sink.cool/' },
-      { role: 'assistant', content: JSON.stringify({ slug: 'sink-cool' }) },
-
-      { role: 'user', content: 'https://github.com/miantiao-me/sink' },
-      { role: 'assistant', content: JSON.stringify({ slug: 'sink' }) },
+      { role: 'user', content: 'https://github.com/miantiao-me/shorty' },
+      { role: 'assistant', content: JSON.stringify({ slug: 'shorty' }) },
 
       { role: 'user', content: url },
     ],

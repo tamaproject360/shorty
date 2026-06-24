@@ -12,7 +12,7 @@ const testLinkPayload = generateMock(linkSchema)
 
 describe('/api/link/ai', () => {
   it('generates AI slug for valid URL', async () => {
-    const response = await fetchWithAuth(`/api/link/ai?url=${encodeURIComponent('https://sink.cool')}`)
+    const response = await fetchWithAuth(`/api/link/ai?url=${encodeURIComponent('https://shorty.dev')}`)
 
     // AI binding may not be enabled (501) or request may timeout
     expect([200, 501]).toContain(response.status)

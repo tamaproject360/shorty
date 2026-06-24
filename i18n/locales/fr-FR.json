@@ -67,81 +67,28 @@
   },
   "home": {
     "hero": {
-      "github_repo": "Dépôt GitHub"
+      "badge": "Simple. Rapide. Sécurisé.",
+      "headline": "Raccourcissez des liens, suivez les clics, maîtrisez votre audience",
+      "cta_dashboard": "Tableau de bord",
+      "cta_create": "Créer un lien",
+      "screenshot_alt": "Aperçu du tableau de bord Shorty"
     },
     "features": {
-      "title": "Fonctionnalités",
-      "subtitle": "Fonctionnalité simple et adéquate",
-      "url_shortening": {
-        "title": "Raccourcissement d'URL",
-        "description": "Raccourcissez la taille de vos liens"
-      },
-      "analytics": {
-        "title": "Statistique",
-        "description": "Suivre l'analyse des liens et recueillir des statistiques pertinentes"
-      },
-      "serverless": {
-        "title": "Serverless",
-        "description": "Déployez sans avoir besoin de serveurs traditionnels"
-      },
-      "customizable_slug": {
-        "title": "Slug personnalisable",
-        "description": "Prise en charge des slugs personnalisés et de la sensibilité à la casse"
-      },
-      "ai_slug": {
-        "title": "Slug IA",
-        "description": "Utilisez l'IA pour créer des slugs"
-      },
-      "link_expiration": {
-        "title": "Expiration des liens",
-        "description": "Définissez des dates d'expiration pour vos liens"
-      },
-      "device_routing": {
-        "title": "Routage par appareil",
-        "description": "Redirigez les utilisateurs iOS/Android vers les stores d'apps"
-      },
-      "og_preview": {
-        "title": "Aperçu social",
-        "description": "Aperçus OpenGraph personnalisés pour les réseaux sociaux"
-      },
-      "realtime_analytics": {
-        "title": "Analyses en temps réel",
-        "description": "Globe 3D en direct et journaux d'événements"
-      },
-      "qr_code": {
-        "title": "Code QR",
-        "description": "Générez des codes QR pour vos liens courts"
-      },
-      "import_export": {
-        "title": "Import/Export",
-        "description": "Migration en masse via fichiers JSON"
-      },
-      "multi_language": {
-        "title": "Multilingue",
-        "description": "Support i18n complet pour le tableau de bord"
-      }
+      "headline": "Tout ce dont vous avez besoin",
+      "short_links": { "title": "Liens courts", "description": "Compressez vos URLs à leur longueur minimale" },
+      "analytics": { "title": "Analytique", "description": "Surveillez les analyses de liens et obtenez des statistiques" },
+      "ai": { "title": "IA", "description": "Génération de slugs par IA" },
+      "microsites": { "title": "Microsites", "description": "Créez des pages link-in-bio en quelques secondes" },
+      "qr": { "title": "QR Code", "description": "Générez des QR codes pour un partage instantané" },
+      "i18n": { "title": "Multilingue", "description": "Support i18n complet avec 6 langues" }
     },
     "cta": {
-      "title": "Déploiement immédiat",
-      "description": "En quelques clics, vous pouvez commencer à déployer sans aucun frais",
-      "button": "Lancer le déploiement"
+      "headline": "Prêt à raccourcir votre premier lien ?",
+      "subtitle": "Des millions de liens raccourcis. Commencez en quelques secondes.",
+      "button": "Tableau de bord"
     },
-    "logos": {
-      "title": "Construit avec de superbes technologies"
-    },
-    "twitter": {
-      "follow": "Suivez-moi sur X(Twitter)"
-    },
-    "stats": {
-      "title": "Sink en chiffres",
-      "subtitle": "Approuvé par les développeurs du monde entier",
-      "stars": "Stars sur GitHub",
-      "forks": "Forks"
-    },
-    "testimonials": {
-      "title": "Aimé par les utilisateurs",
-      "subtitle": "Découvrez ce que disent les développeurs à propos de Sink"
-    }
+    "logos": { "title": "Construit avec" },
+    "testimonials": { "title": "Apprécié des utilisateurs", "subtitle": "Découvrez ce que disent les développeurs de Shorty" }
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -287,7 +234,7 @@
       },
       "errors": {
         "invalid_json": "Fichier JSON invalide",
-        "invalid_format": "Format de fichier invalide. Veuillez utiliser un fichier exporté depuis Sink.",
+        "invalid_format": "Format de fichier invalide. Veuillez utiliser un fichier exporté depuis Shorty.",
         "no_links": "Aucun lien trouvé dans le fichier",
         "parse_error": "Échec de l'analyse du fichier"
       }

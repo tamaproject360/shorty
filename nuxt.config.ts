@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     redirectStatusCode: '301',
     linkCacheTtl: 60,
     redirectWithQuery: false,
-    homeURL: '',
+    homeURL: process.env.NUXT_HOME_URL || '',
     cfAccountId: '',
     cfApiToken: '',
     dataset: 'shorty',

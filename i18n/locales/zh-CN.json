@@ -67,81 +67,28 @@
   },
   "home": {
     "hero": {
-      "github_repo": "GitHub 仓库"
+      "badge": "简单. 快速. 安全.",
+      "headline": "缩短链接，追踪点击，掌控受众",
+      "cta_dashboard": "进入仪表盘",
+      "cta_create": "创建短链",
+      "screenshot_alt": "Shorty 仪表盘预览"
     },
     "features": {
-      "title": "功能特点",
-      "subtitle": "简单而实用的功能",
-      "url_shortening": {
-        "title": "URL 缩短",
-        "description": "将您的 URL 压缩到最小长度"
-      },
-      "analytics": {
-        "title": "数据分析",
-        "description": "监控链接分析并收集有价值的统计数据"
-      },
-      "serverless": {
-        "title": "无服务器",
-        "description": "无需传统服务器即可部署"
-      },
-      "customizable_slug": {
-        "title": "自定义短链",
-        "description": "支持个性化短链和大小写敏感"
-      },
-      "ai_slug": {
-        "title": "AI 短链",
-        "description": "利用 AI 生成短链"
-      },
-      "link_expiration": {
-        "title": "链接过期",
-        "description": "为您的链接设置过期日期"
-      },
-      "device_routing": {
-        "title": "设备路由",
-        "description": "iOS/Android 用户自动跳转应用商店"
-      },
-      "og_preview": {
-        "title": "社交预览",
-        "description": "自定义社交媒体 OpenGraph 预览"
-      },
-      "realtime_analytics": {
-        "title": "实时分析",
-        "description": "3D 地球可视化和实时事件日志"
-      },
-      "qr_code": {
-        "title": "二维码",
-        "description": "为短链生成二维码"
-      },
-      "import_export": {
-        "title": "导入/导出",
-        "description": "通过 JSON 文件批量迁移"
-      },
-      "multi_language": {
-        "title": "多语言",
-        "description": "仪表盘完整的国际化支持"
-      }
+      "headline": "你所需的一切",
+      "short_links": { "title": "短链", "description": "将 URL 压缩到最小长度" },
+      "analytics": { "title": "数据分析", "description": "监控链接分析并收集有价值的统计数据" },
+      "ai": { "title": "AI 驱动", "description": "利用 AI 生成短链" },
+      "microsites": { "title": "微站", "description": "秒建 link-in-bio 页面" },
+      "qr": { "title": "二维码", "description": "生成二维码方便分享" },
+      "i18n": { "title": "多语言", "description": "完整 i18n 支持 6 种语言" }
     },
     "cta": {
-      "title": "立即部署",
-      "description": "只需几个简单的点击，您就可以免费开始部署",
-      "button": "开始部署"
+      "headline": "准备好缩短第一个链接了吗？",
+      "subtitle": "数百万链接已缩短。几秒钟即可开始。",
+      "button": "进入仪表盘"
     },
-    "logos": {
-      "title": "使用优秀的技术构建"
-    },
-    "twitter": {
-      "follow": "在 X(Twitter) 上关注我"
-    },
-    "stats": {
-      "title": "Sink 数据",
-      "subtitle": "受到全球开发者的信赖",
-      "stars": "GitHub Stars",
-      "forks": "Forks"
-    },
-    "testimonials": {
-      "title": "用户好评",
-      "subtitle": "看看开发者们怎么说"
-    }
+    "logos": { "title": "技术栈" },
+    "testimonials": { "title": "用户喜爱", "subtitle": "看看开发者们怎么说 Shorty" }
   },
   "dashboard": {
     "title": "仪表盘",
@@ -287,7 +234,7 @@
       },
       "errors": {
         "invalid_json": "无效的 JSON 文件",
-        "invalid_format": "文件格式无效，请使用从 Sink 导出的文件",
+        "invalid_format": "文件格式无效，请使用从 Shorty 导出的文件",
         "no_links": "文件中未找到链接",
         "parse_error": "文件解析失败"
       }

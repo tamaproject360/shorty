@@ -79,6 +79,6 @@ Set to `true` to disable the automatic daily KV backup to R2 storage. Default is
 This feature requires:
 
 1. R2 bucket binding configured in `wrangler.jsonc`
-2. Create R2 bucket: `wrangler r2 bucket create sink`
+2. Create R2 bucket: `wrangler r2 bucket create shorty`
 
 Backups are stored in R2 with the path `backups/links-{timestamp}.json` and run daily at 00:00 UTC.

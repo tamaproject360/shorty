@@ -20,7 +20,7 @@ const hostname = computed<string>(() => {
 const user = computed<User>(() => ({
   name: 'Root',
   email: `root@${hostname.value}`,
-  avatar: '/sink.png',
+  avatar: '/icon.png',
 }))
 
 function logOut() {

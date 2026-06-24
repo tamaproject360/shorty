@@ -61,7 +61,7 @@ pnpm types:check          # TypeScript type check
 # Testing (Vitest + Cloudflare Workers pool)
 pnpm vitest               # Watch mode
 pnpm vitest run           # CI mode (run once)
-pnpm vitest tests/sink.spec.ts           # Single file
+pnpm vitest tests/shorty.spec.ts           # Single file
 pnpm vitest tests/api/link.spec.ts       # Single API test
 pnpm vitest -t "returns 200"             # Pattern match
 

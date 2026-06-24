@@ -16,7 +16,7 @@
    - **Analytics Engine**:
      - In **Workers & Pages**, go to **Account details** in the right panel, locate `Analytics Engine`, and click `Set up` to enable the free tier.
      - Return to **Settings** -> **Bindings** -> **Add** and select **Analytics engine**.
-     - Bind the variable name `ANALYTICS` to the `sink` dataset.
+     - Bind the variable name `ANALYTICS` to the `shorty` dataset.
 
 7. Add Compatibility flags
    - Go to **Settings** -> **Runtime** -> **Compatibility flags** and set the following flags `nodejs_compat`.

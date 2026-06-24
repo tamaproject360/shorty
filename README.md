@@ -2,7 +2,7 @@
 
 **A Simple, Speedy, and Secure Link Shortener.**
 
-> **Note**: This is a modified fork of [Sink](https://github.com/miantiao-me/sink) designed to run **Locally** (Node.js) or on **Netlify**, without requiring Cloudflare Workers/KV/Analytics.
+> **Note**: This is a modified fork of [Sink](https://github.com/miantiao-me/sink) designed to run **Locally** (Node.js) or on **Netlify/Docker**, without requiring Cloudflare Workers/KV/Analytics.
 
 ## ✨ Key Features
 
@@ -54,10 +54,13 @@ The first time you run the app, use the default site token or check your `.env` 
 ## 🎯 Features Guide
 
 ### Link Shortening
+
 Create short URLs with custom slugs or auto-generated ones. Track clicks, referrers, and manage all your links from the dashboard.
 
 ### Microsites (Link-in-Bio)
+
 Create beautiful landing pages similar to Linktree:
+
 - **Custom branding**: Add your avatar, title, and description
 - **Multiple links**: Add unlimited links to your microsite
 - **Theme options**: Choose from light, dark, or auto themes
@@ -65,6 +68,7 @@ Create beautiful landing pages similar to Linktree:
 - **Custom slugs**: Access your microsite at `yourdomain.com/m/your-slug`
 
 To create a microsite:
+
 1. Go to Dashboard → Microsites
 2. Click "Create Microsite"
 3. Fill in your details and add links
@@ -126,7 +130,7 @@ node .output/server/index.mjs
 
 ## 💖 Credits
 
-Original project [Sink](https://github.com/miantiao-me/sink).
+Original project [Sink](https://github.com/miantiao-me/sink) by @ccbikai.
 This fork modifies the storage layer to be platform-agnostic using [Unstorage](https://unstorage.unjs.io/).
 
 ## 📚 Additional Documentation

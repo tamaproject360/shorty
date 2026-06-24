@@ -60,7 +60,7 @@ const settingsItems = computed<NavItem[]>(() => [
                 "
               >
                 <img
-                  src="/sink.png"
+                  src="/icon.png"
                   :alt="title"
                   class="size-8 rounded-full"
                 >
