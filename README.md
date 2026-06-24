@@ -1,144 +1,163 @@
 # ⚡ Shorty
 
-**A Simple, Speedy, and Secure Link Shortener.**
+**A Simple, Speedy, and Secure Link Shortener with Analytics.**
 
-> **Note**: This is a modified fork of [Sink](https://github.com/miantiao-me/sink) designed to run **Locally** (Node.js) or on **Netlify/Docker**, without requiring Cloudflare Workers/KV/Analytics.
+[![License](https://img.shields.io/github/license/miantiao-me/shorty?style=flat&color=000000)](LICENSE)
+[![Nuxt](https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat&logo=nuxt.js&logoColor=white)](https://nuxt.com)
+[![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat&logo=vue.js&logoColor=white)](https://vuejs.org)
+[![Tailwind](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker&logoColor=white)](https://docker.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-000000?style=flat)](https://github.com/miantiao-me/shorty/pulls)
 
-## ✨ Key Features
+Shorty is a modern, analytics-powered link shortener built for teams. Deploy anywhere — Docker, Netlify, Vercel, or bare metal. No vendor lock-in.
 
-- **🏠 Run Anywhere:** Works on Localhost, Netlify, Vercel, or any Node.js environment.
-- **🔗 Link Shortening:** Create clean, short URLs instantly.
-- **🌐 Microsites (Link-in-Bio):** Create beautiful Linktree-style landing pages with customizable themes.
-- **📂 Local Storage:** Uses file-system based storage by default (no complex database setup required).
-- **📊 Analytics:** Tracks clicks, referrers, and user agents (stored locally).
-- **🎨 Custom Slugs:** Choose your own URL ending or let AI generate one.
-- **🖼️ QR Codes:** Auto-generated QR codes for every link.
-- **📱 Responsive UI:** Beautiful dashboard managed with Nuxt UI & Tailwind CSS.
-- **👁️ View Options:** Toggle between Card and List views for easier management.
+> Forked from [Sink](https://github.com/miantiao-me/sink) by @ccbikai — adapted to run independently without Cloudflare dependency.
 
-## 🚀 Getting Started
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| 🔗 **Short Links** | Compress URLs to minimal length with custom slugs |
+| 📊 **Analytics** | Real-time click tracking, referrers, countries, and device stats |
+| 🤖 **AI-Powered** | Smart slug generation using on-device AI |
+| 🌐 **Microsites** | Build link-in-bio pages with themes, social links, and rich embeds |
+| 📱 **QR Codes** | Auto-generated QR codes for every link |
+| 🌍 **Multi-Language** | Full i18n support across 6 languages |
+| 🎨 **Dark Mode** | Light, dark, and system-aware themes |
+| 📦 **Import/Export** | Bulk migration via JSON files |
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm (recommended) or npm
+- **Node.js** 22+
+- **pnpm** 10+ (recommended)
 
-### Installation
+### Local Development
 
-1. **Clone the repository**
+```bash
+# Clone
+git clone https://github.com/miantiao-me/shorty.git
+cd shorty
 
-   ```bash
-   git clone https://github.com/your-username/shorty.git
-   cd shorty
-   ```
+# Install
+pnpm install
 
-2. **Install dependencies**
+# Run (defaults to port 7465)
+pnpm dev
+```
 
-   ```bash
-   pnpm install
-   ```
+Open [http://localhost:7465](http://localhost:7465).
 
-3. **Start Development Server**
-   ```bash
-   pnpm dev
-   ```
-   Access the dashboard at: `http://localhost:7465`
+### Default Login
 
-### 🔑 Default Login
+Set your site token in `.env`:
 
-The first time you run the app, use the default site token or check your `.env` file if you set one.
+```env
+NUXT_SITE_TOKEN=YourSecretTokenHere
+```
 
-- Default Site Token: Check your console output or set `NUXT_SITE_TOKEN` in `.env`.
-- If not set, it generates a random one. **Check the terminal logs on startup.**
+---
 
-## 🎯 Features Guide
+## 🐳 Docker
 
-### Link Shortening
+```dockerfile
+# Coming soon — Docker Compose setup
+```
 
-Create short URLs with custom slugs or auto-generated ones. Track clicks, referrers, and manage all your links from the dashboard.
+```bash
+docker compose up -d
+```
 
-### Microsites (Link-in-Bio)
-
-Create beautiful landing pages similar to Linktree:
-
-- **Custom branding**: Add your avatar, title, and description
-- **Multiple links**: Add unlimited links to your microsite
-- **Theme options**: Choose from light, dark, or auto themes
-- **Publish control**: Toggle visibility of your microsite
-- **Custom slugs**: Access your microsite at `yourdomain.com/m/your-slug`
-
-To create a microsite:
-
-1. Go to Dashboard → Microsites
-2. Click "Create Microsite"
-3. Fill in your details and add links
-4. Publish and share your microsite URL
+---
 
 ## 🛠️ Configuration
 
-Edit `nuxt.config.ts` or use `.env` variables to configure:
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `NUXT_SITE_TOKEN` | _(required)_ | Dashboard access token (min 8 chars) |
+| `NUXT_HOME_URL` | `""` | Your production URL; leave empty for local |
+| `NUXT_REDIRECT_STATUS_CODE` | `308` | HTTP redirect code for short links |
+| `NUXT_LINK_CACHE_TTL` | `60` | Cache TTL in seconds |
+| `NUXT_DATASET` | `shorty` | Storage dataset name |
+| `NUXT_AI_MODEL` | `@cf/qwen/qwen3-30b-a3b-fp8` | AI model for slug generation |
 
-- `NUXT_SITE_TOKEN`: The password to access the dashboard.
-- `NUXT_PUBLIC_SITE_URL`: Your deployed URL (for generating correct short links).
-- `NUXT_HOME_URL`: Leave empty to prevent redirects (default: empty).
+See [`.env.example`](.env.example) for all options.
+
+---
 
 ## 📁 Project Structure
 
 ```
-app/                    # Nuxt 4 application
-  ├── components/       # Vue components
-  │   ├── ui/           # shadcn-vue components (auto-generated)
-  │   ├── dashboard/    # Dashboard components
-  │   │   ├── links/    # Link management components
-  │   │   └── microsites/  # Microsite components
-  │   └── home/         # Landing page components
-  ├── composables/      # Vue composables
-  ├── pages/            # File-based routing
+app/                    # Nuxt 4 frontend
+  ├── components/       # Vue components (PascalCase)
+  │   ├── ui/           # shadcn-vue components
   │   ├── dashboard/    # Dashboard pages
-  │   └── m/            # Public microsite pages
+  │   └── home/         # Landing page
+  ├── composables/      # Vue composables (camelCase)
+  ├── pages/            # File-based routing
   ├── stores/           # Pinia stores
-  ├── types/            # TypeScript types
-  ├── utils/            # Utility functions
-  └── lib/              # Shared helpers
+  └── types/            # TypeScript types
 server/                 # Nitro server
   ├── api/              # API endpoints
-  │   ├── link/         # Link management APIs
-  │   └── microsite/    # Microsite APIs
   └── utils/            # Server utilities
 schemas/                # Zod validation schemas
 tests/                  # Vitest tests
 docs/                   # Documentation
 ```
 
+---
+
 ## 📦 Deployment
 
-### Netlify
+### Netlify / Vercel
 
-1. Connect your repo to Netlify.
-2. Build command: `npm run build`
+1. Connect your repo
+2. Build command: `pnpm build`
 3. Publish directory: `.output/server`
-4. **Important**: Add environment variables (`NUXT_SITE_TOKEN`) in Netlify dashboard.
+4. Set `NUXT_SITE_TOKEN` in environment variables
 
 ### Docker / Node.js
-
-Build the application:
 
 ```bash
 pnpm build
 node .output/server/index.mjs
 ```
 
+---
+
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feat/amazing`
+3. Commit your changes: `git commit -m "feat: amazing thing"`
+4. Push to the branch: `git push origin feat/amazing`
+5. Open a Pull Request
+
+---
+
 ## 💖 Credits
 
-Original project [Sink](https://github.com/miantiao-me/sink) by @ccbikai.
-This fork modifies the storage layer to be platform-agnostic using [Unstorage](https://unstorage.unjs.io/).
+Original project [Sink](https://github.com/miantiao-me/sink) by [@ccbikai](https://github.com/ccbikai).
 
-## 📚 Additional Documentation
+Shorty extends Sink with platform-agnostic storage via [Unstorage](https://unstorage.unjs.io/), enabling deployment outside Cloudflare.
 
-- [API Documentation](docs/API.md) - Complete API reference
-- [Changelog](docs/CHANGELOG.md) - Recent changes and updates
-- [Task Summary](docs/task.md) - Current implementation status
+---
 
-## 🛡️ License
+## 📚 Docs
 
-MIT License - see LICENSE file for details
+- [API Reference](docs/API.md)
+- [Changelog](docs/CHANGELOG.md)
+- [Configuration](docs/configuration.md)
+- [Deployment Guide](docs/deployment/)
+
+---
+
+## 📜 License
+
+MIT © 2026 Shorty

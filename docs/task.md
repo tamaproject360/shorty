@@ -4,7 +4,21 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
-### 1. Microsite Feature (Linktree-style) - _Completed Feb 2026_
+### 1. Full Rebrand & Homepage Redesign — _Completed Jun 2026_
+
+- **Status:** Production Ready
+- **Description:** Complete rebrand from Sink to Shorty with Linear-style homepage.
+- **Key Changes:**
+  - All 33+ sink references replaced with shorty across codebase
+  - Logo renamed from `sink.png` → `icon.png`
+  - Homepage redesigned with Linear-inspired layout (Hero, Quote, Features, Testimonials, CTA)
+  - GitHub star counts removed from header and sidebar
+  - All social links (twitter/telegram/github) set to empty — hidden from UI
+  - 6 i18n locales updated with new translations
+  - Testimonials cleaned to English-only (9 entries)
+  - Observer image-reading plugin installed
+
+### 2. Microsite Feature (Linktree-style) — _Completed Feb 2026_
 
 - **Status:** Production Ready
 - **Description:** Complete implementation of microsite/link-in-bio functionality.
@@ -15,7 +29,7 @@ This document outlines the development status, gap analysis, and future roadmap 
   - Theme customization (Light/Dark/Auto)
   - Mobile-responsive design
 
-### 2. Core Link Shortening - _Base Feature_
+### 3. Core Link Shortening — _Base Feature_
 
 - **Status:** Production Ready
 - **Key Capabilities:**
