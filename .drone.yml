@@ -17,7 +17,7 @@ steps:
       host: 192.168.0.114
       username: root
       key:
-        from_secret: shorty_ssh_key
+        from_secret: key
       port: 22
       target: /opt/shorty
       source:
@@ -35,7 +35,7 @@ steps:
       host: 192.168.0.114
       username: root
       key:
-        from_secret: shorty_ssh_key
+        from_secret: key
       port: 22
       script:
         - cd /opt/shorty
