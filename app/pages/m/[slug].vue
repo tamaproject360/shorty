@@ -141,15 +141,6 @@ function getSpotifyEmbedUrl(url: string) {
   return url.replace('open.spotify.com', 'open.spotify.com/embed')
 }
 
-function getGridClass(span?: string) {
-  switch (span) {
-    case '2x1': return 'col-span-2'
-    case '2x2': return 'col-span-2 row-span-2'
-    case '1x1': return 'col-span-1'
-    default: return 'col-span-2 sm:col-span-1'
-  }
-}
-
 onMounted(() => {
   if (microsite.value) {
     $fetch('/api/microsite/track', {
@@ -225,10 +216,16 @@ onMounted(() => {
           </a>
         </div>
 
-        <div class="mt-8 grid w-full auto-rows-min grid-cols-2 gap-4">
-          <div v-for="item in visibleItems" :key="item.id" :class="getGridClass(item.gridSpan)">
+        <div class="mt-8 grid w-full auto-rows-min grid-cols-1 gap-4">
+          <template v-for="item in visibleItems" :key="item.id">
+            <div v-if="item.type === 'separator'" class="py-3 text-center">
+              <h2 class="text-lg font-semibold" :style="textStyle">
+                {{ item.title }}
+              </h2>
+            </div>
+
             <div
-              v-if="getEmbedType(item.url) === 'youtube' && getYouTubeId(item.url)"
+              v-else-if="getEmbedType(item.url) === 'youtube' && getYouTubeId(item.url)"
               class="aspect-video h-full w-full overflow-hidden rounded-lg shadow-lg transition-transform hover:scale-[1.02]"
             >
               <iframe
@@ -275,7 +272,7 @@ onMounted(() => {
                 <ExternalLink class="h-5 w-5 text-muted-foreground" />
               </div>
             </a>
-          </div>
+          </template>
         </div>
 
         <div class="mt-12 text-center text-sm text-muted-foreground">

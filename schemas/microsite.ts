@@ -14,8 +14,9 @@ export const SocialLinkSchema = z.object({
 
 export const MicrositeItemSchema = z.object({
   id: z.string().trim().max(26),
+  type: z.enum(['link', 'separator']).default('link'),
   title: z.string().trim().min(1).max(256),
-  url: z.string().trim().url().max(2048),
+  url: z.string().trim().url().max(2048).optional().default(''),
   icon: z.string().trim().max(64).optional(),
   order: z.number().int().min(0).default(0),
   visible: z.boolean().default(true),

@@ -141,9 +141,22 @@ function resetForm() {
 function addItem() {
   form.items.push({
     id: nanoid(),
+    type: 'link',
     title: '',
     url: '',
     icon: 'Link',
+    order: form.items.length,
+    visible: true,
+    gridSpan: '1x1',
+  })
+}
+
+function addSeparator() {
+  form.items.push({
+    id: nanoid(),
+    type: 'separator',
+    title: '',
+    url: '',
     order: form.items.length,
     visible: true,
     gridSpan: '1x1',
@@ -163,8 +176,12 @@ async function handleSubmit() {
     return
   }
 
-  if (form.items.some(item => !item.title || !item.title.trim() || !item.url || !item.url.trim())) {
-    toast.error('All items must have a title and URL')
+  if (form.items.some((item) => {
+    if (item.type === 'separator')
+      return !item.title || !item.title.trim()
+    return !item.title || !item.title.trim() || !item.url || !item.url.trim()
+  })) {
+    toast.error('All links must have a title and URL')
     return
   }
 
@@ -276,18 +293,24 @@ async function handleSubmit() {
 
       <div class="space-y-4">
         <div class="flex items-center justify-between">
-          <Label>Links</Label>
-          <Button type="button" variant="outline" size="sm" @click="addItem">
-            <Plus class="mr-2 h-4 w-4" />
-            Add Link
-          </Button>
+          <Label>Items</Label>
+          <div class="flex gap-2">
+            <Button type="button" variant="outline" size="sm" @click="addSeparator">
+              <Plus class="mr-2 h-4 w-4" />
+              Add Separator
+            </Button>
+            <Button type="button" variant="outline" size="sm" @click="addItem">
+              <Plus class="mr-2 h-4 w-4" />
+              Add Link
+            </Button>
+          </div>
         </div>
 
         <div
           v-if="form.items.length === 0"
           class="py-8 text-center text-muted-foreground"
         >
-          No links yet. Add your first link!
+          No items yet. Add links and separators!
         </div>
 
         <div v-else class="space-y-3">
@@ -295,8 +318,26 @@ async function handleSubmit() {
             v-for="(item, index) in form.items"
             :key="item.id"
             class="p-4"
+            :class="{ 'border-dashed bg-muted/30': item.type === 'separator' }"
           >
-            <div class="flex items-start gap-3">
+            <div v-if="item.type === 'separator'" class="flex items-center gap-3">
+              <span class="text-xs font-medium text-muted-foreground whitespace-nowrap">Separator</span>
+              <Input
+                v-model="item.title"
+                placeholder="Section heading (e.g. Social Media)"
+                class="flex-1"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                @click="removeItem(index)"
+              >
+                <Trash2 class="h-4 w-4" />
+              </Button>
+            </div>
+
+            <div v-else class="flex items-start gap-3">
               <div class="cursor-move pt-2">
                 <GripVertical class="h-5 w-5 text-muted-foreground" />
               </div>
