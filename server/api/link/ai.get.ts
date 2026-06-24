@@ -1,6 +1,5 @@
 import { createOpenAI } from '@ai-sdk/openai'
 import { generateText, Output } from 'ai'
-import { createWorkersAI } from 'workers-ai-provider'
 import { z } from 'zod'
 
 export default eventHandler(async (event) => {
@@ -11,16 +10,18 @@ export default eventHandler(async (event) => {
   const { aiPrompt, aiModel, openaiApiKey, openaiBaseUrl } = useRuntimeConfig(event)
   const { slugRegex } = useAppConfig()
 
-  const cloudflare = event.context.cloudflare || {}
-  const env = cloudflare.env || {}
-  const AI = env.AI
-
-  if (!openaiApiKey && !AI) {
+  if (!openaiApiKey) {
     return { slug: null }
   }
 
+  const openai = createOpenAI({
+    apiKey: openaiApiKey,
+    baseURL: openaiBaseUrl || 'https://api.openai.com/v1',
+    compatibility: 'strict',
+  })
+
   const { output } = await generateText({
-    model: resolveModel(openaiApiKey, openaiBaseUrl, aiModel, AI),
+    model: openai(aiModel),
     output: Output.object({
       schema: z.object({
         slug: z.string().describe('The generated slug for the URL'),
@@ -42,26 +43,3 @@ export default eventHandler(async (event) => {
   })
   return output
 })
-
-function resolveModel(
-  openaiApiKey: string,
-  openaiBaseUrl: string,
-  modelName: string,
-  aiBinding: unknown,
-) {
-  if (openaiApiKey) {
-    const openai = createOpenAI({
-      apiKey: openaiApiKey,
-      baseURL: openaiBaseUrl || 'https://api.openai.com/v1',
-      compatibility: 'strict',
-    })
-    return openai(modelName)
-  }
-
-  if (aiBinding) {
-    const workersai = createWorkersAI({ binding: aiBinding })
-    return workersai(modelName as Parameters<typeof workersai>[0])
-  }
-
-  throw new Error('No AI provider configured')
-}
