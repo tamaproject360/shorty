@@ -1,0 +1,18 @@
+services:
+  shorty:
+    build: .
+    container_name: shorty
+    ports:
+      - '7465:7465'
+    volumes:
+      - shorty_data:/app/.data
+    environment:
+      - NUXT_SITE_TOKEN=${NUXT_SITE_TOKEN:-ChangeMe123}
+      - NUXT_HOME_URL=${NUXT_HOME_URL:-}
+      - NUXT_REDIRECT_STATUS_CODE=308
+      - NUXT_LINK_CACHE_TTL=60
+      - NUXT_DATASET=shorty
+    restart: unless-stopped
+
+volumes:
+  shorty_data:

@@ -2,7 +2,6 @@
 
 **A Simple, Speedy, and Secure Link Shortener with Analytics.**
 
-[![License](https://img.shields.io/github/license/miantiao-me/shorty?style=flat&color=000000)](LICENSE)
 [![Nuxt](https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat&logo=nuxt.js&logoColor=white)](https://nuxt.com)
 [![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat&logo=vue.js&logoColor=white)](https://vuejs.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
@@ -12,22 +11,22 @@
 
 Shorty is a modern, analytics-powered link shortener built for teams. Deploy anywhere — Docker, Netlify, Vercel, or bare metal. No vendor lock-in.
 
-> Forked from [Sink](https://github.com/miantiao-me/sink) by @ccbikai — adapted to run independently without Cloudflare dependency.
+> Forked from [Sink](https://github.com/miantiao-me/sink) adapted to run independently without Cloudflare dependency.
 
 ---
 
 ## ✨ Features
 
-| Feature | Description |
-|---------|-------------|
-| 🔗 **Short Links** | Compress URLs to minimal length with custom slugs |
-| 📊 **Analytics** | Real-time click tracking, referrers, countries, and device stats |
-| 🤖 **AI-Powered** | Smart slug generation using on-device AI |
-| 🌐 **Microsites** | Build link-in-bio pages with themes, social links, and rich embeds |
-| 📱 **QR Codes** | Auto-generated QR codes for every link |
-| 🌍 **Multi-Language** | Full i18n support across 6 languages |
-| 🎨 **Dark Mode** | Light, dark, and system-aware themes |
-| 📦 **Import/Export** | Bulk migration via JSON files |
+| Feature               | Description                                                        |
+| --------------------- | ------------------------------------------------------------------ |
+| 🔗 **Short Links**    | Compress URLs to minimal length with custom slugs                  |
+| 📊 **Analytics**      | Real-time click tracking, referrers, countries, and device stats   |
+| 🤖 **AI-Powered**     | Smart slug generation using on-device AI                           |
+| 🌐 **Microsites**     | Build link-in-bio pages with themes, social links, and rich embeds |
+| 📱 **QR Codes**       | Auto-generated QR codes for every link                             |
+| 🌍 **Multi-Language** | Full i18n support across 6 languages                               |
+| 🎨 **Dark Mode**      | Light, dark, and system-aware themes                               |
+| 📦 **Import/Export**  | Bulk migration via JSON files                                      |
 
 ---
 
@@ -42,7 +41,7 @@ Shorty is a modern, analytics-powered link shortener built for teams. Deploy any
 
 ```bash
 # Clone
-git clone https://github.com/miantiao-me/shorty.git
+git clone https://github.com/tamaproject360/shorty
 cd shorty
 
 # Install
@@ -66,26 +65,48 @@ NUXT_SITE_TOKEN=YourSecretTokenHere
 
 ## 🐳 Docker
 
-```dockerfile
-# Coming soon — Docker Compose setup
-```
+### Docker Compose (Recommended)
 
 ```bash
+# Clone and run
+git clone https://github.com/miantiao-me/shorty.git
+cd shorty
+
+# Set your site token
+echo "NUXT_SITE_TOKEN=YourSecretToken" >> .env
+
+# Start
 docker compose up -d
+```
+
+App runs at [http://localhost:7465](http://localhost:7465). Data persists in a Docker volume (`shorty_data`).
+
+### Docker (Standalone)
+
+```bash
+docker build -t shorty .
+
+docker run -d \
+  --name shorty \
+  -p 7465:7465 \
+  -v shorty_data:/app/.data \
+  -e NUXT_SITE_TOKEN=YourSecretToken \
+  -e NUXT_HOME_URL=https://your-domain.com \
+  shorty
 ```
 
 ---
 
 ## 🛠️ Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NUXT_SITE_TOKEN` | _(required)_ | Dashboard access token (min 8 chars) |
-| `NUXT_HOME_URL` | `""` | Your production URL; leave empty for local |
-| `NUXT_REDIRECT_STATUS_CODE` | `308` | HTTP redirect code for short links |
-| `NUXT_LINK_CACHE_TTL` | `60` | Cache TTL in seconds |
-| `NUXT_DATASET` | `shorty` | Storage dataset name |
-| `NUXT_AI_MODEL` | `@cf/qwen/qwen3-30b-a3b-fp8` | AI model for slug generation |
+| Variable                    | Default                      | Description                                |
+| --------------------------- | ---------------------------- | ------------------------------------------ |
+| `NUXT_SITE_TOKEN`           | _(required)_                 | Dashboard access token (min 8 chars)       |
+| `NUXT_HOME_URL`             | `""`                         | Your production URL; leave empty for local |
+| `NUXT_REDIRECT_STATUS_CODE` | `308`                        | HTTP redirect code for short links         |
+| `NUXT_LINK_CACHE_TTL`       | `60`                         | Cache TTL in seconds                       |
+| `NUXT_DATASET`              | `shorty`                     | Storage dataset name                       |
+| `NUXT_AI_MODEL`             | `@cf/qwen/qwen3-30b-a3b-fp8` | AI model for slug generation               |
 
 See [`.env.example`](.env.example) for all options.
 
@@ -122,7 +143,7 @@ docs/                   # Documentation
 3. Publish directory: `.output/server`
 4. Set `NUXT_SITE_TOKEN` in environment variables
 
-### Docker / Node.js
+### Bare Metal / Node.js
 
 ```bash
 pnpm build
@@ -143,7 +164,7 @@ node .output/server/index.mjs
 
 ## 💖 Credits
 
-Original project [Sink](https://github.com/miantiao-me/sink) by [@ccbikai](https://github.com/ccbikai).
+Original project [Sink](https://github.com/miantiao-me/sink)
 
 Shorty extends Sink with platform-agnostic storage via [Unstorage](https://unstorage.unjs.io/), enabling deployment outside Cloudflare.
 
@@ -160,4 +181,4 @@ Shorty extends Sink with platform-agnostic storage via [Unstorage](https://unsto
 
 ## 📜 License
 
-MIT © 2026 Shorty
+MIT
