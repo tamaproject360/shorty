@@ -74,7 +74,6 @@
       "screenshot_alt": "Aperçu du tableau de bord Shorty"
     },
     "features": {
-      "headline": "Tout ce dont vous avez besoin",
       "short_links": { "title": "Liens courts", "description": "Compressez vos URLs à leur longueur minimale" },
       "analytics": { "title": "Analytique", "description": "Surveillez les analyses de liens et obtenez des statistiques" },
       "ai": { "title": "IA", "description": "Génération de slugs par IA" },
@@ -87,7 +86,11 @@
       "subtitle": "Des millions de liens raccourcis. Commencez en quelques secondes.",
       "button": "Tableau de bord"
     },
-    "logos": { "title": "Construit avec" },
+    "quote": {
+      "powered_by": "Construit sur l'open source",
+      "headline": "Une nouvelle génération de raccourcisseur de liens.",
+      "body": "Conçu pour les équipes modernes avec l'analytique au cœur, Shorty établit un nouveau standard pour la gestion et le suivi de vos liens."
+    },
     "testimonials": { "title": "Apprécié des utilisateurs", "subtitle": "Découvrez ce que disent les développeurs de Shorty" }
   },
   "dashboard": {

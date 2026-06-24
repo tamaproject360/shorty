@@ -25,16 +25,6 @@ const features: Feature[] = [
     "
   >
     <div class="mx-auto max-w-6xl px-6">
-      <div class="mb-12 text-center">
-        <h2
-          class="
-            text-3xl font-medium tracking-tight
-            md:text-4xl
-          "
-        >
-          {{ $t('home.features.headline') }}
-        </h2>
-      </div>
       <div
         class="
           grid gap-6

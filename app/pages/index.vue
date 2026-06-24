@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center">
     <HomeHero />
-    <HomeLogos />
+    <HomeQuote />
     <HomeFeatures />
     <HomeTestimonials />
     <HomeCta />

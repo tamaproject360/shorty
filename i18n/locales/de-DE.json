@@ -74,7 +74,6 @@
       "screenshot_alt": "Shorty Dashboard Vorschau"
     },
     "features": {
-      "headline": "Alles was du brauchst",
       "short_links": { "title": "Kurze Links", "description": "Komprimiere URLs auf minimale Länge" },
       "analytics": { "title": "Analytik", "description": "Echtzeit-Klickverfolgung und Statistiken" },
       "ai": { "title": "KI-gestützt", "description": "Intelligente Slug-Generierung mit KI" },
@@ -87,7 +86,11 @@
       "subtitle": "Millionen gekürzter Links. Starte in Sekunden.",
       "button": "Dashboard"
     },
-    "logos": { "title": "Entwickelt mit" },
+    "quote": {
+      "powered_by": "Auf Open Source gebaut",
+      "headline": "Eine neue Art von Link-Shortener.",
+      "body": "Entwickelt für moderne Teams mit Analytik im Kern, setzt Shorty einen neuen Standard für die Verwaltung und Verfolgung Ihrer Links."
+    },
     "testimonials": { "title": "Von Nutzern geliebt", "subtitle": "Erfahre, was Entwickler über Shorty sagen" }
   },
   "dashboard": {

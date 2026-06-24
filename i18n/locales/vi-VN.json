@@ -74,7 +74,6 @@
       "screenshot_alt": "Xem trước bảng điều khiển Shorty"
     },
     "features": {
-      "headline": "Mọi thứ bạn cần",
       "short_links": { "title": "Link ngắn", "description": "Nén URL xuống độ dài tối thiểu" },
       "analytics": { "title": "Phân tích", "description": "Theo dõi click và thống kê theo thời gian thực" },
       "ai": { "title": "Hỗ trợ AI", "description": "Tạo slug thông minh bằng AI" },
@@ -87,7 +86,11 @@
       "subtitle": "Hàng triệu link đã được rút gọn. Bắt đầu trong vài giây.",
       "button": "Bảng điều khiển"
     },
-    "logos": { "title": "Xây dựng với" },
+    "quote": {
+      "powered_by": "Xây dựng trên mã nguồn mở",
+      "headline": "Một thế hệ rút gọn link mới.",
+      "body": "Được thiết kế cho các đội ngũ hiện đại với phân tích làm cốt lõi, Shorty thiết lập tiêu chuẩn mới cho việc quản lý và theo dõi link của bạn."
+    },
     "testimonials": { "title": "Được yêu thích", "subtitle": "Xem các nhà phát triển nói gì về Shorty" }
   },
   "dashboard": {

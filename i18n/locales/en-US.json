@@ -75,7 +75,6 @@
       "screenshot_alt": "Shorty Dashboard Preview"
     },
     "features": {
-      "headline": "Everything you need",
       "short_links": {
         "title": "Short Links",
         "description": "Compress URLs to minimal length with custom slugs"
@@ -106,8 +105,10 @@
       "subtitle": "Millions of links shortened. Start in seconds.",
       "button": "Go to Dashboard"
     },
-    "logos": {
-      "title": "Built with"
+    "quote": {
+      "powered_by": "Built on open source",
+      "headline": "A new species of link shortener.",
+      "body": "Purpose-built for modern teams with analytics at its core, Shorty sets a new standard for managing and tracking your links."
     },
     "testimonials": {
       "title": "Loved by Users",

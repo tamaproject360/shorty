@@ -74,7 +74,6 @@
       "screenshot_alt": "Shorty 仪表盘预览"
     },
     "features": {
-      "headline": "你所需的一切",
       "short_links": { "title": "短链", "description": "将 URL 压缩到最小长度" },
       "analytics": { "title": "数据分析", "description": "监控链接分析并收集有价值的统计数据" },
       "ai": { "title": "AI 驱动", "description": "利用 AI 生成短链" },
@@ -87,7 +86,11 @@
       "subtitle": "数百万链接已缩短。几秒钟即可开始。",
       "button": "进入仪表盘"
     },
-    "logos": { "title": "技术栈" },
+    "quote": {
+      "powered_by": "基于开源构建",
+      "headline": "新一代链接缩短器。",
+      "body": "专为现代团队打造，以数据分析为核心，Shorty 为管理和追踪链接设立了新标准。"
+    },
     "testimonials": { "title": "用户喜爱", "subtitle": "看看开发者们怎么说 Shorty" }
   },
   "dashboard": {

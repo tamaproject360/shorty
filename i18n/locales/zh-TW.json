@@ -74,7 +74,6 @@
       "screenshot_alt": "Shorty 儀表板預覽"
     },
     "features": {
-      "headline": "你所需的一切",
       "short_links": { "title": "短鏈", "description": "將 URL 壓縮到最小長度" },
       "analytics": { "title": "數據分析", "description": "監控連結分析並收集有價值的統計數據" },
       "ai": { "title": "AI 驅動", "description": "利用 AI 生成短鏈" },
@@ -87,7 +86,11 @@
       "subtitle": "數百萬連結已縮短。幾秒鐘即可開始。",
       "button": "進入儀表板"
     },
-    "logos": { "title": "技術棧" },
+    "quote": {
+      "powered_by": "基於開源構建",
+      "headline": "新一代連結縮短器。",
+      "body": "專為現代團隊打造，以數據分析為核心，Shorty 為管理和追蹤連結設立了新標準。"
+    },
     "testimonials": { "title": "用戶喜愛", "subtitle": "看看開發者們怎麼說 Shorty" }
   },
   "dashboard": {
