@@ -1,4 +1,9 @@
-# Deployment on Cloudflare Workers
+# Legacy: Cloudflare Workers Deployment
+
+> **NOTE**: This guide is for the original Sink project. Shorty no longer uses Cloudflare Workers.
+> See [Docker deployment](../../README.md#-docker) for the current deployment method.
+
+## Legacy Instructions
 
 3. [Fork](https://github.com/tamaproject360/shorty/fork) the repository to your GitHub account.
 4. Create a [KV namespace](https://developers.cloudflare.com/kv/) (under **Storage & Databases** -> **KV**), and copy the namespace ID.

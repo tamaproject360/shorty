@@ -6,108 +6,70 @@
 [![Nuxt](https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat&logo=nuxt.js&logoColor=white)](https://nuxt.com)
 [![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat&logo=vue.js&logoColor=white)](https://vuejs.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![SQLite](https://img.shields.io/badge/SQLite-3.x-003B57?style=flat&logo=sqlite&logoColor=white)](https://sqlite.org)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker&logoColor=white)](https://docker.com)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-000000?style=flat)](https://github.com/tamaproject360/shorty/pulls)
 
-Shorty is a modern, analytics-powered link shortener built for teams. Deploy anywhere — Docker, Netlify, Vercel, or bare metal. No vendor lock-in.
+Shorty is a modern, self-hosted link shortener with built-in analytics. Deploy anywhere — Docker, LXC, VPS, or bare metal. **SQLite for storage, zero external dependencies, no vendor lock-in.**
 
-> Forked from [Sink](https://github.com/miantiao-me/sink) adapted to run independently without Cloudflare dependency.
+> Forked from [Sink](https://github.com/miantiao-me/sink) by @ccbikai — completely de-Cloudflared with SQLite + geoip-lite.
 
 ---
 
 ## ✨ Features
 
-| Feature               | Description                                                        |
-| --------------------- | ------------------------------------------------------------------ |
-| 🔗 **Short Links**    | Compress URLs to minimal length with custom slugs                  |
-| 📊 **Analytics**      | Real-time click tracking, referrers, countries, and device stats   |
-| 🤖 **AI-Powered**     | Smart slug generation using on-device AI                           |
-| 🌐 **Microsites**     | Build link-in-bio pages with themes, social links, and rich embeds |
-| 📱 **QR Codes**       | Auto-generated QR codes for every link                             |
-| 🌍 **Multi-Language** | Full i18n support across 6 languages                               |
-| 🎨 **Dark Mode**      | Light, dark, and system-aware themes                               |
-| 📦 **Import/Export**  | Bulk migration via JSON files                                      |
+| Feature | Description |
+|---------|-------------|
+| 🔗 **Short Links** | Compress URLs to minimal length with custom slugs |
+| 📊 **Analytics** | Click tracking with country, browser, OS, device breakdown |
+| 🤖 **AI Slug** | Smart slug generation via OpenAI-compatible API |
+| 🌐 **Microsites** | Link-in-bio pages with themes, social links, embeds |
+| 📱 **QR Codes** | Auto-generated QR codes for every link |
+| 🌍 **Multi-Language** | 6 languages with full i18n support |
+| 🎨 **Dark Mode** | Light, dark, and system-aware themes |
+| 💾 **SQLite** | Single-file persistent storage, easy to backup |
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- **Node.js** 22+
-- **pnpm** 10+ (recommended)
-
-### Local Development
+**Requirements:** Node.js 22+, pnpm 10+
 
 ```bash
-# Clone
 git clone https://github.com/tamaproject360/shorty
 cd shorty
-
-# Install
 pnpm install
-
-# Run (defaults to port 7465)
 pnpm dev
 ```
 
 Open [http://localhost:7465](http://localhost:7465).
 
-### Default Login
-
-Set your site token in `.env`:
-
-```env
-NUXT_SITE_TOKEN=YourSecretTokenHere
-```
+Default token: set `NUXT_SITE_TOKEN` in `.env` (min 8 chars).
 
 ---
 
 ## 🐳 Docker
 
-### Docker Compose (Recommended)
-
 ```bash
-# Clone and run
 git clone https://github.com/tamaproject360/shorty.git
 cd shorty
-
-# Set your site token
 echo "NUXT_SITE_TOKEN=YourSecretToken" >> .env
-
-# Start
 docker compose up -d
 ```
 
-App runs at [http://localhost:7465](http://localhost:7465). Data persists in a Docker volume (`shorty_data`).
-
-### Docker (Standalone)
-
-```bash
-docker build -t shorty .
-
-docker run -d \
-  --name shorty \
-  -p 7465:7465 \
-  -v shorty_data:/app/.data \
-  -e NUXT_SITE_TOKEN=YourSecretToken \
-  -e NUXT_HOME_URL=https://your-domain.com \
-  shorty
-```
+Data persists in `shorty_data` volume. The SQLite database lives at `.data/shorty.db`.
 
 ---
 
 ## 🛠️ Configuration
 
-| Variable                    | Default                      | Description                                |
-| --------------------------- | ---------------------------- | ------------------------------------------ |
-| `NUXT_SITE_TOKEN`           | _(required)_                 | Dashboard access token (min 8 chars)       |
-| `NUXT_HOME_URL`             | `""`                         | Your production URL; leave empty for local |
-| `NUXT_REDIRECT_STATUS_CODE` | `308`                        | HTTP redirect code for short links         |
-| `NUXT_LINK_CACHE_TTL`       | `60`                         | Cache TTL in seconds                       |
-| `NUXT_DATASET`              | `shorty`                     | Storage dataset name                       |
-| `NUXT_AI_MODEL`             | `@cf/qwen/qwen3-30b-a3b-fp8` | AI model for slug generation               |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `NUXT_SITE_TOKEN` | *(required)* | Dashboard access token |
+| `NUXT_HOME_URL` | `""` | Production URL (leave empty for local) |
+| `NUXT_OPENAI_API_KEY` | `""` | OpenAI API key for AI slug generation |
+| `NUXT_OPENAI_BASE_URL` | `https://api.openai.com/v1` | OpenAI-compatible endpoint (Groq, Ollama, etc.) |
+| `NUXT_AI_MODEL` | `gpt-4o-mini` | AI model name |
+| `NUXT_REDIRECT_STATUS_CODE` | `308` | HTTP redirect code |
 
 See [`.env.example`](.env.example) for all options.
 
@@ -117,34 +79,31 @@ See [`.env.example`](.env.example) for all options.
 
 ```
 app/                    # Nuxt 4 frontend
-  ├── components/       # Vue components (PascalCase)
+  ├── components/       # Vue components
   │   ├── ui/           # shadcn-vue components
-  │   ├── dashboard/    # Dashboard pages
+  │   ├── dashboard/    # Dashboard
   │   └── home/         # Landing page
-  ├── composables/      # Vue composables (camelCase)
   ├── pages/            # File-based routing
   ├── stores/           # Pinia stores
   └── types/            # TypeScript types
 server/                 # Nitro server
-  ├── api/              # API endpoints
-  └── utils/            # Server utilities
+  ├── api/              # REST API endpoints
+  └── utils/            # SQLite storage, analytics, auth
 schemas/                # Zod validation schemas
 tests/                  # Vitest tests
-docs/                   # Documentation
 ```
 
 ---
 
 ## 📦 Deployment
 
-### Netlify / Vercel
+### Docker (Recommended)
 
-1. Connect your repo
-2. Build command: `pnpm build`
-3. Publish directory: `.output/server`
-4. Set `NUXT_SITE_TOKEN` in environment variables
+```bash
+docker compose up -d
+```
 
-### Bare Metal / Node.js
+### Bare Metal
 
 ```bash
 pnpm build
@@ -155,28 +114,13 @@ node .output/server/index.mjs
 
 ## 🤝 Contributing
 
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feat/amazing`
-3. Commit your changes: `git commit -m "feat: amazing thing"`
-4. Push to the branch: `git push origin feat/amazing`
-5. Open a Pull Request
+1. Fork → `git checkout -b feat/amazing` → `git commit -m "feat: thing"` → Push → PR
 
 ---
 
 ## 💖 Credits
 
-Original project [Sink](https://github.com/miantiao-me/sink)
-
-Shorty extends Sink with platform-agnostic storage via [Unstorage](https://unstorage.unjs.io/), enabling deployment outside Cloudflare.
-
----
-
-## 📚 Docs
-
-- [API Reference](docs/API.md)
-- [Changelog](docs/CHANGELOG.md)
-- [Configuration](docs/configuration.md)
-- [Deployment Guide](docs/deployment/)
+Original project [Sink](https://github.com/miantiao-me/sink) by [@ccbikai](https://github.com/ccbikai). Shorty replaces Cloudflare dependencies with SQLite + geoip-lite for full self-hosting.
 
 ---
 

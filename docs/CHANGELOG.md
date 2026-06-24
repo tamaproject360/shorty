@@ -1,5 +1,72 @@
 # Changelog
 
+## 2026-06-24 — SQLite Migration: Zero Cloudflare Dependencies
+
+### 🗄️ Storage Migration
+
+- Replaced unstorage (filesystem/CF KV) with **SQLite** (`better-sqlite3`)
+- Database auto-creates at `.data/shorty.db` with WAL mode + foreign keys
+- Tables: `links`, `microsites`, `clicks` (analytics)
+- Links and microsites now use SQLite for all CRUD operations
+- Added `server/utils/db.ts` — centralized SQLite layer with auto-migration
+
+### 📊 Analytics Rewrite
+
+- Replaced Cloudflare Analytics Engine with **SQLite-based analytics**
+- All 6 analytics endpoints rewired to query SQLite directly:
+  - `counters.get.ts` — visits, visitors, referrers
+  - `views.get.ts` — time-series by minute/hour/day
+  - `heatmap.get.ts` — weekday × hour activity heatmap
+  - `metrics.get.ts` — breakdown by country, browser, OS, device, etc.
+  - `locations.get.ts` — lat/lng for real-time globe
+  - `events.get.ts` — raw event log feed
+- Added `server/utils/analytics.ts` — `recordClick()` + `getClickStats()`
+
+### 🌍 GeoIP
+
+- Replaced `request.cf` (Cloudflare edge) with **`geoip-lite`** (MaxMind GeoLite2, offline)
+- `access-log.ts` now uses `geoip-lite` for IP→country/city/coordinates
+- `location.get.ts` rewritten to use `geoip-lite`
+
+### 🔐 AI
+
+- Cloudflare Workers AI support removed
+- Now uses **OpenAI-compatible API only** (`@ai-sdk/openai`)
+- Configurable via `NUXT_OPENAI_API_KEY`, `NUXT_OPENAI_BASE_URL`, `NUXT_AI_MODEL`
+- Supports any provider: OpenAI, Groq, Together AI, Ollama, LM Studio, OpenRouter
+
+### ❌ Removed (Cloudflare Dependencies)
+
+- `wrangler` CLI + `wrangler.jsonc` (deploy config)
+- `@cloudflare/vitest-pool-workers` (test framework)
+- `workers-ai-provider` (AI binding)
+- `worker-configuration.d.ts` (~8800 lines of CF types)
+- `server/utils/cloudflare.ts` — Analytics Engine SQL API client
+- `server/plugins/backup.ts` — KV→R2 cron backup
+- `mysql-bricks`, `sql-bricks` — SQL query builders for CF Analytics Engine
+- `baseline-browser-mapping`, `p-limit`, `eslint-plugin-better-tailwindcss`, `eslint-plugin-format` — unused deps
+
+### 🧪 Testing
+
+- Vitest config rewritten from `@cloudflare/vitest-pool-workers` → standard vitest
+- `tests/utils.ts` now uses `ofetch` instead of `cloudflare:test` `SELF.fetch()`
+
+### ⚙️ Config
+
+- Removed `NUXT_CF_ACCOUNT_ID`, `NUXT_CF_API_TOKEN`, `NUXT_DISABLE_AUTO_BACKUP`
+- Added `NUXT_OPENAI_API_KEY`, `NUXT_OPENAI_BASE_URL`
+- `NUXT_AI_MODEL` default changed from `@cf/qwen/qwen3-30b-a3b-fp8` → `gpt-4o-mini`
+- Rewrote `.env.example` with organized sections
+
+### 📄 Documentation
+
+- README: SQLite badge, updated config table, removed CF deployment references
+- AGENTS.md: Updated project overview, commands, and server structure
+- `docs/configuration.md`: Full rewrite for SQLite + OpenAI config
+- `docs/deployment/workers.md` + `pages.md`: Marked as legacy
+
+---
+
 ## 2026-06-24 — Full Rebrand & Homepage Redesign
 
 ### 🔄 Complete Rebrand (Sink → Shorty)

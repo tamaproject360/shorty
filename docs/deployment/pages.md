@@ -1,4 +1,9 @@
-# Deployment on Cloudflare Pages
+# Legacy: Cloudflare Pages Deployment
+
+> **NOTE**: This guide is for the original Sink project. Shorty no longer uses Cloudflare Pages.
+> See [Docker deployment](../../README.md#-docker) for the current deployment method.
+
+## Legacy Instructions
 
 1. [Fork](https://github.com/tamaproject360/shorty/fork) the repository to your GitHub account.
 2. Create a project in [Cloudflare Pages](https://developers.cloudflare.com/pages/).

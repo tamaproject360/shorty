@@ -4,6 +4,18 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0. SQLite Migration — _Completed Jun 2026_
+
+- **Status:** Production Ready
+- **Description:** Removed all Cloudflare dependencies. Migrated storage, analytics, and geoip to SQLite stack.
+- **Key Changes:**
+  - SQLite (`better-sqlite3`) for links, microsites, and analytics
+  - `geoip-lite` for IP-to-location (replaces Cloudflare `request.cf`)
+  - AI: OpenAI-compatible API (replaces Workers AI)
+  - Removed 9 Cloudflare packages + `worker-configuration.d.ts` (8800 lines)
+  - Rewrote 6 analytics endpoints to SQLite queries
+  - Docker deployment with persistent SQLite volume
+
 ### 1. Full Rebrand & Homepage Redesign — _Completed Jun 2026_
 
 - **Status:** Production Ready

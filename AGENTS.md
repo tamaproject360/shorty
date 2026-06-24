@@ -4,7 +4,7 @@ Guidelines for agentic coding agents operating in the Shorty codebase.
 
 ## Project Overview
 
-Shorty is a link shortener with analytics, running 100% on Cloudflare. Uses Nuxt 4 frontend and Cloudflare Workers backend.
+Shorty is a self-hosted link shortener with analytics, using Nuxt 4 frontend and Nitro server backend. **SQLite for storage, zero Cloudflare dependency.**
 
 ## Project Structure
 
@@ -28,15 +28,19 @@ app/                    # Nuxt 4 application
   │   ├── link.ts       # Link types
   │   ├── microsite.ts  # Microsite types
   │   └── index.ts      # Type exports
-  ├── utils/            # Utility functions
-  └── lib/              # Shared helpers
-server/                 # Nitro server (Cloudflare Workers)
+  └── utils/            # Utility functions
+server/                 # Nitro server
   ├── api/              # API endpoints
   │   ├── link/         # Link CRUD endpoints
-  │   └── microsite/    # Microsite CRUD endpoints
+  │   ├── microsite/    # Microsite CRUD endpoints
+  │   ├── stats/        # Analytics endpoints
+  │   └── logs/         # Log/event endpoints
   └── utils/            # Server utilities
-    ├── link-store.ts   # Link storage functions
-    └── microsite-store.ts  # Microsite storage functions
+    ├── db.ts           # SQLite database layer
+    ├── link-store.ts   # Link storage (SQLite)
+    ├── microsite-store.ts  # Microsite storage (SQLite)
+    ├── analytics.ts    # Click recording + stats
+    └── access-log.ts   # Request logging
 schemas/                # Zod validation schemas
   ├── link.ts           # Link validation
   └── microsite.ts      # Microsite validation
@@ -54,11 +58,11 @@ Use **pnpm** (v10+) with **Node.js 22+**.
 ```bash
 pnpm dev                  # Start dev server (port 7465)
 pnpm build                # Production build
-pnpm preview              # Worker preview via wrangler
+pnpm preview              # Preview production build
 pnpm lint:fix             # ESLint with auto-fix
 pnpm types:check          # TypeScript type check
 
-# Testing (Vitest + Cloudflare Workers pool)
+# Testing (Vitest)
 pnpm vitest               # Watch mode
 pnpm vitest run           # CI mode (run once)
 pnpm vitest tests/shorty.spec.ts           # Single file
@@ -66,8 +70,7 @@ pnpm vitest tests/api/link.spec.ts       # Single API test
 pnpm vitest -t "returns 200"             # Pattern match
 
 # Deployment
-pnpm deploy:pages         # Deploy to Cloudflare Pages
-pnpm deploy:worker        # Deploy to Cloudflare Workers
+docker compose up -d      # Docker deployment
 ```
 
 ## Code Style
