@@ -1,13 +1,13 @@
 ---
 name: shorty
 description: |
-  Sink short link API operations via OpenAPI. Use when managing short links: creating, querying, updating, deleting, listing, importing, or exporting links. Also covers AI-powered slug generation and link analytics.
+  Shorty short link API operations via OpenAPI. Use when managing short links: creating, querying, updating, deleting, listing, importing, or exporting links. Also covers AI-powered slug generation and link analytics.
   Triggers: "create short link", "shorten URL", "delete link", "edit link", "list links", "export links", "import links", "link analytics", "AI slug".
 ---
 
-# Sink API
+# Shorty API
 
-Sink is a link shortener running on Cloudflare. Manage links via REST API.
+Shorty is a link shortener. Manage links via REST API.
 
 ## Authentication
 
@@ -197,7 +197,7 @@ Verify if the site token is valid.
 
 ```json
 {
-  "name": "Sink",
+  "name": "Shorty",
   "url": "https://shorty.dev"
 }
 ```
