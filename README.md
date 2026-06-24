@@ -120,7 +120,7 @@ node .output/server/index.mjs
 
 ## 💖 Credits
 
-Original project [Sink](https://github.com/miantiao-me/sink) by [@ccbikai](https://github.com/ccbikai). Shorty replaces Cloudflare dependencies with SQLite + geoip-lite for full self-hosting.
+Original project [Sink](https://github.com/miantiao-me/sink). Shorty replaces Cloudflare dependencies with SQLite + geoip-lite for full self-hosting.
 
 ---
 
