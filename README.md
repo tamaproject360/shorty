@@ -11,22 +11,22 @@
 
 Shorty is a modern, self-hosted link shortener with built-in analytics. Deploy anywhere — Docker, LXC, VPS, or bare metal. **SQLite for storage, zero external dependencies, no vendor lock-in.**
 
-> Forked from [Sink](https://github.com/miantiao-me/sink) by @ccbikai — completely de-Cloudflared with SQLite + geoip-lite.
+> Forked from [Sink](https://github.com/miantiao-me/sink)
 
 ---
 
 ## ✨ Features
 
-| Feature | Description |
-|---------|-------------|
-| 🔗 **Short Links** | Compress URLs to minimal length with custom slugs |
-| 📊 **Analytics** | Click tracking with country, browser, OS, device breakdown |
-| 🤖 **AI Slug** | Smart slug generation via OpenAI-compatible API |
-| 🌐 **Microsites** | Link-in-bio pages with themes, social links, embeds |
-| 📱 **QR Codes** | Auto-generated QR codes for every link |
-| 🌍 **Multi-Language** | 6 languages with full i18n support |
-| 🎨 **Dark Mode** | Light, dark, and system-aware themes |
-| 💾 **SQLite** | Single-file persistent storage, easy to backup |
+| Feature               | Description                                                |
+| --------------------- | ---------------------------------------------------------- |
+| 🔗 **Short Links**    | Compress URLs to minimal length with custom slugs          |
+| 📊 **Analytics**      | Click tracking with country, browser, OS, device breakdown |
+| 🤖 **AI Slug**        | Smart slug generation via OpenAI-compatible API            |
+| 🌐 **Microsites**     | Link-in-bio pages with themes, social links, embeds        |
+| 📱 **QR Codes**       | Auto-generated QR codes for every link                     |
+| 🌍 **Multi-Language** | 6 languages with full i18n support                         |
+| 🎨 **Dark Mode**      | Light, dark, and system-aware themes                       |
+| 💾 **SQLite**         | Single-file persistent storage, easy to backup             |
 
 ---
 
@@ -62,14 +62,14 @@ Data persists in `shorty_data` volume. The SQLite database lives at `.data/short
 
 ## 🛠️ Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NUXT_SITE_TOKEN` | *(required)* | Dashboard access token |
-| `NUXT_HOME_URL` | `""` | Production URL (leave empty for local) |
-| `NUXT_OPENAI_API_KEY` | `""` | OpenAI API key for AI slug generation |
-| `NUXT_OPENAI_BASE_URL` | `https://api.openai.com/v1` | OpenAI-compatible endpoint (Groq, Ollama, etc.) |
-| `NUXT_AI_MODEL` | `gpt-4o-mini` | AI model name |
-| `NUXT_REDIRECT_STATUS_CODE` | `308` | HTTP redirect code |
+| Variable                    | Default                     | Description                                     |
+| --------------------------- | --------------------------- | ----------------------------------------------- |
+| `NUXT_SITE_TOKEN`           | _(required)_                | Dashboard access token                          |
+| `NUXT_HOME_URL`             | `""`                        | Production URL (leave empty for local)          |
+| `NUXT_OPENAI_API_KEY`       | `""`                        | OpenAI API key for AI slug generation           |
+| `NUXT_OPENAI_BASE_URL`      | `https://api.openai.com/v1` | OpenAI-compatible endpoint (Groq, Ollama, etc.) |
+| `NUXT_AI_MODEL`             | `gpt-4o-mini`               | AI model name                                   |
+| `NUXT_REDIRECT_STATUS_CODE` | `308`                       | HTTP redirect code                              |
 
 See [`.env.example`](.env.example) for all options.
 
