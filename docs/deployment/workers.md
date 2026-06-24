@@ -1,6 +1,6 @@
 # Deployment on Cloudflare Workers
 
-3. [Fork](https://github.com/miantiao-me/shorty/fork) the repository to your GitHub account.
+3. [Fork](https://github.com/tamaproject360/shorty/fork) the repository to your GitHub account.
 4. Create a [KV namespace](https://developers.cloudflare.com/kv/) (under **Storage & Databases** -> **KV**), and copy the namespace ID.
 5. Update the `kv_namespaces` ID in `wrangler.jsonc` with your own namespace ID.
 6. (_Optional_) For OpenGraph image upload, create an [R2 bucket](https://developers.cloudflare.com/r2/) named `shorty` (or run `wrangler r2 bucket create shorty`). If you don't need this feature, comment out the `r2_buckets` section in `wrangler.jsonc`.

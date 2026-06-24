@@ -39,7 +39,7 @@ export default eventHandler(async (event) => {
       { role: 'user', content: 'https://github.com/nuxt/' },
       { role: 'assistant', content: JSON.stringify({ slug: 'nuxt' }) },
 
-      { role: 'user', content: 'https://github.com/miantiao-me/shorty' },
+      { role: 'user', content: 'https://github.com/tamaproject360/shorty' },
       { role: 'assistant', content: JSON.stringify({ slug: 'shorty' }) },
 
       { role: 'user', content: url },

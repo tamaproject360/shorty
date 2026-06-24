@@ -2,12 +2,13 @@
 
 **A Simple, Speedy, and Secure Link Shortener with Analytics.**
 
+[![License](https://img.shields.io/badge/license-MIT-000000?style=flat)](LICENSE)
 [![Nuxt](https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat&logo=nuxt.js&logoColor=white)](https://nuxt.com)
 [![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat&logo=vue.js&logoColor=white)](https://vuejs.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker&logoColor=white)](https://docker.com)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-000000?style=flat)](https://github.com/miantiao-me/shorty/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-000000?style=flat)](https://github.com/tamaproject360/shorty/pulls)
 
 Shorty is a modern, analytics-powered link shortener built for teams. Deploy anywhere — Docker, Netlify, Vercel, or bare metal. No vendor lock-in.
 
@@ -69,7 +70,7 @@ NUXT_SITE_TOKEN=YourSecretTokenHere
 
 ```bash
 # Clone and run
-git clone https://github.com/miantiao-me/shorty.git
+git clone https://github.com/tamaproject360/shorty.git
 cd shorty
 
 # Set your site token
