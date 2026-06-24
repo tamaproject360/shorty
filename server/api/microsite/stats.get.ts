@@ -11,23 +11,23 @@ export default eventHandler(async (event) => {
   const db = getDb()
 
   const totalViews = db.prepare(
-    'SELECT COUNT(*) as count FROM clicks WHERE slug = ? AND is_bot = 0',
+    'SELECT COUNT(*) as count FROM microsite_events WHERE target_id = ?',
   ).get(slug) as { count: number }
 
   const chartRows = db.prepare(
-    `SELECT date(created_at, 'unixepoch') as date, COUNT(*) as count FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY date ORDER BY date`,
+    `SELECT date(timestamp / 1000, 'unixepoch') as date, COUNT(*) as count FROM microsite_events WHERE target_id = ? GROUP BY date ORDER BY date`,
   ).all(slug) as { date: string, count: number }[]
 
   const countryRows = db.prepare(
-    'SELECT COALESCE(country, \'Unknown\') as name, COUNT(*) as value FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY name ORDER BY value DESC',
+    `SELECT COALESCE(country, 'Unknown') as name, COUNT(*) as value FROM microsite_events WHERE target_id = ? GROUP BY name ORDER BY value DESC`,
   ).all(slug) as { name: string, value: number }[]
 
   const deviceRows = db.prepare(
-    'SELECT COALESCE(device_type, \'Desktop\') as name, COUNT(*) as value FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY name ORDER BY value DESC',
+    `SELECT COALESCE(device, 'desktop') as name, COUNT(*) as value FROM microsite_events WHERE target_id = ? GROUP BY name ORDER BY value DESC`,
   ).all(slug) as { name: string, value: number }[]
 
   const referrerRows = db.prepare(
-    'SELECT COALESCE(referer, \'Direct\') as name, COUNT(*) as count FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY name ORDER BY count DESC',
+    `SELECT COALESCE(referrer, 'Direct') as name, COUNT(*) as count FROM microsite_events WHERE target_id = ? GROUP BY name ORDER BY count DESC`,
   ).all(slug) as { name: string, count: number }[]
 
   return {

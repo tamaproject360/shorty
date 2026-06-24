@@ -5,9 +5,8 @@ const route = useRoute()
 const slug = route.params.slug as string
 const router = useRouter()
 
-const { data: stats, pending, error } = await useFetch('/api/microsite/stats', {
-  query: { slug },
-})
+const { data: stats, pending, error } = await useAsyncData(`microsite-stats-${slug}`, () =>
+  useAPI('/api/microsite/stats', { query: { slug } }))
 
 const { data: microsite } = await useFetch('/api/microsite/get', {
   query: { slug },
