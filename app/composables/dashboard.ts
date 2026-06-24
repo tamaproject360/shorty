@@ -30,6 +30,11 @@ export const DASHBOARD_ROUTES = {
     titleKey: 'nav.microsites',
     icon: Users,
   },
+  micrositeAnalytics: {
+    paths: ['/dashboard/microsite-analytics'],
+    titleKey: 'nav.microsites',
+    icon: Users,
+  },
   analysis: {
     paths: ['/dashboard/analysis'],
     titleKey: 'nav.analysis',

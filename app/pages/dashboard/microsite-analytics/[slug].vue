@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ArrowLeft, Users } from 'lucide-vue-next'
 
+definePageMeta({
+  layout: 'dashboard',
+})
+
 const route = useRoute()
 const slug = route.params.slug as string
 const router = useRouter()
