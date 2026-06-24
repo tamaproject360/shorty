@@ -51,6 +51,7 @@ steps:
       key:
         from_secret: key
       port: 22
+      timeout: 30m
       script:
         - cd /opt/shorty
         - chmod +x deploy.sh
