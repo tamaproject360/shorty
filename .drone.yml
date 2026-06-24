@@ -21,27 +21,21 @@ steps:
       port: 22
       target: /opt/shorty
       source:
-        - .
-      exclude:
-        - .env
-        - .env.*
-        - .git
-        - .git/**
-        - .idea
-        - .vscode
-        - .output
-        - .nuxt
-        - .data
-        - .cache
-        - node_modules
-        - '**/node_modules'
-        - '**/*.bak*'
-        - '**/*.log'
-        - coverage
-        - docs
-        - skills
-        - tests
-        - __pycache__
+        - Dockerfile
+        - package.json
+        - pnpm-lock.yaml
+        - pnpm-workspace.yaml
+        - nuxt.config.ts
+        - tsconfig.json
+        - eslint.config.mjs
+        - components.json
+        - app
+        - server
+        - schemas
+        - public
+        - i18n
+        - deploy.sh
+        - .dockerignore
 
   - name: deploy
     image: appleboy/drone-ssh
