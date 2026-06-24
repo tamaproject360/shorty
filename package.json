@@ -21,6 +21,7 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.74",
     "better-sqlite3": "^12.11.1",
     "geoip-lite": "^2.0.3"
   },
