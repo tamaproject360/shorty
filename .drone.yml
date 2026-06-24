@@ -1,0 +1,45 @@
+kind: pipeline
+name: deploy-shorty
+
+type: docker
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
+    - custom
+
+steps:
+  - name: upload
+    image: appleboy/drone-scp
+    settings:
+      host: 192.168.0.114
+      username: root
+      key:
+        from_secret: shorty_ssh_key
+      port: 22
+      target: /opt/shorty
+      source:
+        - .
+      exclude:
+        - .env
+        - .git
+        - '**/*.bak*'
+        - node_modules
+        - __pycache__
+
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: 192.168.0.114
+      username: root
+      key:
+        from_secret: shorty_ssh_key
+      port: 22
+      script:
+        - cd /opt/shorty
+        - chmod +x deploy.sh
+        - ./deploy.sh
+    depends_on:
+      - upload
