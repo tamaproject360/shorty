@@ -57,6 +57,7 @@ export default defineNuxtConfig({
   compatibilityDate: 'latest',
   nitro: {
     // preset: !import.meta.env.CI ? 'cloudflare-module' : undefined,
+    sourcemap: false,
     experimental: {
       openAPI: true,
     },
@@ -102,6 +103,9 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    build: {
+      sourcemap: false,
+    },
   },
   typescript: {
     tsConfig: {

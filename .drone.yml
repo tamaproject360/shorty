@@ -24,9 +24,23 @@ steps:
         - .
       exclude:
         - .env
+        - .env.*
         - .git
-        - '**/*.bak*'
+        - .git/**
+        - .idea
+        - .vscode
+        - .output
+        - .nuxt
+        - .data
+        - .cache
         - node_modules
+        - '**/node_modules'
+        - '**/*.bak*'
+        - '**/*.log'
+        - coverage
+        - docs
+        - skills
+        - tests
         - __pycache__
 
   - name: deploy
