@@ -1,5 +1,4 @@
-import type { AnalyticsEvent } from '../../utils/analytics-store'
-import { getEvents } from '../../utils/analytics-store'
+import { getDb } from '../../utils/db'
 
 export default eventHandler(async (event) => {
   const query = getQuery(event)
@@ -9,45 +8,33 @@ export default eventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Missing slug' })
   }
 
-  const events: AnalyticsEvent[] = await getEvents('view', slug)
+  const db = getDb()
 
-  const totalViews = events.length
+  const totalViews = db.prepare(
+    'SELECT COUNT(*) as count FROM clicks WHERE slug = ? AND is_bot = 0',
+  ).get(slug) as { count: number }
 
-  const chartData: Record<string, number> = {}
-  const countryData: Record<string, number> = {}
-  const deviceData: Record<string, number> = {}
-  const referrerData: Record<string, number> = {}
+  const chartRows = db.prepare(
+    `SELECT date(created_at, 'unixepoch') as date, COUNT(*) as count FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY date ORDER BY date`,
+  ).all(slug) as { date: string, count: number }[]
 
-  events.forEach((e) => {
-    const day = new Date(e.timestamp).toISOString().split('T')[0]
-    if (day) {
-      chartData[day] = (chartData[day] || 0) + 1
-    }
+  const countryRows = db.prepare(
+    'SELECT COALESCE(country, \'Unknown\') as name, COUNT(*) as value FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY name ORDER BY value DESC',
+  ).all(slug) as { name: string, value: number }[]
 
-    const country = e.country || 'Unknown'
-    countryData[country] = (countryData[country] || 0) + 1
+  const deviceRows = db.prepare(
+    'SELECT COALESCE(device_type, \'Desktop\') as name, COUNT(*) as value FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY name ORDER BY value DESC',
+  ).all(slug) as { name: string, value: number }[]
 
-    const device = e.device || 'Desktop'
-    deviceData[device] = (deviceData[device] || 0) + 1
-
-    let ref = 'Direct'
-    if (e.referrer) {
-      try {
-        const url = new URL(e.referrer)
-        ref = url.hostname
-      }
-      catch {
-        ref = e.referrer
-      }
-    }
-    referrerData[ref] = (referrerData[ref] || 0) + 1
-  })
+  const referrerRows = db.prepare(
+    'SELECT COALESCE(referer, \'Direct\') as name, COUNT(*) as count FROM clicks WHERE slug = ? AND is_bot = 0 GROUP BY name ORDER BY count DESC',
+  ).all(slug) as { name: string, count: number }[]
 
   return {
-    totalViews,
-    chart: Object.entries(chartData).map(([date, count]) => ({ date, count })).sort((a, b) => a.date.localeCompare(b.date)),
-    countries: Object.entries(countryData).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value),
-    devices: Object.entries(deviceData).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value),
-    referrers: Object.entries(referrerData).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count),
+    totalViews: totalViews?.count ?? 0,
+    chart: chartRows,
+    countries: countryRows,
+    devices: deviceRows,
+    referrers: referrerRows,
   }
 })
