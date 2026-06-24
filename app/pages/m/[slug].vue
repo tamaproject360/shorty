@@ -1,6 +1,61 @@
 <script setup lang="ts">
 import type { Microsite } from '@/types'
-import { ExternalLink, Facebook, Github, Globe, Instagram, Linkedin, Mail, Twitter, Video, Youtube } from 'lucide-vue-next'
+import {
+  BookOpen,
+  Briefcase,
+  Camera,
+  Code,
+  ExternalLink,
+  Facebook,
+  FileText,
+  Gift,
+  Github,
+  Globe,
+  Heart,
+  Home,
+  Image,
+  Instagram,
+  Link,
+  Linkedin,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Music,
+  Phone,
+  ShoppingCart,
+  Sparkles,
+  Star,
+  Twitter,
+  User,
+  Video,
+  Wallet,
+  Youtube,
+} from 'lucide-vue-next'
+
+const ITEM_ICON_MAP: Record<string, Component> = {
+  Link,
+  Globe,
+  ShoppingCart,
+  BookOpen,
+  Code,
+  Camera,
+  Music,
+  Video,
+  Heart,
+  Star,
+  MessageCircle,
+  Mail,
+  MapPin,
+  Phone,
+  FileText,
+  Image,
+  Gift,
+  Briefcase,
+  Sparkles,
+  Wallet,
+  Home,
+  User,
+}
 
 const route = useRoute()
 const slug = route.params.slug as string
@@ -34,8 +89,6 @@ const socialLinks = computed(() => {
 const themeClass = computed(() => {
   if (microsite.value?.theme === 'dark')
     return 'dark'
-  if (microsite.value?.theme === 'light')
-    return ''
   return ''
 })
 
@@ -93,11 +146,10 @@ function getGridClass(span?: string) {
     case '2x1': return 'col-span-2'
     case '2x2': return 'col-span-2 row-span-2'
     case '1x1': return 'col-span-1'
-    default: return 'col-span-2 sm:col-span-1' // Fallback for existing items
+    default: return 'col-span-2 sm:col-span-1'
   }
 }
 
-// Track view
 onMounted(() => {
   if (microsite.value) {
     $fetch('/api/microsite/track', {
@@ -117,7 +169,6 @@ onMounted(() => {
     :class="themeClass"
     class="relative min-h-screen w-full overflow-x-hidden"
   >
-    <!-- Background Image -->
     <div
       v-if="microsite.bgImage"
       class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
@@ -129,55 +180,44 @@ onMounted(() => {
       />
     </div>
 
-    <!-- Background Color -->
     <div
       v-else-if="microsite.bgColor"
       class="fixed inset-0 z-0 transition-colors duration-300"
       :style="{ backgroundColor: microsite.bgColor }"
     />
 
-    <!-- Content -->
     <div class="relative z-10 mx-auto max-w-2xl px-4 py-12">
       <div class="flex flex-col items-center space-y-6">
-        <!-- Avatar -->
-        <Avatar v-if="microsite.avatar" class="h-24 w-24">
-          <AvatarImage :src="microsite.avatar" :alt="microsite.title" />
-          <AvatarFallback>{{ microsite.title[0] }}</AvatarFallback>
-        </Avatar>
-
-        <!-- Title & Description -->
-        <div class="space-y-2 text-center">
-          <h1
-            class="text-3xl font-bold"
+        <div v-if="microsite.avatarIcon || microsite.avatar" class="flex h-24 w-24 items-center justify-center rounded-full border bg-muted">
+          <Avatar v-if="microsite.avatar" class="h-24 w-24">
+            <AvatarImage :src="microsite.avatar" :alt="microsite.title" />
+            <AvatarFallback>{{ microsite.title[0] }}</AvatarFallback>
+          </Avatar>
+          <component
+            :is="ITEM_ICON_MAP[microsite.avatarIcon]"
+            v-else-if="microsite.avatarIcon && ITEM_ICON_MAP[microsite.avatarIcon]"
+            class="h-12 w-12"
             :style="textStyle"
-          >
+          />
+        </div>
+
+        <div class="space-y-2 text-center">
+          <h1 class="text-3xl font-bold" :style="textStyle">
             {{ microsite.title }}
           </h1>
-          <p
-            v-if="microsite.description"
-            class="text-muted-foreground"
-            :style="textStyle"
-          >
+          <p v-if="microsite.description" class="text-muted-foreground" :style="textStyle">
             {{ microsite.description }}
           </p>
         </div>
 
-        <!-- Social Icons -->
-        <div
-          v-if="socialLinks.length > 0" class="
-            flex flex-wrap justify-center gap-4
-          "
-        >
+        <div v-if="socialLinks.length > 0" class="flex flex-wrap justify-center gap-4">
           <a
             v-for="link in socialLinks"
             :key="link.platform"
             :href="link.url"
             target="_blank"
             rel="noopener noreferrer"
-            class="
-              transition-transform
-              hover:scale-110
-            "
+            class="transition-transform hover:scale-110"
             :style="textStyle"
             :aria-label="link.platform"
           >
@@ -185,17 +225,11 @@ onMounted(() => {
           </a>
         </div>
 
-        <!-- Links & Embeds -->
         <div class="mt-8 grid w-full auto-rows-min grid-cols-2 gap-4">
           <div v-for="item in visibleItems" :key="item.id" :class="getGridClass(item.gridSpan)">
-            <!-- YouTube Embed -->
             <div
               v-if="getEmbedType(item.url) === 'youtube' && getYouTubeId(item.url)"
-              class="
-                aspect-video h-full w-full overflow-hidden rounded-lg shadow-lg
-                transition-transform
-                hover:scale-[1.02]
-              "
+              class="aspect-video h-full w-full overflow-hidden rounded-lg shadow-lg transition-transform hover:scale-[1.02]"
             >
               <iframe
                 :src="`https://www.youtube.com/embed/${getYouTubeId(item.url)}`"
@@ -207,14 +241,9 @@ onMounted(() => {
               />
             </div>
 
-            <!-- Spotify Embed -->
             <div
               v-else-if="getEmbedType(item.url) === 'spotify'"
-              class="
-                h-full w-full overflow-hidden rounded-lg shadow-lg
-                transition-transform
-                hover:scale-[1.02]
-              "
+              class="h-full w-full overflow-hidden rounded-lg shadow-lg transition-transform hover:scale-[1.02]"
             >
               <iframe
                 style="border-radius:12px"
@@ -229,29 +258,26 @@ onMounted(() => {
               />
             </div>
 
-            <!-- Standard Link -->
             <a
               v-else
               :href="item.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="
-                flex h-full w-full items-center rounded-lg border bg-card p-4
-                transition-all
-                hover:scale-105 hover:shadow-lg
-              "
+              class="flex h-full w-full items-center rounded-lg border bg-card p-4 transition-all hover:scale-105 hover:shadow-lg"
             >
+              <component
+                :is="ITEM_ICON_MAP[item.icon]"
+                v-if="item.icon && ITEM_ICON_MAP[item.icon]"
+                class="mr-3 h-5 w-5 shrink-0 text-muted-foreground"
+              />
               <div class="flex w-full items-center justify-between">
-                <span class="font-medium" :style="textStyle">
-                  {{ item.title }}
-                </span>
+                <span class="font-medium" :style="textStyle">{{ item.title }}</span>
                 <ExternalLink class="h-5 w-5 text-muted-foreground" />
               </div>
             </a>
           </div>
         </div>
 
-        <!-- Footer -->
         <div class="mt-12 text-center text-sm text-muted-foreground">
           <p>Powered by Shorty</p>
         </div>

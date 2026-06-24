@@ -4,6 +4,7 @@ export interface Microsite {
   title: string
   description?: string
   avatar?: string
+  avatarIcon?: string
   theme: 'light' | 'dark' | 'auto'
   bgColor?: string
   bgImage?: string
@@ -25,6 +26,7 @@ export interface MicrositeItem {
   id: string
   title: string
   url: string
+  icon?: string
   order: number
   visible: boolean
   gridSpan?: '1x1' | '2x1' | '2x2'

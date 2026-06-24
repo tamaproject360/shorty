@@ -1,11 +1,73 @@
 <script setup lang="ts">
 import type { Microsite, MicrositeItem, SocialLink } from '@/types'
-import { GripVertical, Plus, Trash2 } from 'lucide-vue-next'
+import {
+  BookOpen,
+  Briefcase,
+  Camera,
+  Code,
+  FileText,
+  Gift,
+  Globe,
+  GripVertical,
+  Heart,
+  Home,
+  Image,
+  Link,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Music,
+  Phone,
+  Plus,
+  ShoppingCart,
+  Sparkles,
+  Star,
+  Trash2,
+  User,
+  Video,
+  Wallet,
+} from 'lucide-vue-next'
 import { nanoid } from 'nanoid'
 import { toast } from 'vue-sonner'
 
 const { t } = useI18n()
 const micrositesStore = useDashboardMicrositesStore()
+
+const ITEM_ICONS = [
+  { name: 'Link', icon: Link },
+  { name: 'Globe', icon: Globe },
+  { name: 'ShoppingCart', icon: ShoppingCart },
+  { name: 'BookOpen', icon: BookOpen },
+  { name: 'Code', icon: Code },
+  { name: 'Camera', icon: Camera },
+  { name: 'Music', icon: Music },
+  { name: 'Video', icon: Video },
+  { name: 'Heart', icon: Heart },
+  { name: 'Star', icon: Star },
+  { name: 'MessageCircle', icon: MessageCircle },
+  { name: 'Mail', icon: Mail },
+  { name: 'MapPin', icon: MapPin },
+  { name: 'Phone', icon: Phone },
+  { name: 'FileText', icon: FileText },
+  { name: 'Image', icon: Image },
+  { name: 'Gift', icon: Gift },
+  { name: 'Briefcase', icon: Briefcase },
+  { name: 'Sparkles', icon: Sparkles },
+  { name: 'Wallet', icon: Wallet },
+  { name: 'Home', icon: Home },
+  { name: 'User', icon: User },
+]
+
+const AVATAR_ICONS = [
+  { name: 'User', icon: User },
+  { name: 'Star', icon: Star },
+  { name: 'Heart', icon: Heart },
+  { name: 'Sparkles', icon: Sparkles },
+  { name: 'Briefcase', icon: Briefcase },
+  { name: 'Globe', icon: Globe },
+  { name: 'Camera', icon: Camera },
+  { name: 'Code', icon: Code },
+]
 
 const open = computed({
   get: () => micrositesStore.showMicrositeEditor,
@@ -22,6 +84,7 @@ const form = reactive({
   title: '',
   description: '',
   avatar: '',
+  avatarIcon: '' as string,
   theme: 'auto' as 'light' | 'dark' | 'auto',
   bgColor: '',
   bgImage: '',
@@ -39,6 +102,8 @@ watch(() => micrositesStore.editingMicrosite, (microsite) => {
     Object.assign(form, microsite)
     if (!form.socialLinks)
       form.socialLinks = []
+    if (!form.avatarIcon)
+      form.avatarIcon = ''
   }
   else {
     resetForm()
@@ -50,6 +115,7 @@ function resetForm() {
   form.title = ''
   form.description = ''
   form.avatar = ''
+  form.avatarIcon = ''
   form.theme = 'auto'
   form.bgColor = ''
   form.bgImage = ''
@@ -65,6 +131,7 @@ function addItem() {
     id: nanoid(),
     title: '',
     url: '',
+    icon: 'Link',
     order: form.items.length,
     visible: true,
     gridSpan: '1x1',
@@ -73,7 +140,6 @@ function addItem() {
 
 function removeItem(index: number) {
   form.items.splice(index, 1)
-  // Reorder
   form.items.forEach((item, idx) => {
     item.order = idx
   })
@@ -94,7 +160,7 @@ async function handleSubmit() {
 
   try {
     if (isEditing.value) {
-      const updated = await $fetch('/api/microsite/update', {
+      const updated = await useAPI('/api/microsite/update', {
         method: 'PUT',
         body: form,
       })
@@ -102,7 +168,7 @@ async function handleSubmit() {
       micrositesStore.notifyMicrositeUpdate(updated as Microsite, 'update')
     }
     else {
-      const created = await $fetch('/api/microsite/create', {
+      const created = await useAPI('/api/microsite/create', {
         method: 'POST',
         body: form,
       })
@@ -154,8 +220,19 @@ async function handleSubmit() {
       </div>
 
       <div class="space-y-2">
-        <Label for="avatar">Avatar URL</Label>
-        <Input id="avatar" v-model="form.avatar" placeholder="https://..." />
+        <Label>Avatar Icon</Label>
+        <div class="grid grid-cols-8 gap-2">
+          <button
+            v-for="opt in AVATAR_ICONS"
+            :key="opt.name"
+            type="button"
+            class="flex size-10 items-center justify-center rounded-lg border transition-colors"
+            :class="form.avatarIcon === opt.name ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/50'"
+            @click="form.avatarIcon = form.avatarIcon === opt.name ? '' : opt.name"
+          >
+            <component :is="opt.icon" class="size-5" />
+          </button>
+        </div>
       </div>
 
       <div class="space-y-2">
@@ -195,9 +272,8 @@ async function handleSubmit() {
         </div>
 
         <div
-          v-if="form.items.length === 0" class="
-            py-8 text-center text-muted-foreground
-          "
+          v-if="form.items.length === 0"
+          class="py-8 text-center text-muted-foreground"
         >
           No links yet. Add your first link!
         </div>
@@ -213,18 +289,45 @@ async function handleSubmit() {
                 <GripVertical class="h-5 w-5 text-muted-foreground" />
               </div>
               <div class="flex-1 space-y-3">
-                <Input
-                  v-model="item.title"
-                  placeholder="Link title"
-                />
                 <div class="flex gap-2">
                   <Input
-                    v-model="item.url"
-                    placeholder="https://..."
+                    v-model="item.title"
+                    placeholder="Link title"
                     class="flex-1"
                   />
+                </div>
+                <Input
+                  v-model="item.url"
+                  placeholder="https://..."
+                />
+                <div class="flex gap-2">
+                  <Popover>
+                    <PopoverTrigger as-child>
+                      <Button variant="outline" class="w-full justify-start gap-2">
+                        <component
+                          :is="ITEM_ICONS.find(i => i.name === (item.icon || 'Link'))?.icon || Link"
+                          class="size-4"
+                        />
+                        {{ item.icon || 'Link' }}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent class="w-72 p-2">
+                      <div class="grid grid-cols-6 gap-1">
+                        <button
+                          v-for="opt in ITEM_ICONS"
+                          :key="opt.name"
+                          type="button"
+                          class="flex size-9 items-center justify-center rounded-md transition-colors"
+                          :class="(item.icon || 'Link') === opt.name ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'"
+                          @click="item.icon = opt.name"
+                        >
+                          <component :is="opt.icon" class="size-4" />
+                        </button>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   <Select v-model="item.gridSpan">
-                    <SelectTrigger class="w-[120px]">
+                    <SelectTrigger class="w-[100px]">
                       <SelectValue placeholder="Size" />
                     </SelectTrigger>
                     <SelectContent>
@@ -239,23 +342,6 @@ async function handleSubmit() {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
-                <div class="space-y-2">
-                  <Label>Background</Label>
-                  <div class="grid gap-2">
-                    <Input v-model="form.bgColor" placeholder="#Color (e.g. #000000)" />
-                    <Input v-model="form.bgImage" placeholder="Image URL (https://...)" />
-                    <div v-if="form.bgImage" class="flex items-center gap-2">
-                      <Label class="w-24 text-xs">Overlay: {{ Math.round((form.bgOverlayOpacity || 0.2) * 100) }}%</Label>
-                      <Slider
-                        :model-value="[form.bgOverlayOpacity || 0.2]"
-                        :max="1"
-                        :step="0.1"
-                        class="flex-1"
-                        @update:model-value="(v) => form.bgOverlayOpacity = v[0]"
-                      />
-                    </div>
-                  </div>
                 </div>
 
                 <div class="flex items-center space-x-2">
