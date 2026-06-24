@@ -1,6 +1,9 @@
 import { QuerySchema } from '@@/schemas/query'
 import { getDb } from '../../utils/db'
-import { date2unix } from '../../utils/time'
+
+function date2unix(date: Date): number {
+  return Math.floor(date.getTime() / 1000)
+}
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, QuerySchema.parse)
