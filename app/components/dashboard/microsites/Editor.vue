@@ -104,6 +104,18 @@ watch(() => micrositesStore.editingMicrosite, (microsite) => {
       form.socialLinks = []
     if (!form.avatarIcon)
       form.avatarIcon = ''
+    if (!form.bgColor)
+      form.bgColor = ''
+    if (!form.bgImage)
+      form.bgImage = ''
+    if (!form.textColor)
+      form.textColor = ''
+    if (!form.description)
+      form.description = ''
+    if (!form.avatar)
+      form.avatar = ''
+    if (form.bgOverlayOpacity == null)
+      form.bgOverlayOpacity = 0.2
   }
   else {
     resetForm()
@@ -146,12 +158,12 @@ function removeItem(index: number) {
 }
 
 async function handleSubmit() {
-  if (!form.title.trim()) {
+  if (!form.title || !form.title.trim()) {
     toast.error('Title is required')
     return
   }
 
-  if (form.items.some(item => !item.title.trim() || !item.url.trim())) {
+  if (form.items.some(item => !item.title || !item.title.trim() || !item.url || !item.url.trim())) {
     toast.error('All items must have a title and URL')
     return
   }
@@ -162,7 +174,7 @@ async function handleSubmit() {
     if (isEditing.value) {
       const updated = await useAPI('/api/microsite/update', {
         method: 'PUT',
-        body: form,
+        body: { ...form },
       })
       toast.success('Microsite updated successfully')
       micrositesStore.notifyMicrositeUpdate(updated as Microsite, 'update')
@@ -170,7 +182,7 @@ async function handleSubmit() {
     else {
       const created = await useAPI('/api/microsite/create', {
         method: 'POST',
-        body: form,
+        body: { ...form },
       })
       toast.success('Microsite created successfully')
       micrositesStore.notifyMicrositeUpdate(created as Microsite, 'create')
@@ -256,7 +268,7 @@ async function handleSubmit() {
       </div>
 
       <div class="flex items-center space-x-2">
-        <Switch id="published" v-model:checked="form.published" />
+        <Switch id="published" v-model="form.published" />
         <Label for="published">Published</Label>
       </div>
 
@@ -345,7 +357,7 @@ async function handleSubmit() {
                 </div>
 
                 <div class="flex items-center space-x-2">
-                  <Switch v-model:checked="item.visible" />
+                  <Switch v-model="item.visible" />
                   <span class="text-sm text-muted-foreground">Visible</span>
                 </div>
               </div>

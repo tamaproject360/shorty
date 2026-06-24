@@ -57,3 +57,39 @@ export function getClickStats(linkId: string): {
 
   return { visits: visits.count, visitors: visitors.count, referrers: referrers.count }
 }
+
+interface MicrositeEvent {
+  id: string
+  type: string
+  targetId: string
+  timestamp: number
+  userAgent: string | undefined
+  ip: string | undefined
+  country: string
+  city: string
+  referrer: string | undefined
+  device: string
+  browser: string | undefined
+  os: string | undefined
+}
+
+export function trackEvent(event: MicrositeEvent): void {
+  const db = getDb()
+  db.prepare(`
+    INSERT INTO microsite_events (id, type, target_id, timestamp, user_agent, ip, country, city, referrer, device, browser, os)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    event.id,
+    event.type,
+    event.targetId,
+    event.timestamp,
+    event.userAgent || null,
+    event.ip || null,
+    event.country || null,
+    event.city || null,
+    event.referrer || null,
+    event.device || null,
+    event.browser || null,
+    event.os || null,
+  )
+}

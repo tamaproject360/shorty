@@ -13,11 +13,13 @@ export function normalizeMicrositeSlug(event: H3Event, slug: string): string {
 export async function putMicrosite(_event: H3Event, microsite: Microsite): Promise<void> {
   const db = getDb()
   db.prepare(`
-    INSERT INTO microsites (id, slug, title, description, avatar, theme, social_links, links, bg_image, bg_overlay_opacity, text_color, published, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO microsites (id, slug, title, description, avatar, avatar_icon, theme, social_links, items, bg_color, bg_image, bg_overlay_opacity, text_color, published, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(slug) DO UPDATE SET
       title = excluded.title, description = excluded.description, avatar = excluded.avatar,
-      theme = excluded.theme, social_links = excluded.social_links, links = excluded.links,
+      avatar_icon = excluded.avatar_icon,
+      theme = excluded.theme, social_links = excluded.social_links, items = excluded.items,
+      bg_color = excluded.bg_color,
       bg_image = excluded.bg_image, bg_overlay_opacity = excluded.bg_overlay_opacity,
       text_color = excluded.text_color, published = excluded.published, updated_at = unixepoch()
   `).run(
@@ -26,9 +28,11 @@ export async function putMicrosite(_event: H3Event, microsite: Microsite): Promi
     microsite.title,
     microsite.description || null,
     microsite.avatar || null,
+    microsite.avatarIcon || null,
     microsite.theme || 'auto',
     JSON.stringify(microsite.socialLinks || []),
-    JSON.stringify(microsite.links || []),
+    JSON.stringify(microsite.items || []),
+    microsite.bgColor || null,
     microsite.bgImage || null,
     microsite.bgOverlayOpacity ?? 0.5,
     microsite.textColor || null,
@@ -88,14 +92,16 @@ function rowToMicrosite(row: Record<string, unknown>): Microsite {
     id: row.id as string,
     slug: row.slug as string,
     title: row.title as string,
-    description: row.description as string,
-    avatar: row.avatar as string,
+    description: (row.description as string) ?? undefined,
+    avatar: (row.avatar as string) ?? undefined,
+    avatarIcon: (row.avatar_icon as string) ?? undefined,
     theme: (row.theme as 'light' | 'dark' | 'auto') || 'auto',
     socialLinks: row.social_links ? JSON.parse(row.social_links as string) : [],
-    links: row.links ? JSON.parse(row.links as string) : [],
-    bgImage: row.bg_image as string,
-    bgOverlayOpacity: row.bg_overlay_opacity as number,
-    textColor: row.text_color as string,
+    items: row.items ? JSON.parse(row.items as string) : [],
+    bgColor: (row.bg_color as string) ?? undefined,
+    bgImage: (row.bg_image as string) ?? undefined,
+    bgOverlayOpacity: (row.bg_overlay_opacity as number) ?? undefined,
+    textColor: (row.text_color as string) ?? undefined,
     published: !!(row.published),
     createdAt: row.created_at as number,
     updatedAt: row.updated_at as number,

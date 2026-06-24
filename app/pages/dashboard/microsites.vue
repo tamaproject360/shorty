@@ -9,17 +9,28 @@ definePageMeta({
 const { t } = useI18n()
 const micrositesStore = useDashboardMicrositesStore()
 
-const { data: micrositesData, refresh, pending } = await useFetch('/api/microsite/list', {
-  query: { limit: 100 },
-  default: () => ({ microsites: [], list_complete: true }),
-})
+const microsites = ref<(Microsite | null)[]>([])
+const pending = ref(true)
 
-const microsites = computed(() => {
-  return (micrositesData.value?.microsites || []).filter((m): m is Microsite => m !== null)
-})
+async function loadMicrosites() {
+  try {
+    const data = await useAPI<{ microsites: (Microsite | null)[], list_complete: boolean }>('/api/microsite/list', {
+      query: { limit: 100 },
+    })
+    microsites.value = data.microsites || []
+  }
+  catch (error) {
+    console.error('Failed to load microsites:', error)
+  }
+  finally {
+    pending.value = false
+  }
+}
+
+onMounted(loadMicrosites)
 
 micrositesStore.onMicrositeUpdate(() => {
-  refresh()
+  loadMicrosites()
 })
 </script>
 
@@ -47,7 +58,7 @@ micrositesStore.onMicrositeUpdate(() => {
     </div>
 
     <div
-      v-else-if="microsites.length === 0" class="
+      v-else-if="microsites.filter(m => m !== null).length === 0" class="
         flex flex-col items-center justify-center py-12 text-center
       "
     >
@@ -68,9 +79,9 @@ micrositesStore.onMicrositeUpdate(() => {
       "
     >
       <DashboardMicrositesMicrositeCard
-        v-for="microsite in microsites"
-        :key="microsite!.id"
-        :microsite="microsite!"
+        v-for="microsite in microsites.filter(m => m !== null)"
+        :key="microsite.id"
+        :microsite="microsite"
       />
     </div>
 

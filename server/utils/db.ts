@@ -42,9 +42,11 @@ export function getDb(): Database.Database {
       title TEXT NOT NULL,
       description TEXT,
       avatar TEXT,
+      avatar_icon TEXT,
       theme TEXT NOT NULL DEFAULT 'auto',
       social_links TEXT DEFAULT '[]',
-      links TEXT DEFAULT '[]',
+      items TEXT DEFAULT '[]',
+      bg_color TEXT,
       bg_image TEXT,
       bg_overlay_opacity REAL DEFAULT 0.5,
       text_color TEXT,
@@ -82,7 +84,26 @@ export function getDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS idx_clicks_slug ON clicks(slug);
     CREATE INDEX IF NOT EXISTS idx_clicks_created ON clicks(created_at);
     CREATE INDEX IF NOT EXISTS idx_clicks_country ON clicks(country);
+
+    CREATE TABLE IF NOT EXISTS microsite_events (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL DEFAULT 'view',
+      target_id TEXT NOT NULL,
+      timestamp INTEGER NOT NULL,
+      user_agent TEXT,
+      ip TEXT,
+      country TEXT,
+      city TEXT,
+      referrer TEXT,
+      device TEXT,
+      browser TEXT,
+      os TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_microsite_events_target ON microsite_events(target_id);
+    CREATE INDEX IF NOT EXISTS idx_microsite_events_timestamp ON microsite_events(timestamp);
   `)
+
+  migrateMicrositesTable(_db)
 
   return _db
 }
@@ -91,5 +112,23 @@ export function closeDb(): void {
   if (_db) {
     _db.close()
     _db = null
+  }
+}
+
+function migrateMicrositesTable(db: Database.Database): void {
+  const columns = db.prepare('PRAGMA table_info(\'microsites\')').all() as { name: string }[]
+
+  const hasColumn = (name: string) => columns.some(c => c.name === name)
+
+  if (hasColumn('links') && !hasColumn('items')) {
+    db.exec('ALTER TABLE microsites RENAME COLUMN links TO items')
+  }
+
+  if (!hasColumn('avatar_icon')) {
+    db.exec('ALTER TABLE microsites ADD COLUMN avatar_icon TEXT')
+  }
+
+  if (!hasColumn('bg_color')) {
+    db.exec('ALTER TABLE microsites ADD COLUMN bg_color TEXT')
   }
 }

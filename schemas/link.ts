@@ -21,8 +21,8 @@ export const LinkSchema = z.object({
   title: z.string().trim().max(256).optional(),
   description: z.string().trim().max(2048).optional(),
   image: z.string().trim().max(128).optional(),
-  apple: z.string().trim().url().max(2048).optional(),
-  google: z.string().trim().url().max(2048).optional(),
+  apple: z.preprocess(val => val === '' ? undefined : val, z.string().trim().url().max(2048).optional()),
+  google: z.preprocess(val => val === '' ? undefined : val, z.string().trim().url().max(2048).optional()),
 })
 
 export type Link = z.infer<typeof LinkSchema>
