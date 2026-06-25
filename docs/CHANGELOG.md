@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-06-25 - Microsite Editor Live Preview
+
+### UI
+
+- Added a Linktree-style live phone preview to the microsite create/edit modal on large screens.
+- Preview now reflects title, slug, description, avatar/icon, theme, background, text color, published state, and visible microsite items while editing.
+- Aligned `MicrositeItem` frontend typing with the existing schema-supported `type` field used by link and separator items.
+
+---
+
 ## 2026-06-25 - Link Editor Modal Width
 
 ### UI

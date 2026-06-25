@@ -24,6 +24,7 @@ export interface SocialLink {
 
 export interface MicrositeItem {
   id: string
+  type?: 'link' | 'separator'
   title: string
   url: string
   icon?: string

@@ -4,6 +4,15 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.2 Microsite Editor Live Preview — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Added a live Linktree-style phone preview to the microsite create/edit modal so users can design with immediate visual feedback.
+- **Key Changes:**
+  - Added desktop live preview panel for title, slug, avatar, theme, background, and item list
+  - Preserved mobile editing layout by hiding the preview on smaller screens
+  - Updated `MicrositeItem` typing to include link/separator item type used by the editor and schema
+
 ### 0.1 Link Editor Modal Width — _Completed Jun 2026_
 
 - **Status:** Completed
