@@ -73,6 +73,8 @@ pnpm vitest -t "returns 200"             # Pattern match
 docker compose up -d      # Docker deployment
 ```
 
+For any file search or grep in the current git-indexed directory, use mcp fff tools.
+
 ## Code Style
 
 Uses `@antfu/eslint-config`. Run `pnpm lint:fix` before committing.
