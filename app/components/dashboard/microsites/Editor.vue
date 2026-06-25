@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Microsite, MicrositeItem, SocialLink } from '@/types'
 import {
+  AtSign,
   BookOpen,
   Briefcase,
   Camera,
   Code,
   ExternalLink,
+  Facebook,
   FileText,
   Gift,
   Globe,
@@ -13,6 +15,7 @@ import {
   Heart,
   Home,
   Image,
+  Instagram,
   Link,
   Mail,
   MapPin,
@@ -20,10 +23,13 @@ import {
   Music,
   Phone,
   Plus,
+  Send,
   ShoppingCart,
   Sparkles,
   Star,
+  Timer,
   Trash2,
+  Type,
   User,
   Video,
   Wallet,
@@ -33,6 +39,48 @@ import { toast } from 'vue-sonner'
 
 const { t } = useI18n()
 const micrositesStore = useDashboardMicrositesStore()
+
+type MicrositeItemType = NonNullable<MicrositeItem['type']>
+
+interface ComponentOption {
+  type: MicrositeItemType
+  title: string
+  description: string
+  icon: Component
+  badge?: string
+}
+
+const COMPONENT_OPTIONS: ComponentOption[] = [
+  { type: 'profile', title: 'Profile', description: 'Komponen profil yang memuat gambar, teks, dan sub teks', icon: User },
+  { type: 'link', title: 'Link', description: 'Tautan standar untuk website atau halaman penting', icon: Link },
+  { type: 'separator', title: 'Separator', description: 'Pembatas antar section di halaman microsite', icon: Type },
+  { type: 'text', title: 'Text', description: 'Komponen teks pendek untuk pengumuman atau bio', icon: FileText },
+  { type: 'image', title: 'Image', description: 'Komponen gambar untuk banner atau visual promosi', icon: Image, badge: 'Baru' },
+  { type: 'embed', title: 'Embed', description: 'Media embed seperti YouTube atau Spotify', icon: Video },
+  { type: 'whatsapp', title: 'WhatsApp', description: 'Tautan chat WhatsApp', icon: MessageCircle },
+  { type: 'email', title: 'Email', description: 'Tautan untuk mengirim email', icon: Mail },
+  { type: 'phone', title: 'Phone', description: 'Aksi kontak telepon', icon: Phone },
+  { type: 'instagram', title: 'Instagram', description: 'Tautan menuju Instagram', icon: Instagram },
+  { type: 'facebook', title: 'Facebook', description: 'Tautan menuju Facebook', icon: Facebook },
+  { type: 'tiktok', title: 'TikTok', description: 'Tautan menuju TikTok', icon: Music },
+  { type: 'telegram', title: 'Telegram', description: 'Tautan menuju Telegram', icon: Send },
+  { type: 'countdown', title: 'Countdown', description: 'Waktu hitung mundur untuk event atau launch', icon: Timer, badge: 'Baru' },
+]
+
+const URL_REQUIRED_TYPES = new Set<MicrositeItemType>([
+  'link',
+  'image',
+  'embed',
+  'whatsapp',
+  'email',
+  'phone',
+  'instagram',
+  'facebook',
+  'tiktok',
+  'telegram',
+])
+
+const DESCRIPTION_TYPES = new Set<MicrositeItemType>(['profile', 'text'])
 
 const ITEM_ICONS = [
   { name: 'Link', icon: Link },
@@ -99,6 +147,16 @@ const form = reactive({
 const submitting = ref(false)
 const dragIndex = ref<number | null>(null)
 const dropOverIndex = ref<number | null>(null)
+const componentPickerOpen = ref(false)
+const componentSearch = ref('')
+
+const filteredComponentOptions = computed(() => {
+  const query = componentSearch.value.trim().toLowerCase()
+  if (!query)
+    return COMPONENT_OPTIONS
+
+  return COMPONENT_OPTIONS.filter(option => `${option.title} ${option.description}`.toLowerCase().includes(query))
+})
 
 const previewVisibleItems = computed(() => {
   return form.items
@@ -137,8 +195,45 @@ function getItemIcon(name?: string) {
   return ITEM_ICONS.find(icon => icon.name === name)?.icon || Link
 }
 
+function getComponentIcon(type?: MicrositeItemType) {
+  return COMPONENT_OPTIONS.find(option => option.type === type)?.icon || Link
+}
+
 function getAvatarIcon(name?: string) {
   return AVATAR_ICONS.find(icon => icon.name === name)?.icon || User
+}
+
+function getDefaultItem(type: MicrositeItemType): MicrositeItem {
+  const option = COMPONENT_OPTIONS.find(component => component.type === type)
+  const title = option?.title || 'Link'
+
+  const defaults: Partial<Record<MicrositeItemType, Partial<MicrositeItem>>> = {
+    profile: { title: form.title || 'Profile', description: form.description || 'Short profile description', icon: 'User' },
+    link: { title: 'New Link', url: 'https://example.com', icon: 'Link' },
+    separator: { title: 'Section title' },
+    text: { title: 'Text block', description: 'Write a short message for your visitors.' },
+    image: { title: 'Image', url: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643', icon: 'Image' },
+    embed: { title: 'Embed', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', icon: 'Video' },
+    whatsapp: { title: 'Chat on WhatsApp', url: 'https://wa.me/6281234567890' },
+    email: { title: 'Send Email', url: 'mailto:hello@example.com' },
+    phone: { title: 'Call Me', url: 'tel:+6281234567890' },
+    instagram: { title: 'Instagram', url: 'https://instagram.com/username' },
+    facebook: { title: 'Facebook', url: 'https://facebook.com/username' },
+    tiktok: { title: 'TikTok', url: 'https://tiktok.com/@username' },
+    telegram: { title: 'Telegram', url: 'https://t.me/username' },
+    countdown: { title: 'Countdown', targetDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16) },
+  }
+
+  return {
+    id: nanoid(),
+    type,
+    title,
+    url: '',
+    order: form.items.length,
+    visible: true,
+    gridSpan: '1x1',
+    ...defaults[type],
+  }
 }
 
 function onDragStart(event: DragEvent, index: number) {
@@ -223,29 +318,10 @@ function resetForm() {
   form.published = false
 }
 
-function addItem() {
-  form.items.push({
-    id: nanoid(),
-    type: 'link',
-    title: '',
-    url: '',
-    icon: 'Link',
-    order: form.items.length,
-    visible: true,
-    gridSpan: '1x1',
-  })
-}
-
-function addSeparator() {
-  form.items.push({
-    id: nanoid(),
-    type: 'separator',
-    title: '',
-    url: '',
-    order: form.items.length,
-    visible: true,
-    gridSpan: '1x1',
-  })
+function addComponent(type: MicrositeItemType) {
+  form.items.push(getDefaultItem(type))
+  componentPickerOpen.value = false
+  componentSearch.value = ''
 }
 
 function removeItem(index: number) {
@@ -262,11 +338,16 @@ async function handleSubmit() {
   }
 
   if (form.items.some((item) => {
-    if (item.type === 'separator')
+    const type = item.type || 'link'
+    if (type === 'separator')
       return !item.title || !item.title.trim()
-    return !item.title || !item.title.trim() || !item.url || !item.url.trim()
+    if (URL_REQUIRED_TYPES.has(type))
+      return !item.title || !item.title.trim() || !item.url || !item.url.trim()
+    if (type === 'countdown')
+      return !item.title || !item.title.trim() || !item.targetDate || !item.targetDate.trim()
+    return !item.title || !item.title.trim()
   })) {
-    toast.error('All links must have a title and URL')
+    toast.error('Please complete required fields for all components')
     return
   }
 
@@ -383,23 +464,66 @@ async function handleSubmit() {
         <div class="space-y-4 md:border-l md:pl-6">
           <div class="flex items-center justify-between">
             <Label>Items</Label>
-            <div class="flex gap-2">
-              <Button type="button" variant="outline" size="sm" @click="addSeparator">
-                <Plus class="mr-2 h-4 w-4" />
-                Add Separator
-              </Button>
-              <Button type="button" variant="outline" size="sm" @click="addItem">
-                <Plus class="mr-2 h-4 w-4" />
-                Add Link
-              </Button>
-            </div>
+            <ResponsiveModal
+              v-model:open="componentPickerOpen"
+              title="Tambah komponen baru"
+              description="Pilih komponen yang ingin ditambahkan ke microsite."
+              content-class="md:!max-w-3xl"
+            >
+              <template #trigger>
+                <Button type="button" variant="outline" size="sm">
+                  <Plus class="mr-2 h-4 w-4" />
+                  Add Component
+                </Button>
+              </template>
+
+              <div class="space-y-4 p-1">
+                <div class="relative">
+                  <Input
+                    v-model="componentSearch"
+                    placeholder="Search component"
+                    class="pr-10"
+                  />
+                  <AtSign class="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                </div>
+
+                <div class="grid max-h-[60vh] gap-2 overflow-y-auto pr-1 md:grid-cols-2">
+                  <button
+                    v-for="component in filteredComponentOptions"
+                    :key="component.type"
+                    type="button"
+                    class="flex gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/60 hover:bg-muted/50"
+                    @click="addComponent(component.type)"
+                  >
+                    <component :is="component.icon" class="mt-1 size-5 shrink-0 text-muted-foreground" />
+                    <span class="min-w-0 flex-1">
+                      <span class="flex items-center gap-2 font-medium">
+                        {{ component.title }}
+                        <Badge v-if="component.badge" variant="secondary" class="text-[10px]">
+                          {{ component.badge }}
+                        </Badge>
+                      </span>
+                      <span class="mt-1 block text-xs text-muted-foreground">
+                        {{ component.description }}
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <template #footer>
+                <Button type="button" variant="secondary" @click="componentPickerOpen = false">
+                  Close
+                </Button>
+              </template>
+            </ResponsiveModal>
           </div>
 
           <div
             v-if="form.items.length === 0"
             class="py-8 text-center text-muted-foreground"
           >
-            No items yet. Add links and separators!
+            No items yet. Add components to build your microsite!
           </div>
 
           <div v-else class="max-h-[60vh] space-y-3 overflow-y-auto pr-1">
@@ -417,51 +541,49 @@ async function handleSubmit() {
               @drop.prevent="onDrop(index)"
               @dragend="onDragEnd()"
             >
-              <div v-if="item.type === 'separator'" class="flex items-center gap-3">
+              <div class="flex items-start gap-3">
                 <div
-                  class="cursor-grab active:cursor-grabbing pt-1"
+                  class="cursor-grab pt-2 active:cursor-grabbing"
                   draggable="true"
                   @dragstart="onDragStart($event, index)"
                 >
                   <GripVertical class="h-5 w-5 text-muted-foreground" />
                 </div>
-                <span class="text-xs font-medium text-muted-foreground whitespace-nowrap">Separator</span>
-                <Input
-                  v-model="item.title"
-                  placeholder="Section heading (e.g. Social Media)"
-                  class="flex-1"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  @click="removeItem(index)"
-                >
-                  <Trash2 class="h-4 w-4" />
-                </Button>
-              </div>
 
-              <div v-else class="flex items-start gap-3">
-                <div
-                  class="cursor-grab active:cursor-grabbing pt-2"
-                  draggable="true"
-                  @dragstart="onDragStart($event, index)"
-                >
-                  <GripVertical class="h-5 w-5 text-muted-foreground" />
-                </div>
-                <div class="flex-1 space-y-3">
-                  <div class="flex gap-2">
-                    <Input
-                      v-model="item.title"
-                      placeholder="Link title"
-                      class="flex-1"
-                    />
+                <div class="min-w-0 flex-1 space-y-3">
+                  <div class="flex items-center gap-2">
+                    <component :is="getComponentIcon(item.type || 'link')" class="size-4 text-muted-foreground" />
+                    <span class="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      {{ COMPONENT_OPTIONS.find(component => component.type === (item.type || 'link'))?.title || 'Link' }}
+                    </span>
                   </div>
+
                   <Input
-                    v-model="item.url"
-                    placeholder="https://..."
+                    v-model="item.title"
+                    :placeholder="item.type === 'separator' ? 'Section heading' : 'Title'"
                   />
-                  <div class="flex gap-2">
+
+                  <Textarea
+                    v-if="DESCRIPTION_TYPES.has(item.type || 'link')"
+                    v-model="item.description"
+                    placeholder="Description"
+                    rows="3"
+                    class="resize-none"
+                  />
+
+                  <Input
+                    v-if="URL_REQUIRED_TYPES.has(item.type || 'link')"
+                    v-model="item.url"
+                    :placeholder="item.type === 'image' ? 'Image URL' : item.type === 'email' ? 'mailto:hello@example.com' : item.type === 'phone' ? 'tel:+6281234567890' : 'https://...'"
+                  />
+
+                  <Input
+                    v-if="item.type === 'countdown'"
+                    v-model="item.targetDate"
+                    type="datetime-local"
+                  />
+
+                  <div v-if="!['separator', 'text', 'profile', 'image', 'embed', 'countdown'].includes(item.type || 'link')" class="flex gap-2">
                     <Popover>
                       <PopoverTrigger as-child>
                         <Button variant="outline" class="w-full justify-start gap-2">
@@ -510,6 +632,7 @@ async function handleSubmit() {
                     <span class="text-sm text-muted-foreground">Visible</span>
                   </div>
                 </div>
+
                 <Button
                   type="button"
                   variant="ghost"
@@ -588,9 +711,45 @@ async function handleSubmit() {
                       </p>
                     </div>
 
+                    <div v-else-if="item.type === 'text'" class="rounded-2xl border bg-background/80 p-3 text-sm backdrop-blur" :style="previewTextStyle">
+                      <p class="font-medium">
+                        {{ item.title || 'Text block' }}
+                      </p>
+                      <p v-if="item.description" class="mt-1 text-muted-foreground" :style="previewTextStyle">
+                        {{ item.description }}
+                      </p>
+                    </div>
+
+                    <div v-else-if="item.type === 'profile'" class="rounded-2xl border bg-background/90 p-4 text-center shadow-sm backdrop-blur">
+                      <component :is="getComponentIcon('profile')" class="mx-auto size-8 text-muted-foreground" />
+                      <p class="mt-2 font-semibold" :style="previewTextStyle">
+                        {{ item.title || 'Profile' }}
+                      </p>
+                      <p v-if="item.description" class="mt-1 text-xs text-muted-foreground" :style="previewTextStyle">
+                        {{ item.description }}
+                      </p>
+                    </div>
+
+                    <img
+                      v-else-if="item.type === 'image' && item.url"
+                      :src="item.url"
+                      :alt="item.title"
+                      class="max-h-44 w-full rounded-2xl border object-cover shadow-sm"
+                    >
+
+                    <div v-else-if="item.type === 'countdown'" class="rounded-2xl border bg-background/90 p-4 text-center shadow-sm backdrop-blur">
+                      <Timer class="mx-auto size-5 text-muted-foreground" />
+                      <p class="mt-2 font-semibold" :style="previewTextStyle">
+                        {{ item.title || 'Countdown' }}
+                      </p>
+                      <p class="mt-1 text-xs text-muted-foreground" :style="previewTextStyle">
+                        {{ item.targetDate || 'Set date and time' }}
+                      </p>
+                    </div>
+
                     <div v-else class="flex items-center gap-3 rounded-2xl border bg-background/90 p-3 shadow-sm backdrop-blur">
                       <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted">
-                        <component :is="getItemIcon(item.icon)" class="size-4 text-muted-foreground" />
+                        <component :is="getComponentIcon(item.type || 'link')" class="size-4 text-muted-foreground" />
                       </div>
                       <span class="min-w-0 flex-1 truncate text-sm font-medium" :style="previewTextStyle">
                         {{ item.title || 'Link title' }}

@@ -4,6 +4,16 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.3 Microsite Rich Components — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Expanded microsite items beyond links and separators with a richer component picker for link-in-bio pages.
+- **Key Changes:**
+  - Added searchable component picker in the microsite editor
+  - Added Link, Separator, Text, Profile, Image, Embed, WhatsApp, Email, Phone, Instagram, Facebook, TikTok, Telegram, and Countdown item types
+  - Updated live preview and public microsite rendering for the new item types
+  - Added schema test coverage for supported item types and Maps rejection
+
 ### 0.2 Microsite Editor Live Preview — _Completed Jun 2026_
 
 - **Status:** Completed

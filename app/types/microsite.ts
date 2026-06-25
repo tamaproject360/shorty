@@ -24,9 +24,11 @@ export interface SocialLink {
 
 export interface MicrositeItem {
   id: string
-  type?: 'link' | 'separator'
+  type?: 'link' | 'separator' | 'text' | 'profile' | 'image' | 'embed' | 'whatsapp' | 'email' | 'phone' | 'instagram' | 'facebook' | 'tiktok' | 'telegram' | 'countdown'
   title: string
   url: string
+  description?: string
+  targetDate?: string
   icon?: string
   order: number
   visible: boolean

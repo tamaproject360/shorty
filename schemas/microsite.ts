@@ -14,9 +14,33 @@ export const SocialLinkSchema = z.object({
 
 export const MicrositeItemSchema = z.object({
   id: z.string().trim().max(26),
-  type: z.enum(['link', 'separator']).default('link'),
+  type: z.enum([
+    'link',
+    'separator',
+    'text',
+    'profile',
+    'image',
+    'embed',
+    'whatsapp',
+    'email',
+    'phone',
+    'instagram',
+    'facebook',
+    'tiktok',
+    'telegram',
+    'countdown',
+  ]).default('link'),
   title: z.string().trim().min(1).max(256),
-  url: z.preprocess(v => v === '' ? undefined : v, z.string().trim().url().max(2048).optional()),
+  url: z.preprocess(
+    v => v === '' ? undefined : v,
+    z.string()
+      .trim()
+      .max(2048)
+      .refine(value => /^(?:https?:\/\/|mailto:|tel:)/i.test(value), 'Invalid URL protocol')
+      .optional(),
+  ),
+  description: z.string().trim().max(2048).optional(),
+  targetDate: z.string().trim().max(64).optional(),
   icon: z.string().trim().max(64).optional(),
   order: z.number().int().min(0).default(0),
   visible: z.boolean().default(true),

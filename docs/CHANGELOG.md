@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-06-25 - Microsite Rich Components
+
+### UI
+
+- Added a searchable "Tambah komponen baru" picker to the microsite editor.
+- Added 14 supported item types: Link, Separator, Text, Profile, Image, Embed, WhatsApp, Email, Phone, Instagram, Facebook, TikTok, Telegram, and Countdown.
+- Updated the editor live preview and public microsite renderer to display the new component types.
+
+### Validation
+
+- Extended microsite item schema/type definitions for the new component types and explicitly kept Maps unsupported.
+- Added schema coverage for supported component types and Maps rejection.
+
+---
+
 ## 2026-06-25 - Microsite Editor Live Preview
 
 ### UI
