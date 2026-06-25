@@ -4,6 +4,15 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.4 Microsite Link Import — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Added a bulk import flow so existing dashboard links can be reused as microsite Link components.
+- **Key Changes:**
+  - Added an `Import Links` action in the microsite editor items toolbar
+  - Added searchable multi-select modal backed by the existing `/api/link/list` endpoint
+  - Imported selected links into the microsite item list with title, URL, description, and default icon
+
 ### 0.3 Microsite Rich Components — _Completed Jun 2026_
 
 - **Status:** Completed

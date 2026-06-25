@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-06-25 - Microsite Link Import
+
+### UI
+
+- Added an "Import Links" action in the microsite editor item section.
+- Users can search and multi-select existing dashboard links, then import them as microsite Link components.
+- Imported items preserve the existing link URL and use the link title/comment/slug as the microsite item title.
+
+---
+
 ## 2026-06-25 - Microsite Rich Components
 
 ### UI

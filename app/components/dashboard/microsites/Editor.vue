@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { Microsite, MicrositeItem, SocialLink } from '@/types'
+import type { Link as DashboardLink, LinkListResponse, Microsite, MicrositeItem, SocialLink } from '@/types'
 import {
   AtSign,
   BookOpen,
   Briefcase,
   Camera,
+  Check,
   Code,
   ExternalLink,
   Facebook,
@@ -149,6 +150,12 @@ const dragIndex = ref<number | null>(null)
 const dropOverIndex = ref<number | null>(null)
 const componentPickerOpen = ref(false)
 const componentSearch = ref('')
+const linkImportOpen = ref(false)
+const linkImportSearch = ref('')
+const linkImportLoading = ref(false)
+const linkImportError = ref(false)
+const availableLinks = ref<DashboardLink[]>([])
+const selectedLinkIds = ref<string[]>([])
 
 const filteredComponentOptions = computed(() => {
   const query = componentSearch.value.trim().toLowerCase()
@@ -156,6 +163,18 @@ const filteredComponentOptions = computed(() => {
     return COMPONENT_OPTIONS
 
   return COMPONENT_OPTIONS.filter(option => `${option.title} ${option.description}`.toLowerCase().includes(query))
+})
+
+const filteredAvailableLinks = computed(() => {
+  const query = linkImportSearch.value.trim().toLowerCase()
+  if (!query)
+    return availableLinks.value
+
+  return availableLinks.value.filter((link) => {
+    return [link.title, link.slug, link.url, link.description]
+      .filter(Boolean)
+      .some(value => value!.toLowerCase().includes(query))
+  })
 })
 
 const previewVisibleItems = computed(() => {
@@ -324,6 +343,65 @@ function addComponent(type: MicrositeItemType) {
   componentSearch.value = ''
 }
 
+async function openLinkImport() {
+  linkImportOpen.value = true
+  if (availableLinks.value.length > 0)
+    return
+
+  await loadAvailableLinks()
+}
+
+async function loadAvailableLinks() {
+  linkImportLoading.value = true
+  linkImportError.value = false
+
+  try {
+    const data = await useAPI<LinkListResponse>('/api/link/list', {
+      query: { limit: 1024 },
+    })
+    availableLinks.value = data.links.filter(Boolean)
+  }
+  catch (error) {
+    console.error(error)
+    linkImportError.value = true
+  }
+  finally {
+    linkImportLoading.value = false
+  }
+}
+
+function toggleLinkSelection(id: string) {
+  const index = selectedLinkIds.value.indexOf(id)
+  if (index >= 0) {
+    selectedLinkIds.value.splice(index, 1)
+    return
+  }
+
+  selectedLinkIds.value.push(id)
+}
+
+function importSelectedLinks() {
+  const selected = availableLinks.value.filter(link => selectedLinkIds.value.includes(link.id))
+
+  for (const link of selected) {
+    form.items.push({
+      id: nanoid(),
+      type: 'link',
+      title: link.title || link.comment || link.slug,
+      url: link.url,
+      description: link.description,
+      icon: 'Link',
+      order: form.items.length,
+      visible: true,
+      gridSpan: '1x1',
+    })
+  }
+
+  selectedLinkIds.value = []
+  linkImportSearch.value = ''
+  linkImportOpen.value = false
+}
+
 function removeItem(index: number) {
   form.items.splice(index, 1)
   form.items.forEach((item, idx) => {
@@ -464,60 +542,131 @@ async function handleSubmit() {
         <div class="space-y-4 md:border-l md:pl-6">
           <div class="flex items-center justify-between">
             <Label>Items</Label>
-            <ResponsiveModal
-              v-model:open="componentPickerOpen"
-              title="Tambah komponen baru"
-              description="Pilih komponen yang ingin ditambahkan ke microsite."
-              content-class="md:!max-w-3xl"
-            >
-              <template #trigger>
-                <Button type="button" variant="outline" size="sm">
-                  <Plus class="mr-2 h-4 w-4" />
-                  Add Component
-                </Button>
-              </template>
+            <div class="flex flex-wrap justify-end gap-2">
+              <Button type="button" variant="outline" size="sm" @click="openLinkImport">
+                <Link class="mr-2 h-4 w-4" />
+                Import Links
+              </Button>
+              <ResponsiveModal
+                v-model:open="componentPickerOpen"
+                title="Tambah komponen baru"
+                description="Pilih komponen yang ingin ditambahkan ke microsite."
+                content-class="md:!max-w-3xl"
+              >
+                <template #trigger>
+                  <Button type="button" variant="outline" size="sm">
+                    <Plus class="mr-2 h-4 w-4" />
+                    Add Component
+                  </Button>
+                </template>
 
-              <div class="space-y-4 p-1">
-                <div class="relative">
-                  <Input
-                    v-model="componentSearch"
-                    placeholder="Search component"
-                    class="pr-10"
-                  />
-                  <AtSign class="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <div class="space-y-4 p-1">
+                  <div class="relative">
+                    <Input
+                      v-model="componentSearch"
+                      placeholder="Search component"
+                      class="pr-10"
+                    />
+                    <AtSign class="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  </div>
+
+                  <div class="grid max-h-[60vh] gap-2 overflow-y-auto pr-1 md:grid-cols-2">
+                    <button
+                      v-for="component in filteredComponentOptions"
+                      :key="component.type"
+                      type="button"
+                      class="flex gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/60 hover:bg-muted/50"
+                      @click="addComponent(component.type)"
+                    >
+                      <component :is="component.icon" class="mt-1 size-5 shrink-0 text-muted-foreground" />
+                      <span class="min-w-0 flex-1">
+                        <span class="flex items-center gap-2 font-medium">
+                          {{ component.title }}
+                          <Badge v-if="component.badge" variant="secondary" class="text-[10px]">
+                            {{ component.badge }}
+                          </Badge>
+                        </span>
+                        <span class="mt-1 block text-xs text-muted-foreground">
+                          {{ component.description }}
+                        </span>
+                      </span>
+                    </button>
+                  </div>
                 </div>
 
-                <div class="grid max-h-[60vh] gap-2 overflow-y-auto pr-1 md:grid-cols-2">
-                  <button
-                    v-for="component in filteredComponentOptions"
-                    :key="component.type"
-                    type="button"
-                    class="flex gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/60 hover:bg-muted/50"
-                    @click="addComponent(component.type)"
-                  >
-                    <component :is="component.icon" class="mt-1 size-5 shrink-0 text-muted-foreground" />
-                    <span class="min-w-0 flex-1">
-                      <span class="flex items-center gap-2 font-medium">
-                        {{ component.title }}
-                        <Badge v-if="component.badge" variant="secondary" class="text-[10px]">
-                          {{ component.badge }}
-                        </Badge>
-                      </span>
-                      <span class="mt-1 block text-xs text-muted-foreground">
-                        {{ component.description }}
-                      </span>
-                    </span>
-                  </button>
-                </div>
+                <template #footer>
+                  <Button type="button" variant="secondary" @click="componentPickerOpen = false">
+                    Close
+                  </Button>
+                </template>
+              </ResponsiveModal>
+            </div>
+          </div>
+
+          <ResponsiveModal
+            v-model:open="linkImportOpen"
+            title="Import existing links"
+            description="Pilih link dashboard yang ingin ditambahkan ke microsite."
+            content-class="md:!max-w-3xl"
+          >
+            <div class="space-y-4 p-1">
+              <div class="relative">
+                <Input
+                  v-model="linkImportSearch"
+                  placeholder="Search existing links"
+                  class="pr-10"
+                />
+                <AtSign class="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               </div>
 
-              <template #footer>
-                <Button type="button" variant="secondary" @click="componentPickerOpen = false">
-                  Close
+              <div v-if="linkImportLoading" class="py-8 text-center text-sm text-muted-foreground">
+                Loading links...
+              </div>
+
+              <div v-else-if="linkImportError" class="py-8 text-center text-sm text-muted-foreground">
+                Failed to load links.
+                <Button type="button" variant="link" @click="loadAvailableLinks">
+                  Try again
                 </Button>
-              </template>
-            </ResponsiveModal>
-          </div>
+              </div>
+
+              <div v-else-if="availableLinks.length === 0" class="py-8 text-center text-sm text-muted-foreground">
+                No existing links found.
+              </div>
+
+              <div v-else class="max-h-[60vh] space-y-2 overflow-y-auto pr-1">
+                <button
+                  v-for="link in filteredAvailableLinks"
+                  :key="link.id"
+                  type="button"
+                  class="flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/60 hover:bg-muted/50"
+                  :class="selectedLinkIds.includes(link.id) ? 'border-primary bg-primary/5' : ''"
+                  @click="toggleLinkSelection(link.id)"
+                >
+                  <div class="mt-1 flex size-5 items-center justify-center rounded border text-xs">
+                    <Check v-if="selectedLinkIds.includes(link.id)" class="size-3" />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="truncate font-medium">
+                      {{ link.title || link.comment || link.slug }}
+                    </div>
+                    <div class="truncate text-xs text-muted-foreground">
+                      /{{ link.slug }} -> {{ link.url }}
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <template #footer>
+              <Button type="button" variant="secondary" @click="linkImportOpen = false">
+                Cancel
+              </Button>
+              <Button type="button" :disabled="selectedLinkIds.length === 0" @click="importSelectedLinks">
+                Import {{ selectedLinkIds.length || '' }} Links
+              </Button>
+            </template>
+          </ResponsiveModal>
 
           <div
             v-if="form.items.length === 0"
