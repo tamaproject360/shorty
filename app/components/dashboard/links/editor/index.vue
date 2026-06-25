@@ -36,6 +36,7 @@ function handleClose() {
   <ResponsiveModal
     v-model:open="dialogOpen"
     :title="isEdit ? t('links.edit') : t('links.create')"
+    content-class="sm:max-w-[calc(100svw-4rem)] lg:max-w-5xl xl:max-w-6xl"
   >
     <template #trigger>
       <slot>

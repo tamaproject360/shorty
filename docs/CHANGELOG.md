@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-25 - Link Editor Modal Width
+
+### UI
+
+- Widened the dashboard link create/edit modal on desktop so long URL and metadata fields have more usable horizontal space.
+- Kept the mobile drawer behavior unchanged.
+
+---
+
 ## 2026-06-24 — SQLite Migration: Zero Cloudflare Dependencies
 
 ### 🗄️ Storage Migration

@@ -4,6 +4,14 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.1 Link Editor Modal Width — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Expanded the dashboard link create/edit modal on desktop to make link information easier to fill in.
+- **Key Changes:**
+  - Added a wider desktop content width to the link editor `ResponsiveModal`
+  - Preserved the existing mobile drawer layout
+
 ### 0. SQLite Migration — _Completed Jun 2026_
 
 - **Status:** Production Ready
