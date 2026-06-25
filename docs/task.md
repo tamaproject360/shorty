@@ -4,6 +4,23 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.7 Microsite Import Save Fix — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Fixed microsite save failures after importing dashboard links with empty metadata.
+- **Key Changes:**
+  - Normalized null microsite item descriptions to optional values during schema validation
+  - Added schema regression coverage for imported link items with null descriptions
+
+### 0.6 Gitea Mirror Sync Repair — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Restored Gitea mirror synchronization for the `tamaproject360/shorty` repository on LXC 106.
+- **Key Changes:**
+  - Confirmed `tamaproject360` is a Gitea organization owner, not a duplicate user account
+  - Identified root-owned files inside affected bare mirror repositories as the cause of failed fetches
+  - Restored repository ownership to the Gitea `git` service user and verified `shorty` matches GitHub `master`
+
 ### 0.5 Analysis and Realtime Repairs — _Completed Jun 2026_
 
 - **Status:** Completed

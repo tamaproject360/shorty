@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-25 - Microsite Import Save Fix
+
+### Validation
+
+- Fixed microsite save failures when imported dashboard links include `null` descriptions.
+- Added regression coverage for microsite item schema validation of imported link descriptions.
+
+---
+
 ## 2026-06-25 - Analysis and Realtime Fixes
 
 ### Analytics

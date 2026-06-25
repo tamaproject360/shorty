@@ -39,7 +39,7 @@ export const MicrositeItemSchema = z.object({
       .refine(value => /^(?:https?:\/\/|mailto:|tel:)/i.test(value), 'Invalid URL protocol')
       .optional(),
   ),
-  description: z.string().trim().max(2048).optional(),
+  description: z.preprocess(val => val == null ? undefined : val, z.string().trim().max(2048).optional()),
   targetDate: z.string().trim().max(64).optional(),
   icon: z.string().trim().max(64).optional(),
   order: z.number().int().min(0).default(0),

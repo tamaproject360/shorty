@@ -46,4 +46,17 @@ describe('micrositeItemSchema', () => {
 
     expect(result.success).toBe(false)
   })
+
+  it('treats null item description as omitted', () => {
+    const result = MicrositeItemSchema.safeParse({
+      id: 'imported-link',
+      type: 'link',
+      title: 'Imported Link',
+      url: 'https://example.com',
+      description: null,
+    })
+
+    expect(result.success).toBe(true)
+    expect(result.data?.description).toBeUndefined()
+  })
 })
