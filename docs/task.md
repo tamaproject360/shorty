@@ -4,6 +4,16 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.5 Analysis and Realtime Repairs — _Completed Jun 2026_
+
+- **Status:** Completed
+- **Description:** Fixed broken analysis/realtime data loading paths and improved empty/realtime UI behavior.
+- **Key Changes:**
+  - Added shared click query filtering so stats/log endpoints generate valid SQL with or without filters
+  - Updated counters, views, heatmap, metrics, events, and locations endpoints to use the shared filter
+  - Added 15-second realtime refresh and newest-first logs
+  - Fixed no-data UI for metrics and removed blur from valid zero counters
+
 ### 0.4 Microsite Link Import — _Completed Jun 2026_
 
 - **Status:** Completed

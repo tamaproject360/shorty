@@ -49,11 +49,15 @@ export const useDashboardRealtimeStore = defineStore('dashboard-realtime', () =>
 
   function initDefaultTimeRange() {
     if (timeRange.value.startAt === 0) {
-      const tz = getLocalTimeZone()
-      const range = computeTimeRangeFromName(timeName.value, tz)
-      timeRange.value.startAt = range[0]
-      timeRange.value.endAt = range[1]
+      refreshTimeRange()
     }
+  }
+
+  function refreshTimeRange() {
+    const tz = getLocalTimeZone()
+    const range = computeTimeRangeFromName(timeName.value, tz)
+    timeRange.value.startAt = range[0]
+    timeRange.value.endAt = range[1]
   }
 
   return {
@@ -65,6 +69,7 @@ export const useDashboardRealtimeStore = defineStore('dashboard-realtime', () =>
     clearFilters,
     restoreFromUrl,
     initDefaultTimeRange,
+    refreshTimeRange,
   }
 })
 

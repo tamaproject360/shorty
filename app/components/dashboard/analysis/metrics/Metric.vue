@@ -13,6 +13,7 @@ const analysisStore = useDashboardAnalysisStore()
 const total = ref(0)
 const metrics = ref<MetricItem[]>([])
 const top10 = ref<MetricItem[]>([])
+const isLoaded = ref(false)
 
 interface RawMetricData {
   name: string
@@ -20,6 +21,7 @@ interface RawMetricData {
 }
 
 async function getLinkMetrics() {
+  isLoaded.value = false
   total.value = 0
   metrics.value = []
   top10.value = []
@@ -40,6 +42,7 @@ async function getLinkMetrics() {
     }))
     top10.value = metrics.value.slice(0, 10)
   }
+  isLoaded.value = true
 }
 
 watch([() => analysisStore.dateRange, () => analysisStore.filters], getLinkMetrics, {
@@ -78,7 +81,7 @@ onMounted(() => {
         </ResponsiveModal>
       </CardFooter>
     </template>
-    <template v-else>
+    <template v-else-if="!isLoaded">
       <div class="flex h-12 items-center justify-between px-4">
         <Skeleton
           class="h-4 w-32 rounded-full"
@@ -97,5 +100,8 @@ onMounted(() => {
         />
       </div>
     </template>
+    <div v-else class="flex min-h-48 items-center justify-center text-sm text-muted-foreground">
+      {{ $t('dashboard.no_data') }}
+    </div>
   </Card>
 </template>

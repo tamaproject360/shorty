@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIntersectionObserver } from '@vueuse/core'
+import { useIntersectionObserver, useIntervalFn } from '@vueuse/core'
 
 const realtimeStore = useDashboardRealtimeStore()
 
@@ -21,6 +21,10 @@ onBeforeMount(() => {
   realtimeStore.restoreFromUrl()
   realtimeStore.initDefaultTimeRange()
 })
+
+useIntervalFn(() => {
+  realtimeStore.refreshTimeRange()
+}, 15_000)
 </script>
 
 <template>

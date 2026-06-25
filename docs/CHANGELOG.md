@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-06-25 - Analysis and Realtime Fixes
+
+### Analytics
+
+- Fixed stats/log SQL filters so analysis and realtime endpoints work when no link/filter is selected.
+- Shared click filtering across counters, views, heatmap, metrics, events, and locations endpoints.
+- Fixed heatmap weekday indexing so Sunday is displayed correctly in the weekly grid.
+
+### Realtime
+
+- Added automatic realtime refresh for the selected time range every 15 seconds.
+- Kept newest realtime events at the top of the log feed.
+- Removed blur styling from valid zero-count counters.
+
+### UI
+
+- Metrics cards now show a proper no-data state instead of loading skeletons forever.
+
+---
+
 ## 2026-06-25 - Microsite Link Import
 
 ### UI

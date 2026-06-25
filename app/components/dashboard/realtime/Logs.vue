@@ -17,7 +17,7 @@ async function getEvents() {
       ...realtimeStore.filters,
     },
   })
-  logs.value = data?.reverse() ?? []
+  logs.value = data ?? []
   logskey.value = Date.now()
 }
 

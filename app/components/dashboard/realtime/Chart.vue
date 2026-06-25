@@ -56,7 +56,7 @@ onMounted(() => {
         <MousePointerClick class="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent class="px-0 pb-4">
-        <NumberFlow class="text-2xl font-bold" :class="{ 'opacity-60 blur-md': !stats.visits }" :value="stats.visits" />
+        <NumberFlow class="text-2xl font-bold" :value="stats.visits" />
       </CardContent>
     </div>
     <DashboardAnalysisViews
