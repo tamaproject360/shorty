@@ -2,13 +2,14 @@
 import { ChevronsUpDown, LogOut } from 'lucide-vue-next'
 import { useSidebar } from '@/components/ui/sidebar'
 
-interface User {
+interface SidebarUser {
   name: string
   email: string
   avatar: string
 }
 
 const { isMobile } = useSidebar()
+const { getToken, getUser, removeToken } = useAuthToken()
 
 const hostname = computed<string>(() => {
   if (import.meta.client) {
@@ -17,14 +18,21 @@ const hostname = computed<string>(() => {
   return 'localhost'
 })
 
-const user = computed<User>(() => ({
-  name: 'Root',
-  email: `root@${hostname.value}`,
+const user = computed<SidebarUser>(() => ({
+  name: getUser()?.username || 'Root',
+  email: `${getUser()?.role || 'admin'}@${hostname.value}`,
   avatar: '/icon.png',
 }))
 
-function logOut() {
-  localStorage.removeItem('ShortySiteToken')
+async function logOut() {
+  const token = getToken()
+  if (token) {
+    await $fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    }).catch(() => undefined)
+  }
+  removeToken()
   navigateTo('/dashboard/login')
 }
 </script>

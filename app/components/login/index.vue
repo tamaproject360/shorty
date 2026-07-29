@@ -1,31 +1,35 @@
 <script setup lang="ts">
-import { AlertCircle } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { z } from 'zod'
 
 const { t } = useI18n()
-const { previewMode } = useRuntimeConfig().public
-const { setToken, removeToken } = useAuthToken()
+const { setToken, removeToken, setUser } = useAuthToken()
 
-const token = ref('')
+const username = ref('admin')
+const password = ref('')
 const error = ref('')
 
 const LoginSchema = z.object({
-  token: z.string().min(1),
+  username: z.string().min(1),
+  password: z.string().min(1),
 })
 
 async function handleSubmit() {
   error.value = ''
-  const result = LoginSchema.safeParse({ token: token.value })
+  const result = LoginSchema.safeParse({ username: username.value, password: password.value })
 
   if (!result.success) {
-    error.value = t('login.token_required')
+    error.value = 'Username and password are required'
     return
   }
 
   try {
-    setToken(token.value)
-    await useAPI('/api/verify')
+    const response = await $fetch<{ token: string, user: { id: string, username: string, role: 'admin' | 'editor' | 'viewer' } }>('/api/auth/login', {
+      method: 'POST',
+      body: result.data,
+    })
+    setToken(response.token)
+    setUser(response.user)
     navigateTo('/dashboard')
   }
   catch (e) {
@@ -52,28 +56,30 @@ async function handleSubmit() {
       <form class="space-y-6" @submit.prevent="handleSubmit">
         <FieldGroup>
           <Field :data-invalid="!!error">
-            <FieldLabel for="token">
-              {{ $t('login.token_label') }}
+            <FieldLabel for="username">
+              Username
             </FieldLabel>
             <Input
-              id="token"
-              v-model="token"
+              id="username"
+              v-model="username"
+              autocomplete="username"
+              :aria-invalid="!!error"
+            />
+          </Field>
+          <Field :data-invalid="!!error">
+            <FieldLabel for="password">
+              Password
+            </FieldLabel>
+            <Input
+              id="password"
+              v-model="password"
               type="password"
-              placeholder="********"
+              autocomplete="current-password"
               :aria-invalid="!!error"
             />
             <FieldError v-if="error" :errors="[error]" />
           </Field>
         </FieldGroup>
-
-        <Alert v-if="previewMode">
-          <AlertCircle class="h-4 w-4" />
-          <AlertTitle>{{ $t('login.tips') }}</AlertTitle>
-          <AlertDescription>
-            {{ $t('login.preview_token') }}
-            <code class="font-mono text-green-500">ShortyCool</code>
-          </AlertDescription>
-        </Alert>
 
         <Button class="w-full" type="submit">
           {{ $t('login.submit') }}

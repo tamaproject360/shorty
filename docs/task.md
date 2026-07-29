@@ -4,6 +4,15 @@ This document outlines the development status, gap analysis, and future roadmap 
 
 ## ✅ Completed Features
 
+### 0.8 User Management and RBAC - Completed Jul 2026
+
+- **Status:** Completed
+- **Description:** Added local account authentication and role-based dashboard access.
+- **Key Changes:**
+  - Added username/password login with the seeded `admin` / `shorty@123` account
+  - Added administrator-only user management below Microsites in the sidebar
+  - Added Admin, Editor, and Viewer authorization for the API
+
 ### 0.7 Microsite Import Save Fix — _Completed Jun 2026_
 
 - **Status:** Completed

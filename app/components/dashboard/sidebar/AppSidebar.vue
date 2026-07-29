@@ -8,6 +8,8 @@ interface NavItem {
 
 const { title } = useAppConfig()
 const { isActive } = useDashboardRoute()
+const { getUser } = useAuthToken()
+const isAdmin = computed(() => getUser()?.role === 'admin')
 
 const platformItems = computed<NavItem[]>(() => [
   {
@@ -22,6 +24,16 @@ const platformItems = computed<NavItem[]>(() => [
     icon: DASHBOARD_ROUTES.microsites.icon,
     isActive: isActive('microsites'),
   },
+  ...(
+    isAdmin.value
+      ? [{
+          title: 'nav.users',
+          url: '/dashboard/users',
+          icon: DASHBOARD_ROUTES.users.icon,
+          isActive: isActive('users'),
+        }]
+      : []
+  ),
   {
     title: 'nav.analysis',
     url: '/dashboard/analysis',

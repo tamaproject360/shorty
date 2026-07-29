@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 import { useRoute } from '#imports'
-import { Activity, ChartArea, FolderSync, Link, Users } from 'lucide-vue-next'
+import { Activity, ChartArea, FolderSync, Link, ShieldCheck, Users } from 'lucide-vue-next'
 import { computed } from 'vue'
 
 export interface DashboardRouteConfig {
@@ -34,6 +34,11 @@ export const DASHBOARD_ROUTES = {
     paths: ['/dashboard/microsite-analytics'],
     titleKey: 'nav.microsites',
     icon: Users,
+  },
+  users: {
+    paths: ['/dashboard/users'],
+    titleKey: 'nav.users',
+    icon: ShieldCheck,
   },
   analysis: {
     paths: ['/dashboard/analysis'],
