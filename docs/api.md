@@ -4,16 +4,37 @@ Complete API reference for Shorty link shortener and microsite platform.
 
 ## Overview
 
-Shorty provides RESTful APIs for managing short links and microsites (link-in-bio pages). All API endpoints require authentication via site token.
+Shorty provides RESTful APIs for managing short links and microsites (link-in-bio pages). Protected endpoints use authenticated user sessions and role-based access control (RBAC).
 
 ## Authentication
 
-Include the site token in your requests using one of these methods:
+Sign in with a dashboard username and password to obtain an opaque session token:
 
-- **Cookie:** `siteToken`
-- **Header:** `Authorization: Bearer YOUR_SITE_TOKEN`
+```bash
+curl -X POST http://localhost:7465/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"shorty@123"}'
+```
 
-The token is configured via `NUXT_SITE_TOKEN` environment variable.
+Include the returned token in protected requests:
+
+```text
+Authorization: Bearer SESSION_TOKEN
+```
+
+The initial administrator account is `admin` / `shorty@123`. Change its password after the first login. `NUXT_SITE_TOKEN` remains available as a legacy administrator API token for existing integrations.
+
+### Roles
+
+| Role | Permissions |
+| ---- | ----------- |
+| `admin` | Full API access, including user management and migration |
+| `editor` | Manage links and microsites; read analytics |
+| `viewer` | Read-only access to protected resources |
+
+User management endpoints require the `admin` role. Viewer requests using a non-`GET` method receive `403 Forbidden`.
+
+See [User Management and RBAC](User-Management.md) for authentication examples and the complete user endpoint reference.
 
 ## Base URL
 
@@ -451,6 +472,7 @@ All requests are validated using **Zod schemas**:
 
 - `schemas/link.ts` - Link validation rules
 - `schemas/microsite.ts` - Microsite validation rules
+- `schemas/user.ts` - Authentication and user-management validation rules
 
 Invalid requests return `400` with detailed validation errors.
 
@@ -507,15 +529,7 @@ export default defineNuxtConfig({
 
 ## Storage
 
-Shorty uses **Nitro Storage** (unstorage) with pluggable backends:
-
-- **Development:** File system (`./data/`)
-- **Production:** Cloudflare KV, Redis, or any supported backend
-
-Storage keys:
-
-- Links: `link:{slug}`
-- Microsites: `microsite:{slug}`
+Shorty uses SQLite for links, microsites, analytics, users, and sessions. The database is persisted at `.data/shorty.db`.
 
 ---
 
@@ -610,5 +624,5 @@ For issues and feature requests:
 
 ---
 
-**Last Updated:** 2026-02-08
+**Last Updated:** 2026-07-29
 **API Version:** 0.2.3

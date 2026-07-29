@@ -23,6 +23,7 @@ Shorty is a modern, self-hosted link shortener with built-in analytics. Deploy a
 | 📊 **Analytics**      | Click tracking with country, browser, OS, device breakdown |
 | 🤖 **AI Slug**        | Smart slug generation via OpenAI-compatible API            |
 | 🌐 **Microsites**     | Link-in-bio pages with themes, social links, embeds        |
+| 👥 **User Management**| Dashboard accounts with Admin, Editor, and Viewer RBAC     |
 | 📱 **QR Codes**       | Auto-generated QR codes for every link                     |
 | 🌍 **Multi-Language** | 6 languages with full i18n support                         |
 | 🎨 **Dark Mode**      | Light, dark, and system-aware themes                       |
@@ -43,7 +44,26 @@ pnpm dev
 
 Open [http://localhost:7465](http://localhost:7465).
 
-Default token: set `NUXT_SITE_TOKEN` in `.env` (min 8 chars).
+Sign in at `http://localhost:7465/dashboard/login` with the default administrator account:
+
+```text
+Username: admin
+Password: shorty@123
+```
+
+Change the default password immediately after the first sign-in from **Dashboard > User Management**.
+
+### Roles and Access
+
+| Role | Access |
+| ---- | ------ |
+| **Admin** | Full dashboard access, including users and import/export |
+| **Editor** | Create, update, and delete links and microsites; view analytics |
+| **Viewer** | Read-only access to dashboard data and analytics |
+
+Only administrators can access **User Management**, located in the sidebar directly below **Microsites**.
+
+See [User Management and RBAC](docs/User-Management.md) for API and account-management details.
 
 ---
 
@@ -64,7 +84,7 @@ Data persists in `shorty_data` volume. The SQLite database lives at `.data/short
 
 | Variable                    | Default                     | Description                                     |
 | --------------------------- | --------------------------- | ----------------------------------------------- |
-| `NUXT_SITE_TOKEN`           | _(required)_                | Dashboard access token                          |
+| `NUXT_SITE_TOKEN`           | Auto-generated               | Optional legacy API administrator token          |
 | `NUXT_HOME_URL`             | `""`                        | Production URL (leave empty for local)          |
 | `NUXT_OPENAI_API_KEY`       | `""`                        | OpenAI API key for AI slug generation           |
 | `NUXT_OPENAI_BASE_URL`      | `https://api.openai.com/v1` | OpenAI-compatible endpoint (Groq, Ollama, etc.) |
@@ -72,6 +92,8 @@ Data persists in `shorty_data` volume. The SQLite database lives at `.data/short
 | `NUXT_REDIRECT_STATUS_CODE` | `308`                       | HTTP redirect code                              |
 
 See [`.env.example`](.env.example) for all options.
+
+User accounts and sessions are stored in the local SQLite database (`.data/shorty.db`).
 
 ---
 
